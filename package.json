@@ -1,8 +1,8 @@
 {
   "name": "ng2-ui-auth",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "angular2 migration for satellizer",
-  "main": "src/export.js",
+  "main": "export.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
