@@ -1,0 +1,32 @@
+{
+  "name": "ng2-ui-auth",
+  "version": "1.0.0",
+  "description": "angular2 migration for satellizer",
+  "main": "src/export.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "authentication",
+    "jwt"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronzeidman/ng2-ui-auth.git"
+  },
+  "author": "Ron Zeidman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ronzeidman/ng2-ui-auth/issues"
+  },
+  "homepage": "https://github.com/ronzeidman/ng2-ui-auth#readme",
+  "dependencies": {
+    "angular2": "^2.0.0-beta.0",
+    "es6-shim": "^0.33.3",
+    "reflect-metadata": "^0.1.2",
+    "rxjs": "^5.0.0-beta.0",
+    "zone.js": "^0.5.10"
+  }
+}
