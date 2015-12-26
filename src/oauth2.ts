@@ -75,7 +75,7 @@ export class Oauth2 {
 
                 return this.exchangeForToken(oauthData, userData);
             });
-    };
+    }
 
     private exchangeForToken(oauthData: {code?, state?}, userData?: {}) {
         let data: any = extend({}, userData);

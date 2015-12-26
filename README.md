@@ -1,7 +1,7 @@
 # ng2-ui-auth
 an angular2 repository for authentication based on angular1's satellizer
 This is mostly copy-paste from the great satellizer (https://satellizer.herokuapp.com/#/ https://github.com/sahat/satellizer) library (even the default token prefix remained "satellizer").
-To use this run `npm install angular2-jwt ronzeidman/ng2-ui-auth --save`.
+To use this run `npm install angular2-jwt ng2-ui-auth --save`.
 For configuration do the following:
 ```typescript
 import {bootstrap} from 'angular2/platform/browser';
@@ -131,4 +131,4 @@ The corresponding html (also migrated from satellizer):
 If something doesn't work, feel free to issue a pull request and/or create a new issue, I'm not sure I'll be responsive though since I use it internally for my project and will only update and fix the repository if it affects my work.
 If someone (like let's say @shahat) will want to take control of this repository and maintain it he is more than welcome to do so.
 
-If someone thinks that some of my code can be written better I encurage you to inform me.
+If someone thinks that some of my code can be written better I encourage you to inform me.

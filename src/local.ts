@@ -27,7 +27,7 @@ export class Local {
                 this.shared.setToken(response);
                 return response;
             });
-    };
+    }
     signup(user, opts?: RequestOptionsArgs) {
         opts = opts || {};
         let url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
@@ -35,5 +35,5 @@ export class Local {
         opts.method = opts.method || 'POST';
 
         return this.http.request(url, opts);
-    };
+    }
 }

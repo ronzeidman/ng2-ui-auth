@@ -24,13 +24,13 @@ export class Popup {
                 top: window.screenY + ((window.outerHeight - height) / 2.5)
             },
             options);
-    };
+    }
 
     private static stringifyOptions(options: Object) {
         return Object.keys(options).map((key) => {
             return key + '=' + options[key];
         }).join(',');
-    };
+    }
 
     private static parseQueryString(joinedKeyValue: string): any {
         let key, value;
@@ -44,7 +44,7 @@ export class Popup {
                 return obj;
             },
             {});
-    };
+    }
 
 
     constructor(private config: Config) {}
@@ -71,10 +71,10 @@ export class Popup {
             .fromEvent(this.popupWindow, 'loadstart')
             .concatMap((event: Event & { url: string }) => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return ['Popup Window Closed'];
+                    return <any>['Popup Window Closed'];
                 }
                 if (event.url.indexOf(redirectUri) !== 0) {
-                    return [];
+                    return <any>[];
                 }
 
                 let parser = document.createElement('a');
@@ -93,7 +93,7 @@ export class Popup {
                     if (qs.error) {
                         throw qs.error;
                     } else {
-                        return [qs];
+                        return <any>[qs];
                     }
                 }
                 return <any>[];
@@ -107,7 +107,7 @@ export class Popup {
             .interval(50)
             .concatMap(() => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return ['Popup Window Closed'];
+                    return <any>['Popup Window Closed'];
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';
@@ -127,12 +127,12 @@ export class Popup {
                     if (qs.error) {
                         throw qs.error;
                     } else {
-                        return [qs];
+                        return <any>[qs];
                     }
                 }
                 return <any>[];
             })
             .take(1)
             .takeWhile((response) => response !== 'Popup Window Closed');
-    };
+    }
 }

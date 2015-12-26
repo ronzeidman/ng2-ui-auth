@@ -68,7 +68,7 @@ export class Shared {
         }
 
         this.storage.set(this.tokenName, token);
-    };
+    }
     removeToken() {
         this.storage.remove(this.tokenName);
     }
@@ -113,8 +113,8 @@ export class Shared {
             observer.next();
             observer.complete();
         });
-    };
+    }
     setStorageType(type) {
         this.config.storageType = type;
-    };
+    }
 }
