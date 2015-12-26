@@ -12,7 +12,7 @@ script:
 after_success:
 deploy:
    provider: npm
-   email: ". . ."
+   email: "ron.zeidman@gmail.com"
    api_key: "$NPM_TOKEN"
    on:
      tags: true
