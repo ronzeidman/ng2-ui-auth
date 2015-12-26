@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- '0.10'
+env:
+  global:
+  - GH_REF: github.com/ronzeidman/ng2-ui-auth
+before_install:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+script:
+- npm run compile
+after_success:
+deploy:
+   provider: npm
+   email: ". . ."
+   api_key: "$NPM_TOKEN"
+   on:
+     tags: true
