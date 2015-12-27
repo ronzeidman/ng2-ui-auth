@@ -17,7 +17,7 @@ export function SATELLIZER_PROVIDERS(config: ICustomConfig) {
     return [provide(Config, { useFactory: () => { return new Config(config);}}), 
             provide(Storage, { useFactory: (providedConfig) => { return new Storage(providedConfig);}, deps: [Config]} ), 
             provide(Shared, { useFactory: (storage, providedConfig) => { return new Shared(storage, providedConfig);}, deps: [Storage, Config]} ), 
-            provide(Oauth, { useFactory: (http, injector, providedConfig, storage) => { return new Oauth(http, injector, providedConfig, storage);}, deps: [Http, Injector, Config, Storage]} ), 
+            provide(Oauth, { useFactory: (http, injector, shared, providedConfig) => { return new Oauth(http, injector, shared, providedConfig);}, deps: [Http, Injector, Shared, Config]} ), 
             provide(Popup, { useFactory: (providedConfig) => { return new Popup(providedConfig);}, deps: [Config]} ),
             provide(Oauth1, { useFactory: (http, popup, providedConfig) => { return new Oauth1(http, popup, providedConfig);}, deps: [Http, Popup, Config]} ),
             provide(Oauth2, { useFactory: (http, popup, storage, providedConfig) => { return new Oauth2(http, popup, storage, providedConfig);}, deps: [Http, Popup, Storage, Config]} ),
