@@ -1,6 +1,6 @@
 {
   "name": "ng2-ui-auth",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "angular2 migration for satellizer",
   "main": "export.js",
   "scripts": {
