@@ -122,7 +122,7 @@ export class Popup {
                     let hashParams = this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
                     let hash = Popup.parseQueryString(hashParams);
                     let qs = Popup.parseQueryString(queryParams);
-                    //this.popupWindow.close();
+                    this.popupWindow.close();
                     extend(qs, hash);
                     if (qs.error) {
                         throw qs.error;
