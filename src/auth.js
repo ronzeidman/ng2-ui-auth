@@ -1,4 +1,5 @@
 System.register(['angular2/core', 'angular2/http', './shared', './local', './oauth', './popup', './oauth2', './oauth1', './storage', './config'], function(exports_1) {
+    "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -105,7 +106,7 @@ System.register(['angular2/core', 'angular2/http', './shared', './local', './oau
                     __metadata('design:paramtypes', [shared_1.Shared, local_1.Local, oauth_1.Oauth])
                 ], Auth);
                 return Auth;
-            })();
+            }());
             exports_1("Auth", Auth);
         }
     }

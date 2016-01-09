@@ -1,4 +1,5 @@
 System.register(['angular2/core', 'rxjs', './utils', './config'], function(exports_1) {
+    "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -141,7 +142,7 @@ System.register(['angular2/core', 'rxjs', './utils', './config'], function(expor
                     __metadata('design:paramtypes', [config_1.Config])
                 ], Popup);
                 return Popup;
-            })();
+            }());
             exports_1("Popup", Popup);
         }
     }
