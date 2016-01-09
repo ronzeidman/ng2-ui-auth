@@ -24,6 +24,7 @@ export class JwtHttp extends Http {
     }
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         if (this._shared.isAuthenticated()) {
             options.headers = options.headers || new Headers();
             options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
@@ -32,34 +33,40 @@ export class JwtHttp extends Http {
     }
 
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         options.method = RequestMethod.Get;
         return this.request(url, options);
     }
 
     post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         options.method = RequestMethod.Post;
         options.body = body;
         return this.request(url, options);
     }
 
     put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         options.method = RequestMethod.Put;
         options.body = body;
         return super.put(url, body, options);
     }
 
     delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         options.method = RequestMethod.Delete;
         return super.delete(url, options);
     }
 
     patch(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         options.method = RequestMethod.Patch;
         options.body = body;
         return super.patch(url, body, options);
     }
 
     head(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
         options.method = RequestMethod.Head;
         return super.head(url, options);
     }

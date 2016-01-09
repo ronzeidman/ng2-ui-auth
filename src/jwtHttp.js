@@ -42,6 +42,7 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                     this._config = _config;
                 }
                 JwtHttp.prototype.request = function (url, options) {
+                    options = options || {};
                     if (this._shared.isAuthenticated()) {
                         options.headers = options.headers || new http_3.Headers();
                         options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
@@ -49,29 +50,35 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                     return _super.prototype.request.call(this, url, options);
                 };
                 JwtHttp.prototype.get = function (url, options) {
+                    options = options || {};
                     options.method = http_2.RequestMethod.Get;
                     return this.request(url, options);
                 };
                 JwtHttp.prototype.post = function (url, body, options) {
+                    options = options || {};
                     options.method = http_2.RequestMethod.Post;
                     options.body = body;
                     return this.request(url, options);
                 };
                 JwtHttp.prototype.put = function (url, body, options) {
+                    options = options || {};
                     options.method = http_2.RequestMethod.Put;
                     options.body = body;
                     return _super.prototype.put.call(this, url, body, options);
                 };
                 JwtHttp.prototype.delete = function (url, options) {
+                    options = options || {};
                     options.method = http_2.RequestMethod.Delete;
                     return _super.prototype.delete.call(this, url, options);
                 };
                 JwtHttp.prototype.patch = function (url, body, options) {
+                    options = options || {};
                     options.method = http_2.RequestMethod.Patch;
                     options.body = body;
                     return _super.prototype.patch.call(this, url, body, options);
                 };
                 JwtHttp.prototype.head = function (url, options) {
+                    options = options || {};
                     options.method = http_2.RequestMethod.Head;
                     return _super.prototype.head.call(this, url, options);
                 };
