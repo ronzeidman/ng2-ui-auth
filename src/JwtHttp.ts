@@ -7,8 +7,6 @@ import {RequestOptionsArgs} from 'angular2/http';
 import {Headers} from 'angular2/http';
 import {Request} from 'angular2/http';
 import {Config} from './config';
-import {Auth} from './auth';
-import {Router} from 'angular2/router';
 import {RequestOptions} from 'angular2/http';
 import {ConnectionBackend} from 'angular2/http';
 import {Shared} from './shared';
