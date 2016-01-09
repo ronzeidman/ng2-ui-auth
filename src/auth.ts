@@ -13,7 +13,7 @@ import {Config} from './config';
 /**
  * Created by Ron on 17/12/2015.
  */
-export function SATELLIZER_PROVIDERS(config: ICustomConfig) {
+export function NG2_UI_AUTH_PROVIDERS(config: ICustomConfig) {
     return [provide(Config, { useFactory: () => { return new Config(config);}}), 
             provide(Storage, { useFactory: (providedConfig) => { return new Storage(providedConfig);}, deps: [Config]} ), 
             provide(Shared, { useFactory: (storage, providedConfig) => { return new Shared(storage, providedConfig);}, deps: [Storage, Config]} ), 
@@ -64,5 +64,8 @@ export class Auth {
     }
     setStorageType(type: string) {
         return this.shared.setStorageType(type);
+    }
+    getExpirationDate() {
+        return this.shared.getExpirationDate();
     }
 }

@@ -122,6 +122,7 @@ System.register(['angular2/core', 'rxjs', './utils', './config'], function(expor
                             var hashParams = _this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
                             var hash = Popup.parseQueryString(hashParams);
                             var qs = Popup.parseQueryString(queryParams);
+                            _this.popupWindow.close();
                             utils_1.extend(qs, hash);
                             if (qs.error) {
                                 throw qs.error;

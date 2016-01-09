@@ -81,8 +81,8 @@ export class Config implements ICustomConfig {
     signupUrl = '/auth/signup';
     unlinkUrl = '/auth/unlink/';
     tokenName = 'token';
-    tokenPrefix = 'satellizer';
-    // authHeader = 'Authorization'; handled by angular2-jwt
+    tokenPrefix = 'ng2-ui-auth';
+    authHeader = 'Authorization';
     authToken = 'Bearer';
     storageType = 'localStorage';
     providers: IProviders = {

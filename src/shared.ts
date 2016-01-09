@@ -19,7 +19,7 @@ export class Shared {
         return this.storage.get(this.tokenName);
     }
     getPayload() {
-        let token = this.storage.get(this.tokenName);
+        let token = this.getToken();
 
         if (token && token.split('.').length === 3) {
             try {
@@ -73,7 +73,7 @@ export class Shared {
         this.storage.remove(this.tokenName);
     }
     isAuthenticated() {
-        let token = this.storage.get(this.tokenName);
+        let token = this.getToken();
 
         // a token is present
         if (token) {
@@ -84,7 +84,7 @@ export class Shared {
                     let base64Url = token.split('.')[1];
                     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                     let exp = JSON.parse(window.atob(base64)).exp;
-                    // jwt with an optonal expiration claims
+                    // jwt with an optional expiration claims
                     if (exp) {
                         let isExpired = Math.round(new Date().getTime() / 1000) >= exp;
                         if (isExpired) {
@@ -106,6 +106,15 @@ export class Shared {
         }
         // lail: No token at all
         return false;
+    }
+    getExpirationDate() {
+        let payload = this.getPayload();
+        if (payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
+            let date = new Date(0);
+            date.setUTCSeconds(payload.exp);
+            return date;
+        }
+        return null;
     }
     logout(): Observable<any> {
         this.storage.remove(this.tokenName);

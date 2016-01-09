@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', './shared', './local', './oau
     };
     var core_1, http_1, shared_1, local_1, oauth_1, popup_1, oauth2_1, oauth1_1, storage_1, config_1;
     var Auth;
-    function SATELLIZER_PROVIDERS(config) {
+    function NG2_UI_AUTH_PROVIDERS(config) {
         return [core_1.provide(config_1.Config, { useFactory: function () { return new config_1.Config(config); } }),
             core_1.provide(storage_1.Storage, { useFactory: function (providedConfig) { return new storage_1.Storage(providedConfig); }, deps: [config_1.Config] }),
             core_1.provide(shared_1.Shared, { useFactory: function (storage, providedConfig) { return new shared_1.Shared(storage, providedConfig); }, deps: [storage_1.Storage, config_1.Config] }),
@@ -21,7 +21,7 @@ System.register(['angular2/core', 'angular2/http', './shared', './local', './oau
             core_1.provide(local_1.Local, { useFactory: function (http, shared, providedConfig) { return new local_1.Local(http, shared, providedConfig); }, deps: [http_1.Http, shared_1.Shared, config_1.Config] }),
             core_1.provide(Auth, { useFactory: function (shared, local, oauth) { return new Auth(shared, local, oauth); }, deps: [shared_1.Shared, local_1.Local, oauth_1.Oauth] })];
     }
-    exports_1("SATELLIZER_PROVIDERS", SATELLIZER_PROVIDERS);
+    exports_1("NG2_UI_AUTH_PROVIDERS", NG2_UI_AUTH_PROVIDERS);
     return {
         setters:[
             function (core_1_1) {
@@ -96,6 +96,9 @@ System.register(['angular2/core', 'angular2/http', './shared', './local', './oau
                 };
                 Auth.prototype.setStorageType = function (type) {
                     return this.shared.setStorageType(type);
+                };
+                Auth.prototype.getExpirationDate = function () {
+                    return this.shared.getExpirationDate();
                 };
                 Auth = __decorate([
                     core_1.Injectable(), 

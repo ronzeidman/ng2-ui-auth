@@ -35,7 +35,7 @@ System.register(['rxjs', 'angular2/core', './config', './storage'], function(exp
                     return this.storage.get(this.tokenName);
                 };
                 Shared.prototype.getPayload = function () {
-                    var token = this.storage.get(this.tokenName);
+                    var token = this.getToken();
                     if (token && token.split('.').length === 3) {
                         try {
                             var base64Url = token.split('.')[1];
@@ -84,7 +84,7 @@ System.register(['rxjs', 'angular2/core', './config', './storage'], function(exp
                     this.storage.remove(this.tokenName);
                 };
                 Shared.prototype.isAuthenticated = function () {
-                    var token = this.storage.get(this.tokenName);
+                    var token = this.getToken();
                     if (token) {
                         if (token.split('.').length === 3) {
                             try {
@@ -109,6 +109,15 @@ System.register(['rxjs', 'angular2/core', './config', './storage'], function(exp
                         return true;
                     }
                     return false;
+                };
+                Shared.prototype.getExpirationDate = function () {
+                    var payload = this.getPayload();
+                    if (payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
+                        var date = new Date(0);
+                        date.setUTCSeconds(payload.exp);
+                        return date;
+                    }
+                    return null;
                 };
                 Shared.prototype.logout = function () {
                     this.storage.remove(this.tokenName);

@@ -1,0 +1,68 @@
+import {Injectable} from 'angular2/core';
+import {Http} from 'angular2/http';
+import {RequestMethod} from 'angular2/http';
+import {Response} from 'angular2/http';
+import {Observable} from 'rxjs/Observable';
+import {RequestOptionsArgs} from 'angular2/http';
+import {Headers} from 'angular2/http';
+import {Request} from 'angular2/http';
+import {Config} from './config';
+import {Auth} from './auth';
+import {Router} from 'angular2/router';
+import {RequestOptions} from 'angular2/http';
+import {ConnectionBackend} from 'angular2/http';
+import {Shared} from './shared';
+/**
+ * Created by Ron on 06/01/2016.
+ */
+
+@Injectable()
+export class JwtHttp extends Http {
+    constructor(_backend: ConnectionBackend,
+                _defaultOptions: RequestOptions,
+                private _shared: Shared,
+                private _config: Config) {
+        super(_backend, _defaultOptions);
+    }
+
+    request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
+        if (this._shared.isAuthenticated()) {
+            options.headers = options.headers || new Headers();
+            options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        }
+        return super.request(url, options);
+    }
+
+    get(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        options.method = RequestMethod.Get;
+        return this.request(url, options);
+    }
+
+    post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        options.method = RequestMethod.Post;
+        options.body = body;
+        return this.request(url, options);
+    }
+
+    put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        options.method = RequestMethod.Put;
+        options.body = body;
+        return super.put(url, body, options);
+    }
+
+    delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        options.method = RequestMethod.Delete;
+        return super.delete(url, options);
+    }
+
+    patch(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        options.method = RequestMethod.Patch;
+        options.body = body;
+        return super.patch(url, body, options);
+    }
+
+    head(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        options.method = RequestMethod.Head;
+        return super.head(url, options);
+    }
+}
