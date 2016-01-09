@@ -1,32 +1,76 @@
 # ng2-ui-auth
 an angular2 repository for authentication based on angular1's satellizer
 This is mostly copy-paste from the great satellizer (https://satellizer.herokuapp.com/#/ https://github.com/sahat/satellizer) library (even the default token prefix remained "satellizer").
-To use this run `npm install angular2-jwt ng2-ui-auth --save`.
+To use this run `npm install ng2-ui-auth --save`.
 For configuration do the following:
 ```typescript
 import {bootstrap} from 'angular2/platform/browser';
 import {provide} from 'angular2/core';
 import {HTTP_PROVIDERS} from 'angular2/http';
-import {AuthHttp} from 'angular2-jwt';
-import {Config, SATELLIZER_PROVIDERS, Auth} from 'ng2-ui-auth';
+import {NG2_UI_AUTH_PROVIDERS, JwtHttp} from 'ng2-ui-auth';
 import {Main} from './main';
 
 const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
 
 bootstrap(Main, [
     HTTP_PROVIDERS,
-    SATELLIZER_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
-    provide(AuthHttp, {
-        useFactory: (auth: Auth, config: Config) => {
-            return new AuthHttp({
-                tokenName: config.tokenName,
-                tokenGetter: () => auth.getToken(),
-            });
-        },
-        deps: [Auth, Config],
-    }),
+    NG2_UI_AUTH_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
+    JwtHttp
 ]);
 ```
+or if you want to provide your own http implementation (or replace existing http):
+```typescript
+import {Http,RequestOptions,BaseRequestOptions,ResponseOptions,BaseResponseOptions,BrowserXhr,XHRBackend} from 'angular2/http';
+import {JwtHttp, Config} from 'ng2-ui-auth';
+import {Shared} from 'ng2-ui-auth/src/shared';
+
+export class MyHttp extends JwtHttp {
+    constructor(backend: ConnectionBackend,
+                defaultOptions: RequestOptions,
+                shared: Shared,
+                config: Config) {
+        super(backend, defaultOptions, shared, config);
+    }
+
+    request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
+        options = options || {};
+        if (!options.headers) {
+            options.headers = new Headers();
+        }
+        if (!options.headers.has('Content-Type')) {
+            options.headers.set('Content-Type', 'application/json');
+        }
+        return super.request(url, options)
+            .catch((err, source, caught) => {
+                handleError(err);
+                return Observable.empty();
+            });
+    }
+}
+
+export const MY_HTTP_PROVIDERS = [
+    provide(
+        Http,
+        {
+            useFactory:
+                (xhrBackend, requestOptions, shared, config, router) =>
+                    new MyHttp(xhrBackend, requestOptions, shared, config),
+            deps: [XHRBackend, RequestOptions, Shared, Config],
+        }),
+    DefaultHandlers,
+    BrowserXhr,
+    provide(RequestOptions, {useClass: BaseRequestOptions}),
+    provide(ResponseOptions, {useClass: BaseResponseOptions}),
+    XHRBackend,
+];
+
+//in the bootstrap file:
+bootstrap(Main, [
+    NG2_UI_AUTH_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
+    MY_HTTP_PROVIDERS,
+]);
+```
+
 
 For usage look at the satellizer project it's 99% the same (instead of promises it uses Observables)
 
