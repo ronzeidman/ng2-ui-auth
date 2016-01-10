@@ -1,6 +1,6 @@
 # ng2-ui-auth
 an angular2 repository for authentication based on angular1's satellizer
-This is mostly copy-paste from the great satellizer (https://satellizer.herokuapp.com/#/ https://github.com/sahat/satellizer) library (even the default token prefix remained "satellizer").
+This is mostly copy-paste from the great satellizer (https://satellizer.herokuapp.com/#/ https://github.com/sahat/satellizer) library.
 To use this run `npm install ng2-ui-auth --save`.
 For configuration do the following:
 ```typescript
