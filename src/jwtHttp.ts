@@ -49,25 +49,25 @@ export class JwtHttp extends Http {
         options = options || {};
         options.method = RequestMethod.Put;
         options.body = body;
-        return this.put(url, body, options);
+        return this.request(url, options);
     }
 
     delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
         options = options || {};
         options.method = RequestMethod.Delete;
-        return this.delete(url, options);
+        return this.request(url, options);
     }
 
     patch(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
         options = options || {};
         options.method = RequestMethod.Patch;
         options.body = body;
-        return this.patch(url, body, options);
+        return this.request(url, options);
     }
 
     head(url: string, options?: RequestOptionsArgs): Observable<Response> {
         options = options || {};
         options.method = RequestMethod.Head;
-        return this.head(url, options);
+        return this.request(url, options);
     }
 }
