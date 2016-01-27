@@ -35,10 +35,10 @@ var Oauth = (function () {
     };
     Oauth.prototype.unlink = function (provider, opts) {
         opts = opts || {};
-        opts.url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.unlinkUrl);
+        var url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.unlinkUrl);
         opts.body = JSON.stringify({ provider: provider }) || opts.body;
         opts.method = opts.method || 'POST';
-        return this.http.request(opts);
+        return this.http.request(url, opts);
     };
     Oauth = __decorate([
         core_1.Injectable(), 

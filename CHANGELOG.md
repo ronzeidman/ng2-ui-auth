@@ -1,3 +1,7 @@
+# 1.0.14
+* fixed http "unlink" call
+# 1.0.13
+* changed module from system to commonjs
 # 1.0.10
 * Removed dependency on angular-jwt (you can now use the included JwtHttp)
 * Readded "authHeader" to the configuration

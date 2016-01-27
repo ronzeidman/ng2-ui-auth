@@ -37,6 +37,6 @@ export class Oauth {
         opts.body = JSON.stringify({ provider: provider }) || opts.body;
         opts.method = opts.method || 'POST';
         
-        return this.http.request(url, <any>opts);
+        return this.http.request(url, opts);
     }
 }
