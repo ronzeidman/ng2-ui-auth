@@ -1,13 +1,11 @@
-/**
- * Created by Ron on 17/12/2015.
- */
 import {Injectable} from 'angular2/core';
 import {Http} from 'angular2/http';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {extend, joinUrl, merge, camelCase} from './utils';
 import {Config, IOauth2Options} from './config';
 import {Popup} from './popup';
 import {Storage} from './storage';
+import 'rxjs/add/operator/mergeMap';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -60,7 +58,7 @@ export class Oauth2 {
         }
 
         return openPopup
-            .flatMap((oauthData) => {
+            .mergeMap((oauthData) => {
                 // when no server URL provided, return popup params as-is.
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and

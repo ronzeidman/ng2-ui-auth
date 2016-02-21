@@ -1,14 +1,16 @@
-import {Injectable} from 'angular2/core';
-import {Http} from 'angular2/http';
-import {RequestMethod} from 'angular2/http';
-import {Response} from 'angular2/http';
+import {Injectable, provide} from 'angular2/core';
+import {
+    Http,
+    RequestMethod,
+    Response,
+    RequestOptionsArgs,
+    Headers,
+    Request,
+    RequestOptions,
+    ConnectionBackend, XHRBackend
+} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
-import {RequestOptionsArgs} from 'angular2/http';
-import {Headers} from 'angular2/http';
-import {Request} from 'angular2/http';
 import {Config} from './config';
-import {RequestOptions} from 'angular2/http';
-import {ConnectionBackend} from 'angular2/http';
 import {Shared} from './shared';
 /**
  * Created by Ron on 06/01/2016.
@@ -71,3 +73,9 @@ export class JwtHttp extends Http {
         return this.request(url, options);
     }
 }
+
+export const JWT_HTTP_PROVIDER =  provide(JwtHttp, {
+    useFactory: (xhrBackend, requestOptions, shared, config, router) =>
+        new JwtHttp(xhrBackend, requestOptions, shared, config),
+    deps: [XHRBackend, RequestOptions, Shared, Config],
+});

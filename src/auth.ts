@@ -1,5 +1,5 @@
-import {Injectable, Injector, provide} from 'angular2/core';
-import {Http, RequestOptionsArgs} from 'angular2/http';
+import {Injectable, Injector, provide, Provider} from 'angular2/core';
+import {Http, RequestOptionsArgs, Response} from 'angular2/http';
 import {Shared} from './shared';
 import {Local} from './local';
 import {Oauth} from './oauth';
@@ -9,11 +9,12 @@ import {Oauth1} from './oauth1';
 import {Storage} from './storage';
 import {ICustomConfig} from './config';
 import {Config} from './config';
+import {Observable} from 'rxjs/Observable';
 
 /**
  * Created by Ron on 17/12/2015.
  */
-export function NG2_UI_AUTH_PROVIDERS(config: ICustomConfig) {
+export function NG2_UI_AUTH_PROVIDERS(config: ICustomConfig): Array<Provider> {
     return [provide(Config, { useFactory: () => { return new Config(config);}}), 
             provide(Storage, { useFactory: (providedConfig) => { return new Storage(providedConfig);}, deps: [Config]} ), 
             provide(Shared, { useFactory: (storage, providedConfig) => { return new Shared(storage, providedConfig);}, deps: [Storage, Config]} ), 
@@ -29,43 +30,43 @@ export class Auth {
     constructor(private shared: Shared,
                 private local: Local,
                 private oauth: Oauth) {}
-    login(user, opts?: RequestOptionsArgs) {
+    login(user, opts?: RequestOptionsArgs): Observable<Response> {
         return this.local.login(user, opts);
     }
-    signup(user, opts?: RequestOptionsArgs) {
+    signup(user, opts?: RequestOptionsArgs): Observable<Response>  {
         return this.local.signup(user, opts);
     }
-    logout() {
+    logout(): Observable<void> {
         return this.shared.logout();
     }
-    authenticate(name: string, userData?: any) {
+    authenticate(name: string, userData?: any): Observable<Response> {
         return this.oauth.authenticate(name, userData);
     }
-    link(name: string, userData?: any) {
+    link(name: string, userData?: any): Observable<Response> {
         return this.oauth.authenticate(name, userData);
     }
-    unlink(provider: string, opts: RequestOptionsArgs) {
+    unlink(provider: string, opts: RequestOptionsArgs): Observable<Response> {
         return this.oauth.unlink(provider, opts);
     }
-    isAuthenticated() {
+    isAuthenticated(): boolean {
         return this.shared.isAuthenticated();
     }
-    getToken() {
+    getToken(): string {
         return this.shared.getToken();
     }
-    setToken(token: string) {
-        return this.shared.setToken(token);
+    setToken(token: string): void {
+        this.shared.setToken(token);
     }
-    removeToken() {
-        return this.shared.removeToken();
+    removeToken(): void {
+        this.shared.removeToken();
     }
-    getPayload() {
+    getPayload(): any {
         return this.shared.getPayload();
     }
-    setStorageType(type: string) {
-        return this.shared.setStorageType(type);
+    setStorageType(type: string): void {
+        this.shared.setStorageType(type);
     }
-    getExpirationDate() {
+    getExpirationDate(): Date {
         return this.shared.getExpirationDate();
     }
 }

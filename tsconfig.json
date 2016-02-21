@@ -3,15 +3,18 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "module": "commonjs",
+    "module": "system",
     "moduleResolution": "node",
     "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "typings"
   ],
   "files": [
-    "./export.ts"
+    "./typings/browser.d.ts",
+    "./build/export.ts"
   ]
 }

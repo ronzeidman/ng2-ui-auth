@@ -9,6 +9,7 @@ before_install:
 - sh -e /etc/init.d/xvfb start
 script:
 - npm run compile
+- npm run bundle
 after_success:
 deploy:
    provider: npm

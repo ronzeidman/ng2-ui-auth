@@ -6,6 +6,7 @@ import {Http, Response, RequestOptionsArgs} from 'angular2/http';
 import {joinUrl} from './utils';
 import {Config} from './config';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 /**
  * Created by Ron on 17/12/2015.

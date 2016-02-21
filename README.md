@@ -2,12 +2,15 @@
 an angular2 repository for authentication based on angular1's satellizer
 This is mostly copy-paste from the great satellizer (https://satellizer.herokuapp.com/#/ https://github.com/sahat/satellizer) library.
 To use this run `npm install ng2-ui-auth --save`.
+
+for a full client + server-side example: https://github.com/ronzeidman/ng2-ui-auth-example
+
 For configuration do the following:
 ```typescript
 import {bootstrap} from 'angular2/platform/browser';
 import {provide} from 'angular2/core';
 import {HTTP_PROVIDERS} from 'angular2/http';
-import {NG2_UI_AUTH_PROVIDERS, JwtHttp} from 'ng2-ui-auth';
+import {NG2_UI_AUTH_PROVIDERS, JwtHttp, JWT_HTTP_PROVIDER} from 'ng2-ui-auth';
 import {Main} from './main';
 
 const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
@@ -15,14 +18,13 @@ const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.
 bootstrap(Main, [
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
-    JwtHttp
+    JWT_HTTP_PROVIDER
 ]);
 ```
 or if you want to provide your own http implementation (or replace existing http):
 ```typescript
 import {Http,RequestOptions,BaseRequestOptions,ResponseOptions,BaseResponseOptions,BrowserXhr,XHRBackend} from 'angular2/http';
-import {JwtHttp, Config} from 'ng2-ui-auth';
-import {Shared} from 'ng2-ui-auth/src/shared';
+import {JwtHttp, Config, Shared} from 'ng2-ui-auth';
 
 export class MyHttp extends JwtHttp {
     constructor(backend: ConnectionBackend,

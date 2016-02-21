@@ -1,12 +1,12 @@
 /**
  * Created by Ron on 17/12/2015.
  */
-import {Observable, Subscriber} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import {Subscriber} from 'rxjs/Subscriber';
 import {Injectable} from 'angular2/core';
 import {Response} from 'angular2/http';
 import {Config} from './config';
 import {Storage} from './storage';
-
 /**
  * Created by Ron on 17/12/2015.
  */
@@ -33,7 +33,8 @@ export class Shared {
     }
     setToken(response: string | Response) {
         if (!response) {
-            return console.warn('Can\'t set token without passing a value');
+            console.warn('Can\'t set token without passing a value');
+            return;
         }
 
         let token: string;
@@ -63,7 +64,8 @@ export class Shared {
 
             if (!token) {
                 let tokenPath = this.config.tokenRoot ? this.config.tokenRoot + '.' + this.config.tokenName : this.config.tokenName;
-                return console.warn('Expecting a token named "' + tokenPath);
+                console.warn('Expecting a token named "' + tokenPath);
+                return;
             }
         }
 

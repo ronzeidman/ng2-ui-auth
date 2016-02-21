@@ -1,7 +1,13 @@
 import {Injectable} from 'angular2/core';
-import {Observable, } from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {extend} from './utils';
 import {Config, IPopupOptions} from './config';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeWhile';
+
 
 /**
  * Created by Ron on 17/12/2015.
