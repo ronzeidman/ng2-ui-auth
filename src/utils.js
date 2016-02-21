@@ -1,5 +1,4 @@
 System.register([], function(exports_1) {
-    "use strict";
     function extend(dst, src) {
         Object.keys(src)
             .forEach(function (key) {

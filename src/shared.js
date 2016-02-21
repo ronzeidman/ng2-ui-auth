@@ -1,5 +1,4 @@
 System.register(['rxjs/Observable', 'angular2/core', './config', './storage'], function(exports_1) {
-    "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59,7 +58,7 @@ System.register(['rxjs/Observable', 'angular2/core', './config', './storage'], f
                     }
                     else {
                         var accessToken = response && response.json() && (response.json().access_token || response.json().token);
-                        var tokenObject = void 0;
+                        var tokenObject;
                         if (accessToken) {
                             if (typeof accessToken === 'object' && typeof accessToken.data === 'object') {
                                 tokenObject = accessToken;
@@ -137,7 +136,7 @@ System.register(['rxjs/Observable', 'angular2/core', './config', './storage'], f
                     __metadata('design:paramtypes', [storage_1.Storage, config_1.Config])
                 ], Shared);
                 return Shared;
-            }());
+            })();
             exports_1("Shared", Shared);
         }
     }

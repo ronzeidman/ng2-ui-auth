@@ -1,5 +1,4 @@
 System.register(['../src/auth', '../src/config', '../src/shared', '../src/jwtHttp'], function(exports_1) {
-    "use strict";
     return {
         setters:[
             function (auth_1_1) {

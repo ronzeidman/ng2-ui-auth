@@ -1,4 +1,4 @@
-import {Injectable, provide} from 'angular2/core';
+import {Injectable, provide, Provider} from 'angular2/core';
 import {
     Http,
     RequestMethod,
@@ -74,7 +74,7 @@ export class JwtHttp extends Http {
     }
 }
 
-export const JWT_HTTP_PROVIDER =  provide(JwtHttp, {
+export const JWT_HTTP_PROVIDER: Provider =  provide(JwtHttp, {
     useFactory: (xhrBackend, requestOptions, shared, config, router) =>
         new JwtHttp(xhrBackend, requestOptions, shared, config),
     deps: [XHRBackend, RequestOptions, Shared, Config],
