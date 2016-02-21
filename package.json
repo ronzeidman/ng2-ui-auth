@@ -5,6 +5,7 @@
   "main": "./dist/ng2-ui-auth.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "typings": "typings install",
     "compile": "tsc",
     "bundle": "node ./build/system.builder.js"
   },
