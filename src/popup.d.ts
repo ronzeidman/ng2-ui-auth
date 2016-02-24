@@ -1,5 +1,10 @@
 import { Observable } from 'rxjs/Observable';
 import { Config, IPopupOptions } from './config';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeWhile';
 export declare class Popup {
     private config;
     url: string;

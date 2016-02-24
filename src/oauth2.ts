@@ -1,5 +1,5 @@
 import {Injectable} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Http, Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import {extend, joinUrl, merge, camelCase} from './utils';
 import {Config, IOauth2Options} from './config';
@@ -99,7 +99,17 @@ export class Oauth2 {
 
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 
-        return this.http.post(exchangeForTokenUrl,  JSON.stringify(data) /*todo , { withCredentials: this.config.withCredentials }*/);
+        var opts:any = {};
+        if (this.config.defaultHeaders) {
+            opts.headers = opts.headers || new Headers();
+            Object.keys(this.config.defaultHeaders).forEach((defaultHeader) => {
+                if (!opts.headers.has(defaultHeader)) {
+                    opts.headers.set(defaultHeader, this.config.defaultHeaders[defaultHeader]);
+                }
+            });
+        }
+
+        return this.http.post(exchangeForTokenUrl,  JSON.stringify(data), opts /*todo , { withCredentials: this.config.withCredentials }*/);
     }
 
     private buildQueryString() {

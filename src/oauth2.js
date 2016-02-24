@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/http', './utils', './config', './popup', './storage', 'rxjs/add/operator/mergeMap'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', './utils', './config', './popup', './storage', 'rxjs/add/operator/mergeMap'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -96,7 +98,16 @@ System.register(['angular2/core', 'angular2/http', './utils', './config', './pop
                         data.state = oauthData.state;
                     }
                     var exchangeForTokenUrl = this.config.baseUrl ? utils_1.joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-                    return this.http.post(exchangeForTokenUrl, JSON.stringify(data));
+                    var opts = {};
+                    if (this.config.defaultHeaders) {
+                        opts.headers = opts.headers || new http_1.Headers();
+                        Object.keys(this.config.defaultHeaders).forEach(function (defaultHeader) {
+                            if (!opts.headers.has(defaultHeader)) {
+                                opts.headers.set(defaultHeader, _this.config.defaultHeaders[defaultHeader]);
+                            }
+                        });
+                    }
+                    return this.http.post(exchangeForTokenUrl, JSON.stringify(data), opts);
                 };
                 Oauth2.prototype.buildQueryString = function () {
                     var _this = this;
@@ -141,7 +152,7 @@ System.register(['angular2/core', 'angular2/http', './utils', './config', './pop
                     __metadata('design:paramtypes', [http_1.Http, popup_1.Popup, storage_1.Storage, config_1.Config])
                 ], Oauth2);
                 return Oauth2;
-            })();
+            }());
             exports_1("Oauth2", Oauth2);
         }
     }
