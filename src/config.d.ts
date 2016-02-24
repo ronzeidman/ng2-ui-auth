@@ -40,10 +40,14 @@ export interface ICustomConfig {
     signupUrl?: string;
     unlinkUrl?: string;
     tokenName?: string;
+    tokenSeparator?: string;
     tokenPrefix?: string;
     authToken?: string;
     storageType?: string;
     providers?: IProviders;
+    defaultHeaders?: {
+        [name: string]: string;
+    };
 }
 export declare class Config implements ICustomConfig {
     constructor(config?: ICustomConfig);
@@ -59,5 +63,6 @@ export declare class Config implements ICustomConfig {
     authHeader: string;
     authToken: string;
     storageType: string;
+    defaultHeaders: any;
     providers: IProviders;
 }

@@ -49,10 +49,12 @@ export interface ICustomConfig {
     signupUrl?: string;
     unlinkUrl?: string;
     tokenName?: string;
+    tokenSeparator?: string;
     tokenPrefix?: string;
     authToken?: string;
     storageType?: string;
     providers?: IProviders;
+    defaultHeaders?: { [name: string]: string };
 }
 @Injectable()
 export class Config implements ICustomConfig {
@@ -86,6 +88,7 @@ export class Config implements ICustomConfig {
     authHeader = 'Authorization';
     authToken = 'Bearer';
     storageType = 'localStorage';
+    defaultHeaders = null;
     providers: IProviders = {
         facebook: {
             name: 'facebook',

@@ -29,11 +29,10 @@ export class JwtHttp extends Http {
         if (this._shared.isAuthenticated()) {
             if (url instanceof Request) {
                 url.headers = url.headers || new Headers();
-                url.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                this.setHeaders(url);
             } else {
                 options = options || {};
-                options.headers = options.headers || new Headers();
-                options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                this.setHeaders(options);
             }
         }
         return super.request(url, options);
@@ -76,6 +75,18 @@ export class JwtHttp extends Http {
         options = options || {};
         options.method = RequestMethod.Head;
         return this.request(url, options);
+    }
+
+    private setHeaders(obj: { headers?: Headers, [index: string]: any }) {
+        obj.headers = obj.headers || new Headers();
+        if (this._config.defaultHeaders) {
+            Object.keys(this._config.defaultHeaders).forEach((defaultHeader) => {
+                if (!obj.headers.has(defaultHeader)) {
+                    obj.headers.set(defaultHeader, this._config.defaultHeaders[defaultHeader]);
+                }
+            });
+        }
+        obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
     }
 }
 

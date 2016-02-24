@@ -14,5 +14,6 @@ export declare class JwtHttp extends Http {
     delete(url: string, options?: RequestOptionsArgs): Observable<Response>;
     patch(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
     head(url: string, options?: RequestOptionsArgs): Observable<Response>;
+    private setHeaders(obj);
 }
 export declare const JWT_HTTP_PROVIDER: Provider;

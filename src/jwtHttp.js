@@ -41,12 +41,11 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                     if (this._shared.isAuthenticated()) {
                         if (url instanceof http_1.Request) {
                             url.headers = url.headers || new http_1.Headers();
-                            url.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                            this.setHeaders(url);
                         }
                         else {
                             options = options || {};
-                            options.headers = options.headers || new http_1.Headers();
-                            options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                            this.setHeaders(options);
                         }
                     }
                     return _super.prototype.request.call(this, url, options);
@@ -83,6 +82,18 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                     options = options || {};
                     options.method = http_1.RequestMethod.Head;
                     return this.request(url, options);
+                };
+                JwtHttp.prototype.setHeaders = function (obj) {
+                    var _this = this;
+                    obj.headers = obj.headers || new http_1.Headers();
+                    if (this._config.defaultHeaders) {
+                        Object.keys(this._config.defaultHeaders).forEach(function (defaultHeader) {
+                            if (!obj.headers.has(defaultHeader)) {
+                                obj.headers.set(defaultHeader, _this._config.defaultHeaders[defaultHeader]);
+                            }
+                        });
+                    }
+                    obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
                 };
                 JwtHttp = __decorate([
                     core_1.Injectable(), 

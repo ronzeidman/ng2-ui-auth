@@ -31,6 +31,7 @@ System.register(['angular2/core'], function(exports_1) {
                     this.authHeader = 'Authorization';
                     this.authToken = 'Bearer';
                     this.storageType = 'localStorage';
+                    this.defaultHeaders = null;
                     this.providers = {
                         facebook: {
                             name: 'facebook',
