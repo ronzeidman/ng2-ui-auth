@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'rxjs/Observable', './utils', './config', 'rxjs/add/observable/interval', 'rxjs/add/observable/fromEvent', 'rxjs/add/operator/concatMap', 'rxjs/add/operator/take', 'rxjs/add/operator/takeWhile'], function(exports_1) {
+System.register(['angular2/core', 'rxjs/Observable', './utils', './config', 'rxjs/add/observable/interval', 'rxjs/add/observable/fromEvent', 'rxjs/add/operator/concatMap', 'rxjs/add/operator/take', 'rxjs/add/operator/takeWhile'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -146,7 +148,7 @@ System.register(['angular2/core', 'rxjs/Observable', './utils', './config', 'rxj
                     __metadata('design:paramtypes', [config_1.Config])
                 ], Popup);
                 return Popup;
-            })();
+            }());
             exports_1("Popup", Popup);
         }
     }

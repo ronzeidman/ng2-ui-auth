@@ -1,4 +1,6 @@
-System.register(['angular2/core', './oauth1', './oauth2', './shared', 'angular2/http', './utils', './config', 'rxjs/add/operator/map'], function(exports_1) {
+System.register(['angular2/core', './oauth1', './oauth2', './shared', 'angular2/http', './utils', './config', 'rxjs/add/operator/map'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -65,7 +67,7 @@ System.register(['angular2/core', './oauth1', './oauth2', './shared', 'angular2/
                     __metadata('design:paramtypes', [http_1.Http, core_1.Injector, shared_1.Shared, config_1.Config])
                 ], Oauth);
                 return Oauth;
-            })();
+            }());
             exports_1("Oauth", Oauth);
         }
     }

@@ -1,4 +1,6 @@
-System.register(['../src/auth', '../src/config', '../src/shared', '../src/jwtHttp'], function(exports_1) {
+System.register(['../src/auth', '../src/config', '../src/shared', '../src/jwtHttp'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     return {
         setters:[
             function (auth_1_1) {

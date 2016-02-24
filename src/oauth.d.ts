@@ -3,6 +3,7 @@ import { Shared } from './shared';
 import { Http, Response, RequestOptionsArgs } from 'angular2/http';
 import { Config } from './config';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 export declare class Oauth {
     private http;
     private injector;

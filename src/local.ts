@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {Shared} from './shared';
 import {Config} from './config';
-import {Http, RequestOptionsArgs, Response, Request} from 'angular2/http';
+import {Http, Headers, RequestOptionsArgs, Response, Request} from 'angular2/http';
 import {joinUrl} from './utils';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -23,6 +23,15 @@ export class Local {
         /*opts.headers = new Headers({
             'Content-Type': 'application/json'
         });*/
+
+        if (this.config.defaultHeaders) {
+            opts.headers = opts.headers || new Headers();
+            Object.keys(this.config.defaultHeaders).forEach((defaultHeader) => {
+                if (!opts.headers.has(defaultHeader)) {
+                    opts.headers.set(defaultHeader, this.config.defaultHeaders[defaultHeader]);
+                }
+            });
+        }
 
         return this.http.request(url, opts)
             .map((response: Response) => {
