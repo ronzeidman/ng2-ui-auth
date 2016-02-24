@@ -1,4 +1,3 @@
-import { Provider } from 'angular2/core';
 import { Http, Response, RequestOptionsArgs, Request, RequestOptions, ConnectionBackend } from 'angular2/http';
 import { Observable } from 'rxjs/Observable';
 import { Config } from './config';
@@ -16,4 +15,3 @@ export declare class JwtHttp extends Http {
     head(url: string, options?: RequestOptionsArgs): Observable<Response>;
     private setHeaders(obj);
 }
-export declare const JWT_HTTP_PROVIDER: Provider;

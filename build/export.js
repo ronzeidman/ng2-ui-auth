@@ -19,8 +19,7 @@ System.register(['../src/auth', '../src/config', '../src/shared', '../src/jwtHtt
             },
             function (jwtHttp_1_1) {
                 exports_1({
-                    "JwtHttp": jwtHttp_1_1["JwtHttp"],
-                    "JWT_HTTP_PROVIDER": jwtHttp_1_1["JWT_HTTP_PROVIDER"]
+                    "JwtHttp": jwtHttp_1_1["JwtHttp"]
                 });
             }],
         execute: function() {

@@ -89,9 +89,3 @@ export class JwtHttp extends Http {
         obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
     }
 }
-
-export const JWT_HTTP_PROVIDER: Provider =  provide(JwtHttp, {
-    useFactory: (xhrBackend, requestOptions, shared, config, router) =>
-        new JwtHttp(xhrBackend, requestOptions, shared, config),
-    deps: [XHRBackend, RequestOptions, Shared, Config],
-});

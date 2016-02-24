@@ -14,7 +14,7 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, http_1, config_1, shared_1;
-    var JwtHttp, JWT_HTTP_PROVIDER;
+    var JwtHttp;
     return {
         setters:[
             function (core_1_1) {
@@ -102,12 +102,6 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                 return JwtHttp;
             })(http_1.Http);
             exports_1("JwtHttp", JwtHttp);
-            exports_1("JWT_HTTP_PROVIDER", JWT_HTTP_PROVIDER = core_1.provide(JwtHttp, {
-                useFactory: function (xhrBackend, requestOptions, shared, config, router) {
-                    return new JwtHttp(xhrBackend, requestOptions, shared, config);
-                },
-                deps: [http_1.XHRBackend, http_1.RequestOptions, shared_1.Shared, config_1.Config],
-            }));
         }
     }
 });
