@@ -26,10 +26,15 @@ export class JwtHttp extends Http {
     }
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-        options = options || {};
         if (this._shared.isAuthenticated()) {
-            options.headers = options.headers || new Headers();
-            options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+            if (url instanceof Request) {
+                url.headers = url.headers || new Headers();
+                url.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+            } else {
+                options = options || {};
+                options.headers = options.headers || new Headers();
+                options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+            }
         }
         return super.request(url, options);
     }

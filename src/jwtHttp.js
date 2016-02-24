@@ -38,10 +38,16 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                     this._config = _config;
                 }
                 JwtHttp.prototype.request = function (url, options) {
-                    options = options || {};
                     if (this._shared.isAuthenticated()) {
-                        options.headers = options.headers || new http_1.Headers();
-                        options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                        if (url instanceof http_1.Request) {
+                            url.headers = url.headers || new http_1.Headers();
+                            url.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                        }
+                        else {
+                            options = options || {};
+                            options.headers = options.headers || new http_1.Headers();
+                            options.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+                        }
                     }
                     return _super.prototype.request.call(this, url, options);
                 };
