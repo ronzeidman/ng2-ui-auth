@@ -13,7 +13,7 @@ import {Storage} from './storage';
 
 @Injectable()
 export class Shared {
-    tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join('_') : this.config.tokenName;
+    tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join(this.config.tokenSeparator) : this.config.tokenName;
     constructor(private storage: Storage, private config: Config) {}
     getToken() {
         return this.storage.get(this.tokenName);

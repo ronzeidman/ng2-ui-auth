@@ -81,6 +81,7 @@ export class Config implements ICustomConfig {
     signupUrl = '/auth/signup';
     unlinkUrl = '/auth/unlink/';
     tokenName = 'token';
+    tokenSeparator = '_';
     tokenPrefix = 'ng2-ui-auth';
     authHeader = 'Authorization';
     authToken = 'Bearer';

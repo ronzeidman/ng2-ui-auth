@@ -29,7 +29,7 @@ System.register(['rxjs/Observable', 'angular2/core', './config', './storage'], f
                 function Shared(storage, config) {
                     this.storage = storage;
                     this.config = config;
-                    this.tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join('_') : this.config.tokenName;
+                    this.tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join(this.config.tokenSeparator) : this.config.tokenName;
                 }
                 Shared.prototype.getToken = function () {
                     return this.storage.get(this.tokenName);

@@ -54,6 +54,7 @@ export declare class Config implements ICustomConfig {
     signupUrl: string;
     unlinkUrl: string;
     tokenName: string;
+    tokenSeparator: string;
     tokenPrefix: string;
     authHeader: string;
     authToken: string;

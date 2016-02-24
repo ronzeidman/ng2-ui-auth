@@ -26,6 +26,7 @@ System.register(['angular2/core'], function(exports_1) {
                     this.signupUrl = '/auth/signup';
                     this.unlinkUrl = '/auth/unlink/';
                     this.tokenName = 'token';
+                    this.tokenSeparator = '_';
                     this.tokenPrefix = 'ng2-ui-auth';
                     this.authHeader = 'Authorization';
                     this.authToken = 'Bearer';
