@@ -10,7 +10,7 @@ For configuration do the following:
 import {bootstrap} from 'angular2/platform/browser';
 import {provide} from 'angular2/core';
 import {HTTP_PROVIDERS} from 'angular2/http';
-import {NG2_UI_AUTH_PROVIDERS, JwtHttp, JWT_HTTP_PROVIDER} from 'ng2-ui-auth';
+import {NG2_UI_AUTH_PROVIDERS, JwtHttp} from 'ng2-ui-auth';
 import {Main} from './main';
 
 const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
@@ -18,7 +18,6 @@ const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.
 bootstrap(Main, [
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
-    JWT_HTTP_PROVIDER
 ]);
 ```
 or if you want to provide your own http implementation (or replace existing http):
