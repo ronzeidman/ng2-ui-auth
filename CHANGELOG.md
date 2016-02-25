@@ -1,3 +1,9 @@
+#### 2.0.0
+* breaking change: removed JWT_HTTP_PROVIDER, JwtHttp is provided in the default provider,
+* breaking change: all internal calls use JwtHttp for their calls instead of Http
+* added configurable default headers (`NG2_UI_AUTH_PROVIDERS({ defaultHeaders: {'Content-Type': 'application/json'}, providers: {google: {clientId: GOOGLE_CLIENT_ID}}})`)
+* added configurable token seperator (`NG2_UI_AUTH_PROVIDERS({ tokenSeparator: '-', providers: {google: {clientId: GOOGLE_CLIENT_ID}}})`)
+* fix for JwtHttp to support "Request" class as a parameter.
 #### 1.1.0
 * bundled the entire sources to dist/ng2-ui-auth.js and provided a minified version
 * added a provider for plain JwtHttp (JWT_HTTP_PROVIDER)
