@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Config, IOauth2Options } from './config';
 import { Popup } from './popup';
 import { Storage } from './storage';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concatMap';
 export declare class Oauth2 {
     private http;
     private popup;

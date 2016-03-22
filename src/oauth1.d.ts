@@ -2,7 +2,7 @@ import { Popup } from './popup';
 import { Http, Response } from 'angular2/http';
 import { Config, IOauth1Options } from './config';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concatMap';
 export declare class Oauth1 {
     private http;
     private popup;

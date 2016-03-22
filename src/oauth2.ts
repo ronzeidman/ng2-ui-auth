@@ -5,7 +5,7 @@ import {extend, joinUrl, merge, camelCase} from './utils';
 import {Config, IOauth2Options} from './config';
 import {Popup} from './popup';
 import {Storage} from './storage';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concatMap';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -58,7 +58,7 @@ export class Oauth2 {
         }
 
         return openPopup
-            .mergeMap((oauthData) => {
+            .concatMap((oauthData) => {
                 // when no server URL provided, return popup params as-is.
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and

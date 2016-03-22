@@ -1,4 +1,4 @@
-System.register(['angular2/core', './popup', 'angular2/http', './utils', './config', 'rxjs/add/operator/mergeMap'], function(exports_1, context_1) {
+System.register(['angular2/core', './popup', 'angular2/http', './utils', './config', 'rxjs/add/operator/concatMap'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -46,7 +46,7 @@ System.register(['angular2/core', './popup', 'angular2/http', './utils', './conf
                         popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
                     }
                     return this.http.post(serverUrl, JSON.stringify(this.defaults))
-                        .mergeMap(function (response) {
+                        .concatMap(function (response) {
                         if (_this.config.cordova) {
                             popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
                         }
@@ -56,7 +56,7 @@ System.register(['angular2/core', './popup', 'angular2/http', './utils', './conf
                         }
                         return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
                     })
-                        .mergeMap(function (response) {
+                        .concatMap(function (response) {
                         return _this.exchangeForToken(response, userData);
                     });
                 };

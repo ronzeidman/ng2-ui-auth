@@ -32,9 +32,6 @@ builder.config({
             'rxjs/add/operator/map': {
                 build: false
             },
-            'rxjs/add/operator/mergeMap': {
-                build: false
-            },
             'rxjs/add/operator/takeWhile': {
                 build: false
             },

@@ -4,7 +4,7 @@ import {Http, Response} from 'angular2/http';
 import {extend, joinUrl} from './utils';
 import {Config, IOauth1Options} from './config';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concatMap';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -32,7 +32,7 @@ export class Oauth1 {
         }
 
         return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .mergeMap((response: Response) => {
+            .concatMap((response: Response) => {
                 if (this.config.cordova) {
                     popupWindow = this.popup.open(
                         [this.defaults.authorizationEndpoint, this.buildQueryString(response.json())].join('?'),
@@ -45,7 +45,7 @@ export class Oauth1 {
 
                 return this.config.cordova ? popupWindow.eventListener(this.defaults.redirectUri) : popupWindow.pollPopup();
             })
-            .mergeMap((response) => {
+            .concatMap((response) => {
                 return this.exchangeForToken(response, userData);
             });
     }
