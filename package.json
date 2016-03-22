@@ -26,18 +26,18 @@
   },
   "homepage": "https://github.com/ronzeidman/ng2-ui-auth#readme",
   "peerDependencies": {
-    "angular2": "^2.0.0-beta.7"
+    "angular2": "^2.0.0-beta.11"
   },
   "typings": "./dist/ng2-ui-auth.d.ts",
   "devDependencies": {
-    "angular2": "^2.0.0-beta.7",
+    "angular2": "^2.0.0-beta.11",
     "es6-promise": "^3.0.2",
-    "es6-shim": "^0.33.3",
+    "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
-    "systemjs-builder": "^0.15.9",
-    "typescript": "^1.7.5",
-    "typings": "^0.6.8",
-    "zone.js": "0.5.15"
+    "systemjs-builder": "^0.15.13",
+    "typescript": "^1.8.9",
+    "typings": "^0.6.10",
+    "zone.js": "^0.6.4"
   }
 }

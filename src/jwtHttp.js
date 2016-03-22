@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/http', './config', './shared'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', './config', './shared'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
         for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
         function __() { this.constructor = d; }
@@ -100,7 +102,7 @@ System.register(['angular2/core', 'angular2/http', './config', './shared'], func
                     __metadata('design:paramtypes', [http_1.ConnectionBackend, http_1.RequestOptions, shared_1.Shared, config_1.Config])
                 ], JwtHttp);
                 return JwtHttp;
-            })(http_1.Http);
+            }(http_1.Http));
             exports_1("JwtHttp", JwtHttp);
         }
     }
