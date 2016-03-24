@@ -51,7 +51,7 @@ export class MyHttp extends JwtHttp {
 
 export const MY_HTTP_PROVIDERS = [
     provide(
-        Http,
+        MyHttp, // If you replace the JwtHttp or the Http itself make sure you are not changing the response type since NG2_UI_AUTH_PROVIDERS is using JwtHttp and expects the default response type
         {
             useFactory:
                 (xhrBackend, requestOptions, shared, config, router) =>
