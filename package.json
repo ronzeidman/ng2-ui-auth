@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "typings": "typings install",
-    "compile": "tsc",
-    "bundle": "node ./build/system.builder.js"
+    "compile": "rollup -c && rollup -c rollup.config.prod.js"
   },
   "keywords": [
     "angular",
@@ -34,6 +33,10 @@
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
+    "rollup": "^0.25.6",
+    "rollup-plugin-node-resolve": "^1.5.0",
+    "rollup-plugin-typescript": "^0.6.0",
+    "rollup-plugin-uglify": "^0.3.1",
     "rxjs": "5.0.0-beta.2",
     "systemjs-builder": "^0.15.13",
     "typescript": "^1.8.9",
