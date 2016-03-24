@@ -51,7 +51,7 @@ export class MyHttp extends JwtHttp {
 
 export const MY_HTTP_PROVIDERS = [
     provide(
-        Http,
+        JwtHttp,
         {
             useFactory:
                 (xhrBackend, requestOptions, shared, config, router) =>
