@@ -25,15 +25,13 @@ var JwtHttp = (function (_super) {
         this._config = _config;
     }
     JwtHttp.prototype.request = function (url, options) {
-        if (this._shared.isAuthenticated()) {
-            if (url instanceof http_1.Request) {
-                url.headers = url.headers || new http_1.Headers();
-                this.setHeaders(url);
-            }
-            else {
-                options = options || {};
-                this.setHeaders(options);
-            }
+        if (url instanceof http_1.Request) {
+            url.headers = url.headers || new http_1.Headers();
+            this.setHeaders(url);
+        }
+        else {
+            options = options || {};
+            this.setHeaders(options);
         }
         return _super.prototype.request.call(this, url, options);
     };
@@ -80,13 +78,16 @@ var JwtHttp = (function (_super) {
                 }
             });
         }
-        obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        if (this._shared.isAuthenticated()) {
+            obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        }
     };
     JwtHttp = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.ConnectionBackend, http_1.RequestOptions, shared_1.Shared, config_1.Config])
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.ConnectionBackend !== 'undefined' && http_1.ConnectionBackend) === 'function' && _a) || Object, (typeof (_b = typeof http_1.RequestOptions !== 'undefined' && http_1.RequestOptions) === 'function' && _b) || Object, shared_1.Shared, config_1.Config])
     ], JwtHttp);
     return JwtHttp;
+    var _a, _b;
 }(http_1.Http));
 exports.JwtHttp = JwtHttp;
 //# sourceMappingURL=jwtHttp.js.map

@@ -26,14 +26,12 @@ export class JwtHttp extends Http {
     }
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-        if (this._shared.isAuthenticated()) {
-            if (url instanceof Request) {
-                url.headers = url.headers || new Headers();
-                this.setHeaders(url);
-            } else {
-                options = options || {};
-                this.setHeaders(options);
-            }
+        if (url instanceof Request) {
+            url.headers = url.headers || new Headers();
+            this.setHeaders(url);
+        } else {
+            options = options || {};
+            this.setHeaders(options);
         }
         return super.request(url, options);
     }
@@ -86,6 +84,8 @@ export class JwtHttp extends Http {
                 }
             });
         }
-        obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        if (this._shared.isAuthenticated()) {
+            obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        }
     }
 }
