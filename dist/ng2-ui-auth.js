@@ -774,15 +774,13 @@ var JwtHttp = (function (_super) {
         this._config = _config;
     }
     JwtHttp.prototype.request = function (url, options) {
-        if (this._shared.isAuthenticated()) {
-            if (url instanceof angular2_http.Request) {
-                url.headers = url.headers || new angular2_http.Headers();
-                this.setHeaders(url);
-            }
-            else {
-                options = options || {};
-                this.setHeaders(options);
-            }
+        if (url instanceof angular2_http.Request) {
+            url.headers = url.headers || new angular2_http.Headers();
+            this.setHeaders(url);
+        }
+        else {
+            options = options || {};
+            this.setHeaders(options);
         }
         return _super.prototype.request.call(this, url, options);
     };
@@ -829,7 +827,9 @@ var JwtHttp = (function (_super) {
                 }
             });
         }
-        obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        if (this._shared.isAuthenticated()) {
+            obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        }
     };
     JwtHttp = __decorate([
         angular2_core.Injectable()
