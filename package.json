@@ -1,6 +1,6 @@
 {
   "name": "ng2-ui-auth",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "angular2 migration for satellizer",
   "main": "./dist/ng2-ui-auth.js",
   "scripts": {
@@ -25,12 +25,11 @@
   },
   "homepage": "https://github.com/ronzeidman/ng2-ui-auth#readme",
   "peerDependencies": {
-    "angular2": "^2.0.0-beta.11"
+    "angular2": "^2.0.0-beta.12"
   },
   "typings": "./dist/ng2-ui-auth.d.ts",
   "devDependencies": {
-    "angular2": "^2.0.0-beta.11",
-    "es6-promise": "^3.0.2",
+    "angular2": "^2.0.0-beta.12",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
     "rollup": "^0.25.6",
@@ -41,6 +40,6 @@
     "systemjs-builder": "^0.15.13",
     "typescript": "^1.8.9",
     "typings": "^0.7.9",
-    "zone.js": "^0.6.4"
+    "zone.js": "^0.6.6"
   }
 }

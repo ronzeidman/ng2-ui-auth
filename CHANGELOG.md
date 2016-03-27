@@ -1,3 +1,8 @@
+#### 2.1.0
+* using rollup to bundle (fixes warning in webpack import)
+* breaking change: adding default headers even without authentication
+* removed dependency on "flatMap"
+* updated peer dependencies to beta.12
 #### 2.0.0
 * breaking change: removed JWT_HTTP_PROVIDER, JwtHttp is provided in the default provider,
 * breaking change: all internal calls use JwtHttp for their calls instead of Http
