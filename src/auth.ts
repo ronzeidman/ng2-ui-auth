@@ -1,5 +1,5 @@
-import {provide, Provider, Injectable} from '@angular/core'
-import {Response, RequestOptionsArgs} from '@angular/http'
+import {provide, Provider, Injectable, Injector} from '@angular/core'
+import {Response, RequestOptionsArgs, XHRBackend, RequestOptions} from '@angular/http'
 import {Shared} from './shared';
 import {Local} from './local';
 import {Oauth} from './oauth';

@@ -1,8 +1,8 @@
 'use strict';
 
 var _angular_core = require('@angular/core');
-var rxjs_Observable = require('rxjs/Observable');
 var _angular_http = require('@angular/http');
+var rxjs_Observable = require('rxjs/Observable');
 var rxjs_add_operator_map = require('rxjs/add/operator/map');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
@@ -814,8 +814,8 @@ function NG2_UI_AUTH_PROVIDERS(config) {
     return [_angular_core.provide(Config, { useFactory: function () { return new Config(config); } }),
         _angular_core.provide(Storage, { useFactory: function (providedConfig) { return new Storage(providedConfig); }, deps: [Config] }),
         _angular_core.provide(Shared, { useFactory: function (storage, providedConfig) { return new Shared(storage, providedConfig); }, deps: [Storage, Config] }),
-        _angular_core.provide(JwtHttp, { useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [XHRBackend, RequestOptions, Shared, Config] }),
-        _angular_core.provide(Oauth, { useFactory: function (http, injector, shared, providedConfig) { return new Oauth(http, injector, shared, providedConfig); }, deps: [JwtHttp, Injector, Shared, Config] }),
+        _angular_core.provide(JwtHttp, { useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [_angular_http.XHRBackend, _angular_http.RequestOptions, Shared, Config] }),
+        _angular_core.provide(Oauth, { useFactory: function (http, injector, shared, providedConfig) { return new Oauth(http, injector, shared, providedConfig); }, deps: [JwtHttp, _angular_core.Injector, Shared, Config] }),
         _angular_core.provide(Popup, { useFactory: function (providedConfig) { return new Popup(providedConfig); }, deps: [Config] }),
         _angular_core.provide(Oauth1, { useFactory: function (http, popup, providedConfig) { return new Oauth1(http, popup, providedConfig); }, deps: [JwtHttp, Popup, Config] }),
         _angular_core.provide(Oauth2, { useFactory: function (http, popup, storage, providedConfig) { return new Oauth2(http, popup, storage, providedConfig); }, deps: [JwtHttp, Popup, Storage, Config] }),
