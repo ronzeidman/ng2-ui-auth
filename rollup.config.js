@@ -23,7 +23,10 @@ export default {
 
             // if there's something your bundle requires that you DON'T
             // want to include, add it to 'skip'
-            skip: [ 'angular2', 'rxjs' ],
+            skip: [
+                '@angular/core',
+                '@angular/http',
+                'rxjs' ],
 
             // some package.json files have a `browser` field which
             // specifies alternative files to load for people bundling

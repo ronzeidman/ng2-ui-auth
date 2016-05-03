@@ -3,8 +3,8 @@
  */
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
-import {Injectable} from 'angular2/core';
-import {Response} from 'angular2/http';
+import {Injectable} from '@angular/core';
+import {Response} from '@angular/http';
 import {Config} from './config';
 import {Storage} from './storage';
 /**

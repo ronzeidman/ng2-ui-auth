@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var Observable_1 = require('rxjs/Observable');
-var core_1 = require('angular2/core');
+var core_1 = require('@angular/core');
 var config_1 = require('./config');
 var storage_1 = require('./storage');
 var Shared = (function () {

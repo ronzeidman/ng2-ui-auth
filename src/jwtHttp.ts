@@ -1,4 +1,4 @@
-import {Injectable, provide, Provider} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {
     Http,
     RequestMethod,
@@ -7,8 +7,8 @@ import {
     Headers,
     Request,
     RequestOptions,
-    ConnectionBackend, XHRBackend
-} from 'angular2/http';
+    ConnectionBackend
+} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Config} from './config';
 import {Shared} from './shared';

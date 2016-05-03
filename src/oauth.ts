@@ -1,8 +1,8 @@
-import {Injectable, Injector} from 'angular2/core';
+import {Injectable, Injector} from '@angular/core';
 import {Oauth1} from './oauth1';
 import {Oauth2} from './oauth2';
 import {Shared} from './shared';
-import {Http, Response, RequestOptionsArgs} from 'angular2/http';
+import {Http, Response, RequestOptionsArgs} from '@angular/http';
 import {joinUrl} from './utils';
 import {Config} from './config';
 import {Observable} from 'rxjs/Observable';

@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('angular2/core');
+var core_1 = require('@angular/core');
 var oauth1_1 = require('./oauth1');
 var oauth2_1 = require('./oauth2');
 var shared_1 = require('./shared');
-var http_1 = require('angular2/http');
+var http_1 = require('@angular/http');
 var utils_1 = require('./utils');
 var config_1 = require('./config');
 require('rxjs/add/operator/map');

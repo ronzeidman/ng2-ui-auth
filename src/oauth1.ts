@@ -1,6 +1,6 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Popup} from './popup';
-import {Http, Response} from 'angular2/http';
+import {Http, Response} from '@angular/http';
 import {extend, joinUrl} from './utils';
 import {Config, IOauth1Options} from './config';
 import {Observable} from 'rxjs/Observable';

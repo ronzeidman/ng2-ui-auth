@@ -1,3 +1,5 @@
+#### 3.0.0
+* updated to support rc.0 and hopefully above
 #### 2.1.0
 * using rollup to bundle (fixes warning in webpack import)
 * breaking change: adding default headers even without authentication

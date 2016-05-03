@@ -1,7 +1,7 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Shared} from './shared';
 import {Config} from './config';
-import {Http, RequestOptionsArgs, Response, Request} from 'angular2/http';
+import {Http, RequestOptionsArgs, Response, Request} from '@angular/http';
 import {joinUrl} from './utils';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
