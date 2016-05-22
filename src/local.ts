@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Shared} from './shared';
 import {Config} from './config';
-import {Http, RequestOptionsArgs, Response, Request} from '@angular/http';
+import {Http, RequestOptionsArgs, Response} from '@angular/http';
 import {joinUrl} from './utils';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -18,11 +18,10 @@ export class Local {
     login(user, opts?: RequestOptionsArgs): Observable<Response> {
         opts = opts || {};
         let url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
-        opts.body = JSON.stringify(user) || opts.body;
+        if (user) {
+            opts.body = typeof user === 'string' ? user : JSON.stringify(user);
+        }
         opts.method = opts.method || 'POST';
-        /*opts.headers = new Headers({
-            'Content-Type': 'application/json'
-        });*/
 
         return this.http.request(url, opts)
             .map((response: Response) => {

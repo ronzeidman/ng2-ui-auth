@@ -1,3 +1,5 @@
+#### 3.0.2
+* fixed issue: Not able to send a string user, or the user in the options body.
 #### 3.0.0
 * updated to support rc.0 and hopefully above
 #### 2.1.0

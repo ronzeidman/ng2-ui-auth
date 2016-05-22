@@ -24,7 +24,9 @@ var Local = (function () {
         var _this = this;
         opts = opts || {};
         var url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.loginUrl);
-        opts.body = JSON.stringify(user) || opts.body;
+        if (user) {
+            opts.body = typeof user === 'string' ? user : JSON.stringify(user);
+        }
         opts.method = opts.method || 'POST';
         return this.http.request(url, opts)
             .map(function (response) {

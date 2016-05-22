@@ -12,12 +12,14 @@ import {provide} from 'angular2/core';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {NG2_UI_AUTH_PROVIDERS, JwtHttp} from 'ng2-ui-auth';
 import {Main} from './main';
-
+const DEFAULT_POST_HEADER: {[name: string]: string} = {
+  'Content-Type': 'application/json'
+};
 const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
 
 bootstrap(Main, [
     HTTP_PROVIDERS,
-    NG2_UI_AUTH_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
+    NG2_UI_AUTH_PROVIDERS({defaultHeaders: DEFAULT_POST_HEADER, providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
 ]);
 ```
 or if you want to provide your own http implementation (or replace existing http):
