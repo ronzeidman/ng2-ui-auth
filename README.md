@@ -7,9 +7,9 @@ for a full client + server-side example: https://github.com/ronzeidman/ng2-ui-au
 
 For configuration do the following:
 ```typescript
-import {bootstrap} from 'angular2/platform/browser';
-import {provide} from 'angular2/core';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {bootstrap} from '@angular/platform-browser-dynamic';
+import {provide} from '@angular/core';
+import {HTTP_PROVIDERS} from '@angular/http';
 import {NG2_UI_AUTH_PROVIDERS, JwtHttp} from 'ng2-ui-auth';
 import {Main} from './main';
 const DEFAULT_POST_HEADER: {[name: string]: string} = {
@@ -24,7 +24,7 @@ bootstrap(Main, [
 ```
 or if you want to provide your own http implementation (or replace existing http):
 ```typescript
-import {Http,RequestOptions,BaseRequestOptions,ResponseOptions,BaseResponseOptions,BrowserXhr,XHRBackend} from 'angular2/http';
+import {Http,RequestOptions,BaseRequestOptions,ResponseOptions,BaseResponseOptions,BrowserXhr,XHRBackend} from '@angular/http';
 import {JwtHttp, Config, Shared} from 'ng2-ui-auth';
 
 export class MyHttp extends JwtHttp {
@@ -78,9 +78,9 @@ bootstrap(Main, [
 For usage look at the satellizer project it's 99% the same (instead of promises it uses Observables)
 
 ```typescript
-import {Component, AfterContentInit, ElementRef, Renderer} from 'angular2/core';
-import {Router, ROUTER_DIRECTIVES} from 'angular2/router';
-import {FormBuilder, ControlGroup, Validators} from 'angular2/common';
+import {Component, AfterContentInit, ElementRef, Renderer} from '@angular/core';
+import {Router, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import {FormBuilder, ControlGroup, Validators} from '@angular/common';
 import {Auth} from 'ng2-ui-auth';
 import {NgMessages} from '../formComponents/ngMessages';
 import {CustomValidators} from '../formComponents/customValidators';
