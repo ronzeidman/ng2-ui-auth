@@ -1,3 +1,6 @@
+#### 3.0.3
+* made a different folder for declarations so typescript won't try to re-compile the library
+
 #### 3.0.2
 * fixed issue: Not able to send a string user, or the user in the options body.
 
