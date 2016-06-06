@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "typings": "typings install",
-    "compile": "rollup -c && rollup -c rollup.config.prod.js"
+    "compile": "tsc --project tsconfig.def.json && rollup -c && rollup -c rollup.config.prod.js"
   },
   "keywords": [
     "angular",
