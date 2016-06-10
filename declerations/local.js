@@ -13,7 +13,15 @@ var shared_1 = require('./shared');
 var config_1 = require('./config');
 var http_1 = require('@angular/http');
 var utils_1 = require('./utils');
-require('rxjs/add/operator/map');
+require('rxjs/add/operator/do');
+function getFullOpts(user, userOpts) {
+    var opts = userOpts || {};
+    if (user) {
+        opts.body = typeof user === 'string' ? user : JSON.stringify(user);
+    }
+    opts.method = opts.method || 'POST';
+    return opts;
+}
 var Local = (function () {
     function Local(http, shared, config) {
         this.http = http;
@@ -22,24 +30,13 @@ var Local = (function () {
     }
     Local.prototype.login = function (user, opts) {
         var _this = this;
-        opts = opts || {};
         var url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.loginUrl);
-        if (user) {
-            opts.body = typeof user === 'string' ? user : JSON.stringify(user);
-        }
-        opts.method = opts.method || 'POST';
-        return this.http.request(url, opts)
-            .map(function (response) {
-            _this.shared.setToken(response);
-            return response;
-        });
+        return this.http.request(url, getFullOpts(user, opts))
+            .do(function (response) { return _this.shared.setToken(response); });
     };
     Local.prototype.signup = function (user, opts) {
-        opts = opts || {};
         var url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.signupUrl);
-        opts.body = JSON.stringify(user) || opts.body;
-        opts.method = opts.method || 'POST';
-        return this.http.request(url, opts);
+        return this.http.request(url, getFullOpts(user, opts));
     };
     Local = __decorate([
         core_1.Injectable(), 

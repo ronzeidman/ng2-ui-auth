@@ -1,7 +1,7 @@
-import {Observable} from 'rxjs/Observable';
-import {Response} from '@angular/http';
-import {Config} from './config';
-import {Storage} from './storage';
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
+import { Config } from './config';
+import { Storage } from './storage';
 export declare class Shared {
     private storage;
     private config;

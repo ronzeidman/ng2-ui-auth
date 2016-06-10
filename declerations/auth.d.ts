@@ -1,10 +1,10 @@
-import {Provider} from '@angular/core';
-import {Response, RequestOptionsArgs} from '@angular/http';
-import {Shared} from './shared';
-import {Local} from './local';
-import {Oauth} from './oauth';
-import {ICustomConfig} from './config';
-import {Observable} from 'rxjs/Observable';
+import { Provider } from '@angular/core';
+import { Response, RequestOptionsArgs } from '@angular/http';
+import { Shared } from './shared';
+import { Local } from './local';
+import { Oauth } from './oauth';
+import { ICustomConfig } from './config';
+import { Observable } from 'rxjs/Observable';
 export declare function NG2_UI_AUTH_PROVIDERS(config: ICustomConfig): Array<Provider>;
 export declare class Auth {
     private shared;

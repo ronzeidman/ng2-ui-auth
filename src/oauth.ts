@@ -6,7 +6,7 @@ import {Http, Response, RequestOptionsArgs} from '@angular/http';
 import {joinUrl} from './utils';
 import {Config} from './config';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -22,14 +22,13 @@ export class Oauth {
         // var injector = Injector.resolveAndCreate([Oauth1, Oauth2]);
         let provider: Oauth1 | Oauth2 = this.config.providers[name].type === '1.0' ? this.injector.get(Oauth1) : this.injector.get(Oauth2);
         return provider.open(this.config.providers[name], userData || {})
-            .map((response: Response) => {
+            .do((response: Response) => {
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and
                 // saving a token manually.
                 if (this.config.providers[name].url) {
                     this.shared.setToken(response);
                 }
-                return response;
             });
     }
     unlink(provider: string, opts: RequestOptionsArgs) {

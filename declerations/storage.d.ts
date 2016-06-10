@@ -1,4 +1,4 @@
-import {Config} from './config';
+import { Config } from './config';
 export declare class Storage {
     private config;
     private store;

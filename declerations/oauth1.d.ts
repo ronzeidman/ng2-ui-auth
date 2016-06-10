@@ -1,7 +1,7 @@
-import {Popup} from './popup';
-import {Http, Response} from '@angular/http';
-import {Config, IOauth1Options} from './config';
-import {Observable} from 'rxjs/Observable';
+import { Popup } from './popup';
+import { Http, Response } from '@angular/http';
+import { Config, IOauth1Options } from './config';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/concatMap';
 export declare class Oauth1 {
     private http;

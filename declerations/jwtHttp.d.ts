@@ -1,7 +1,7 @@
-import {Http, Response, RequestOptionsArgs, Request, RequestOptions, ConnectionBackend} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {Config} from './config';
-import {Shared} from './shared';
+import { Http, Response, RequestOptionsArgs, Request, RequestOptions, ConnectionBackend } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Config } from './config';
+import { Shared } from './shared';
 export declare class JwtHttp extends Http {
     private _shared;
     private _config;

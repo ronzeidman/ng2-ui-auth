@@ -1,5 +1,5 @@
-import {Observable} from 'rxjs/Observable';
-import {Config, IPopupOptions} from './config';
+import { Observable } from 'rxjs/Observable';
+import { Config, IPopupOptions } from './config';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/concatMap';

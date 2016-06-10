@@ -15,7 +15,7 @@ var shared_1 = require('./shared');
 var http_1 = require('@angular/http');
 var utils_1 = require('./utils');
 var config_1 = require('./config');
-require('rxjs/add/operator/map');
+require('rxjs/add/operator/do');
 var Oauth = (function () {
     function Oauth(http, injector, shared, config) {
         this.http = http;
@@ -27,11 +27,10 @@ var Oauth = (function () {
         var _this = this;
         var provider = this.config.providers[name].type === '1.0' ? this.injector.get(oauth1_1.Oauth1) : this.injector.get(oauth2_1.Oauth2);
         return provider.open(this.config.providers[name], userData || {})
-            .map(function (response) {
+            .do(function (response) {
             if (_this.config.providers[name].url) {
                 _this.shared.setToken(response);
             }
-            return response;
         });
     };
     Oauth.prototype.unlink = function (provider, opts) {
