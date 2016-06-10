@@ -32,9 +32,11 @@ export class Local {
     signup(user, opts?: RequestOptionsArgs): Observable<Response> {
         opts = opts || {};
         let url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
-        opts.body = JSON.stringify(user) || opts.body;
+        if (user) {
+            opts.body = typeof user === 'string' ? user : JSON.stringify(user);
+        }
         opts.method = opts.method || 'POST';
 
-        return this.http.request(url, opts);
+        return this.http.request(url, opts).map((response: Response): Response => response);
     }
 }
