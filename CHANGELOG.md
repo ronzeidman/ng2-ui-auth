@@ -1,3 +1,6 @@
+#### 3.0.4
+* fixed issue #25: signup should accept "string" user and custom body
+
 #### 3.0.3
 * made a different folder for declarations so typescript won't try to re-compile the library
 
