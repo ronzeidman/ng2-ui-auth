@@ -1,4 +1,4 @@
-#### 3.0.4
+#### 3.0.5
 * fixed issue #25: signup should accept "string" user and custom body
 
 #### 3.0.3

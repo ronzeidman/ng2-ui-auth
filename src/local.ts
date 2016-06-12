@@ -26,15 +26,17 @@ export class Local {
                 private config: Config) {}
 
     login(user: string | Object, opts?: RequestOptionsArgs): Observable<Response> {
-        const url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
+        const fullOpts = getFullOpts(user, opts);
+        const url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
 
-        return this.http.request(url, getFullOpts(user, opts))
+        return this.http.request(url, fullOpts)
             .do((response: Response) => this.shared.setToken(response));
     }
 
     signup(user: string | Object, opts?: RequestOptionsArgs): Observable<Response> {
-        const url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
+        const fullOpts = getFullOpts(user, opts);
+        const url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
 
-        return this.http.request(url, getFullOpts(user, opts));
+        return this.http.request(url, getFullOpts(user, fullOpts));
     }
 }

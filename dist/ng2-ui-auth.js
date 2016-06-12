@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var _angular_core = require('@angular/core');
 var _angular_http = require('@angular/http');
 var rxjs_Observable = require('rxjs/Observable');
@@ -403,13 +401,15 @@ var Local = (function () {
     }
     Local.prototype.login = function (user, opts) {
         var _this = this;
-        var url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
-        return this.http.request(url, getFullOpts(user, opts))
+        var fullOpts = getFullOpts(user, opts);
+        var url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
+        return this.http.request(url, fullOpts)
             .do(function (response) { return _this.shared.setToken(response); });
     };
     Local.prototype.signup = function (user, opts) {
-        var url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
-        return this.http.request(url, getFullOpts(user, opts));
+        var fullOpts = getFullOpts(user, opts);
+        var url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
+        return this.http.request(url, getFullOpts(user, fullOpts));
     };
     Local = __decorate([
         _angular_core.Injectable(), 

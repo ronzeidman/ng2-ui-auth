@@ -30,13 +30,15 @@ var Local = (function () {
     }
     Local.prototype.login = function (user, opts) {
         var _this = this;
-        var url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.loginUrl);
-        return this.http.request(url, getFullOpts(user, opts))
+        var fullOpts = getFullOpts(user, opts);
+        var url = fullOpts.url ? fullOpts.url : utils_1.joinUrl(this.config.baseUrl, this.config.loginUrl);
+        return this.http.request(url, fullOpts)
             .do(function (response) { return _this.shared.setToken(response); });
     };
     Local.prototype.signup = function (user, opts) {
-        var url = opts.url ? opts.url : utils_1.joinUrl(this.config.baseUrl, this.config.signupUrl);
-        return this.http.request(url, getFullOpts(user, opts));
+        var fullOpts = getFullOpts(user, opts);
+        var url = fullOpts.url ? fullOpts.url : utils_1.joinUrl(this.config.baseUrl, this.config.signupUrl);
+        return this.http.request(url, getFullOpts(user, fullOpts));
     };
     Local = __decorate([
         core_1.Injectable(), 
