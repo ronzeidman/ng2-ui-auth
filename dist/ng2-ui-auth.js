@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var _angular_core = require('@angular/core');
 var _angular_http = require('@angular/http');
 var rxjs_Observable = require('rxjs/Observable');
@@ -30,6 +32,7 @@ function __metadata(k, v) {
 var Config = (function () {
     function Config(config) {
         var _this = this;
+        this.withCredentials = false;
         this.tokenRoot = null;
         this.cordova = false;
         this.baseUrl = '/';
@@ -571,7 +574,7 @@ var Oauth1 = (function () {
         var data = extend({}, userData);
         extend(data, oauthData);
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data);
+        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     };
     Oauth1.prototype.buildQueryString = function (obj) {
         return Object.keys(obj).map(function (key) {
@@ -657,7 +660,7 @@ var Oauth2 = (function () {
             data.state = oauthData.state;
         }
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, JSON.stringify(data));
+        return this.http.post(exchangeForTokenUrl, JSON.stringify(data), { withCredentials: this.config.withCredentials });
     };
     Oauth2.prototype.buildQueryString = function () {
         var _this = this;

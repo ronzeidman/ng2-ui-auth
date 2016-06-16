@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var Config = (function () {
     function Config(config) {
         var _this = this;
+        this.withCredentials = false;
         this.tokenRoot = null;
         this.cordova = false;
         this.baseUrl = '/';

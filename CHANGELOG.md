@@ -1,3 +1,6 @@
+#### 3.1.0
+* support rc2 "withCredentials" http flag
+
 #### 3.0.5
 * fixed issue #25: signup should accept "string" user and custom body
 

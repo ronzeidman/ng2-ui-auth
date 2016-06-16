@@ -53,7 +53,7 @@ export class Oauth1 {
         let data = extend({}, userData);
         extend(data, oauthData);
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data/*TODO: support, { withCredentials: this.config.withCredentials }*/);
+        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     }
     private buildQueryString(obj: Object) {
         return Object.keys(obj).map((key) => {

@@ -55,6 +55,7 @@ export interface ICustomConfig {
     storageType?: string;
     providers?: IProviders;
     defaultHeaders?: { [name: string]: string };
+    withCredentials?: boolean
 }
 @Injectable()
 export class Config implements ICustomConfig {
@@ -75,7 +76,7 @@ export class Config implements ICustomConfig {
             }
         });
     }
-    // todo doesn't work with ng2 withCredentials: false,
+    withCredentials = false;
     tokenRoot = null;
     cordova = false;
     baseUrl = '/';

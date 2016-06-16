@@ -47,7 +47,7 @@ var Oauth1 = (function () {
         var data = utils_1.extend({}, userData);
         utils_1.extend(data, oauthData);
         var exchangeForTokenUrl = this.config.baseUrl ? utils_1.joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data);
+        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     };
     Oauth1.prototype.buildQueryString = function (obj) {
         return Object.keys(obj).map(function (key) {

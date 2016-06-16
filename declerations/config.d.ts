@@ -48,9 +48,11 @@ export interface ICustomConfig {
     defaultHeaders?: {
         [name: string]: string;
     };
+    withCredentials?: boolean;
 }
 export declare class Config implements ICustomConfig {
     constructor(config?: ICustomConfig);
+    withCredentials: boolean;
     tokenRoot: any;
     cordova: boolean;
     baseUrl: string;

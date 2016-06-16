@@ -99,7 +99,7 @@ export class Oauth2 {
 
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 
-        return this.http.post(exchangeForTokenUrl,  JSON.stringify(data) /*todo , { withCredentials: this.config.withCredentials }*/);
+        return this.http.post(exchangeForTokenUrl,  JSON.stringify(data), { withCredentials: this.config.withCredentials });
     }
 
     private buildQueryString() {
