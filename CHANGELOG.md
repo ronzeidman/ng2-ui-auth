@@ -1,4 +1,4 @@
-#### 3.1.1
+#### 3.1.2
 * fixed issue #27: added missing `authHeader` to `ICustomConfig` interface
 
 #### 3.1.0
