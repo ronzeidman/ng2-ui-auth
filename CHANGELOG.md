@@ -1,3 +1,7 @@
+#### 3.1.1
+* fixed issue #27: added missing `authHeader` to `ICustomConfig` interface
+* updated rollup version fixes issue with sourcemaps
+
 #### 3.1.0
 * support rc2 "withCredentials" http flag
 

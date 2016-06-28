@@ -52,6 +52,7 @@ export interface ICustomConfig {
     tokenSeparator?: string;
     tokenPrefix?: string;
     authToken?: string;
+    authHeader: string;
     storageType?: string;
     providers?: IProviders;
     defaultHeaders?: { [name: string]: string };
