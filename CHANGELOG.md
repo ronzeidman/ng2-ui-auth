@@ -1,3 +1,6 @@
+#### 3.2.0
+* fixed issue #29: extend() did not work causing custom options of popup window size to not work and `authenticate('provider', userCustomData)` with user custom data to not work properly
+
 #### 3.1.2
 * fixed issue #27: added missing `authHeader` to `ICustomConfig` interface
 

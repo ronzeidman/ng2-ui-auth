@@ -342,7 +342,7 @@ var Shared = (function () {
 function extend(dst, src) {
     Object.keys(src)
         .forEach(function (key) {
-        dst[key] = dst[key];
+        dst[key] = src[key];
     });
     return dst;
 }

@@ -5,7 +5,7 @@
 export function extend<T, S>(dst: T, src: S): T & S {
     Object.keys(src)
         .forEach((key) => {
-            dst[key] = dst[key];
+            dst[key] = src[key];
         });
     return <any>dst;
 }
