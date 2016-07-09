@@ -2,12 +2,23 @@
  * Created by Ron on 17/12/2015.
  */
 
-export function extend<T, S>(dst: T, src: S): T & S {
-    Object.keys(src)
-        .forEach((key) => {
-            dst[key] = dst[key];
-        });
-    return <any>dst;
+export function assign(target: any, ...src: any[]): any {
+    if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source != null) {
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
 }
 
 export function joinUrl(baseUrl: string, url: string) {

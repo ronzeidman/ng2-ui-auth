@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {extend, joinUrl, merge, camelCase} from './utils';
+import {assign, joinUrl, merge, camelCase} from './utils';
 import {Config, IOauth2Options} from './config';
 import {Popup} from './popup';
 import {Storage} from './storage';
@@ -76,26 +76,7 @@ export class Oauth2 {
     }
 
     private exchangeForToken(oauthData: {code?, state?}, userData?: {}) {
-        let data: any = extend({}, userData);
-        Object.keys(this.defaults.responseParams).forEach((key) => {
-            switch (key) {
-                case 'code':
-                    data[this.defaults.responseParams[key]] = oauthData.code;
-                    break;
-                case 'clientId':
-                    data[this.defaults.responseParams[key]] = this.defaults.clientId;
-                    break;
-                case 'redirectUri':
-                    data[this.defaults.responseParams[key]] = this.defaults.redirectUri;
-                    break;
-                default:
-                    data[this.defaults.responseParams[key]] = oauthData[key];
-            }
-        });
-
-        if (oauthData.state) {
-            data.state = oauthData.state;
-        }
+        let data: any = assign({}, this.defaults, oauthData, userData);
 
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 

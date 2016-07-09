@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Popup} from './popup';
 import {Http, Response} from '@angular/http';
-import {extend, joinUrl} from './utils';
+import {joinUrl, assign} from './utils';
 import {Config, IOauth1Options} from './config';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/concatMap';
@@ -23,7 +23,7 @@ export class Oauth1 {
     private defaults: IOauth1Options;
     constructor(private http: Http, private popup: Popup, private config: Config) {}
     open(options?: IOauth1Options, userData?: any): Observable<Response> {
-        this.defaults = extend(options, Oauth1.base);
+        this.defaults = assign({}, Oauth1.base, options);
         let popupWindow;
         let serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 
@@ -37,7 +37,7 @@ export class Oauth1 {
                     popupWindow = this.popup.open(
                         [this.defaults.authorizationEndpoint, this.buildQueryString(response.json())].join('?'),
                         this.defaults.name,
-                        this.defaults.popupOptions/*, this.defaults.redirectUri*/);
+                        this.defaults.popupOptions);
                 } else {
                     popupWindow.popupWindow.location =
                         [this.defaults.authorizationEndpoint, this.buildQueryString(response.json())].join('?');
@@ -50,8 +50,7 @@ export class Oauth1 {
             });
     }
     private exchangeForToken(oauthData, userData?: any) {
-        let data = extend({}, userData);
-        extend(data, oauthData);
+        let data = assign({}, oauthData, userData);
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     }

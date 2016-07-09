@@ -339,12 +339,26 @@ var Shared = (function () {
     var _a, _b;
 }());
 
-function extend(dst, src) {
-    Object.keys(src)
-        .forEach(function (key) {
-        dst[key] = dst[key];
-    });
-    return dst;
+function assign(target) {
+    var src = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        src[_i - 1] = arguments[_i];
+    }
+    if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+    }
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source != null) {
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
 }
 function joinUrl(baseUrl, url) {
     if (/^(?:[a-z]+:)?\/\//i.test(url)) {
@@ -432,7 +446,7 @@ var Popup = (function () {
         options = options || {};
         var width = options.width || 500;
         var height = options.height || 500;
-        return extend({
+        return assign({
             width: width,
             height: height,
             left: window.screenX + ((window.outerWidth - width) / 2),
@@ -485,13 +499,13 @@ var Popup = (function () {
                 var hashParams = parser.hash.substring(1).replace(/\/$/, '');
                 var hash = Popup.parseQueryString(hashParams);
                 var qs = Popup.parseQueryString(queryParams);
-                extend(qs, hash);
+                var allParams = assign({}, qs, hash);
                 _this.popupWindow.close();
-                if (qs.error) {
-                    throw qs.error;
+                if (allParams.error) {
+                    throw allParams.error;
                 }
                 else {
-                    return [qs];
+                    return [allParams];
                 }
             }
             return [];
@@ -520,12 +534,12 @@ var Popup = (function () {
                 var hash = Popup.parseQueryString(hashParams);
                 var qs = Popup.parseQueryString(queryParams);
                 _this.popupWindow.close();
-                extend(qs, hash);
-                if (qs.error) {
-                    throw qs.error;
+                var allParams = assign({}, qs, hash);
+                if (allParams.error) {
+                    throw allParams.error;
                 }
                 else {
-                    return [qs];
+                    return [allParams];
                 }
             }
             return [];
@@ -549,7 +563,7 @@ var Oauth1 = (function () {
     }
     Oauth1.prototype.open = function (options, userData) {
         var _this = this;
-        this.defaults = extend(options, Oauth1.base);
+        this.defaults = assign({}, Oauth1.base, options);
         var popupWindow;
         var serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         if (!this.config.cordova) {
@@ -571,8 +585,7 @@ var Oauth1 = (function () {
         });
     };
     Oauth1.prototype.exchangeForToken = function (oauthData, userData) {
-        var data = extend({}, userData);
-        extend(data, oauthData);
+        var data = assign({}, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     };
@@ -639,26 +652,7 @@ var Oauth2 = (function () {
         });
     };
     Oauth2.prototype.exchangeForToken = function (oauthData, userData) {
-        var _this = this;
-        var data = extend({}, userData);
-        Object.keys(this.defaults.responseParams).forEach(function (key) {
-            switch (key) {
-                case 'code':
-                    data[_this.defaults.responseParams[key]] = oauthData.code;
-                    break;
-                case 'clientId':
-                    data[_this.defaults.responseParams[key]] = _this.defaults.clientId;
-                    break;
-                case 'redirectUri':
-                    data[_this.defaults.responseParams[key]] = _this.defaults.redirectUri;
-                    break;
-                default:
-                    data[_this.defaults.responseParams[key]] = oauthData[key];
-            }
-        });
-        if (oauthData.state) {
-            data.state = oauthData.state;
-        }
+        var data = assign({}, this.defaults, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, JSON.stringify(data), { withCredentials: this.config.withCredentials });
     };

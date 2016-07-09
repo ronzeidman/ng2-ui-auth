@@ -27,7 +27,7 @@ var Popup = (function () {
         options = options || {};
         var width = options.width || 500;
         var height = options.height || 500;
-        return utils_1.extend({
+        return utils_1.assign({
             width: width,
             height: height,
             left: window.screenX + ((window.outerWidth - width) / 2),
@@ -80,13 +80,13 @@ var Popup = (function () {
                 var hashParams = parser.hash.substring(1).replace(/\/$/, '');
                 var hash = Popup.parseQueryString(hashParams);
                 var qs = Popup.parseQueryString(queryParams);
-                utils_1.extend(qs, hash);
+                var allParams = utils_1.assign({}, qs, hash);
                 _this.popupWindow.close();
-                if (qs.error) {
-                    throw qs.error;
+                if (allParams.error) {
+                    throw allParams.error;
                 }
                 else {
-                    return [qs];
+                    return [allParams];
                 }
             }
             return [];
@@ -115,12 +115,12 @@ var Popup = (function () {
                 var hash = Popup.parseQueryString(hashParams);
                 var qs = Popup.parseQueryString(queryParams);
                 _this.popupWindow.close();
-                utils_1.extend(qs, hash);
-                if (qs.error) {
-                    throw qs.error;
+                var allParams = utils_1.assign({}, qs, hash);
+                if (allParams.error) {
+                    throw allParams.error;
                 }
                 else {
-                    return [qs];
+                    return [allParams];
                 }
             }
             return [];

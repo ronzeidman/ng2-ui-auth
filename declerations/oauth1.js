@@ -22,7 +22,7 @@ var Oauth1 = (function () {
     }
     Oauth1.prototype.open = function (options, userData) {
         var _this = this;
-        this.defaults = utils_1.extend(options, Oauth1.base);
+        this.defaults = utils_1.assign({}, Oauth1.base, options);
         var popupWindow;
         var serverUrl = this.config.baseUrl ? utils_1.joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         if (!this.config.cordova) {
@@ -44,8 +44,7 @@ var Oauth1 = (function () {
         });
     };
     Oauth1.prototype.exchangeForToken = function (oauthData, userData) {
-        var data = utils_1.extend({}, userData);
-        utils_1.extend(data, oauthData);
+        var data = utils_1.assign({}, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? utils_1.joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     };

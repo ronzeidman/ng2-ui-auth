@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {extend} from './utils';
+import {assign} from './utils';
 import {Config, IPopupOptions} from './config';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
@@ -22,7 +22,7 @@ export class Popup {
         options = options || {};
         let width = options.width || 500;
         let height = options.height || 500;
-        return extend(
+        return assign(
             {
                 width: width,
                 height: height,
@@ -87,19 +87,18 @@ export class Popup {
                 parser.href = event.url;
 
                 if (parser.search || parser.hash) {
-                    let queryParams = parser.search.substring(1).replace(/\/$/, '');
-                    let hashParams = parser.hash.substring(1).replace(/\/$/, '');
-                    let hash = Popup.parseQueryString(hashParams);
-                    let qs = Popup.parseQueryString(queryParams);
-
-                    extend(qs, hash);
+                    const queryParams = parser.search.substring(1).replace(/\/$/, '');
+                    const hashParams = parser.hash.substring(1).replace(/\/$/, '');
+                    const hash = Popup.parseQueryString(hashParams);
+                    const qs = Popup.parseQueryString(queryParams);
+                    const allParams = assign({}, qs, hash);
 
                     this.popupWindow.close();
 
-                    if (qs.error) {
-                        throw qs.error;
+                    if (allParams.error) {
+                        throw allParams.error;
                     } else {
-                        return <any>[qs];
+                        return <any>[allParams];
                     }
                 }
                 return <any>[];
@@ -124,16 +123,16 @@ export class Popup {
                     //error instanceof DOMException && error.name === 'SecurityError'
                 }
                 if (popupWindowOrigin === documentOrigin && (this.popupWindow.location.search || this.popupWindow.location.hash)) {
-                    let queryParams = this.popupWindow.location.search.substring(1).replace(/\/$/, '');
-                    let hashParams = this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
-                    let hash = Popup.parseQueryString(hashParams);
-                    let qs = Popup.parseQueryString(queryParams);
+                    const queryParams = this.popupWindow.location.search.substring(1).replace(/\/$/, '');
+                    const hashParams = this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
+                    const hash = Popup.parseQueryString(hashParams);
+                    const qs = Popup.parseQueryString(queryParams);
                     this.popupWindow.close();
-                    extend(qs, hash);
-                    if (qs.error) {
-                        throw qs.error;
+                    const allParams = assign({}, qs, hash);
+                    if (allParams.error) {
+                        throw allParams.error;
                     } else {
-                        return <any>[qs];
+                        return <any>[allParams];
                     }
                 }
                 return <any>[];

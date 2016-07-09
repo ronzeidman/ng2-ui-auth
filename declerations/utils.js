@@ -1,12 +1,26 @@
 "use strict";
-function extend(dst, src) {
-    Object.keys(src)
-        .forEach(function (key) {
-        dst[key] = dst[key];
-    });
-    return dst;
+function assign(target) {
+    var src = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        src[_i - 1] = arguments[_i];
+    }
+    if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+    }
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source != null) {
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
 }
-exports.extend = extend;
+exports.assign = assign;
 function joinUrl(baseUrl, url) {
     if (/^(?:[a-z]+:)?\/\//i.test(url)) {
         return url;

@@ -58,26 +58,7 @@ var Oauth2 = (function () {
         });
     };
     Oauth2.prototype.exchangeForToken = function (oauthData, userData) {
-        var _this = this;
-        var data = utils_1.extend({}, userData);
-        Object.keys(this.defaults.responseParams).forEach(function (key) {
-            switch (key) {
-                case 'code':
-                    data[_this.defaults.responseParams[key]] = oauthData.code;
-                    break;
-                case 'clientId':
-                    data[_this.defaults.responseParams[key]] = _this.defaults.clientId;
-                    break;
-                case 'redirectUri':
-                    data[_this.defaults.responseParams[key]] = _this.defaults.redirectUri;
-                    break;
-                default:
-                    data[_this.defaults.responseParams[key]] = oauthData[key];
-            }
-        });
-        if (oauthData.state) {
-            data.state = oauthData.state;
-        }
+        var data = utils_1.assign({}, this.defaults, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? utils_1.joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, JSON.stringify(data), { withCredentials: this.config.withCredentials });
     };
