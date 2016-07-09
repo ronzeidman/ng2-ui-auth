@@ -1,3 +1,6 @@
+#### 3.2.1
+* reverting to 3.1.2 since the 3.2.0 fix was not enough
+
 #### 3.2.0
 * fixed issue #29: extend() did not work causing custom options of popup window size to not work and `authenticate('provider', userCustomData)` with user custom data to not work properly
 

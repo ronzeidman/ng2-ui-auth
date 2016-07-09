@@ -2,7 +2,7 @@
 function extend(dst, src) {
     Object.keys(src)
         .forEach(function (key) {
-        dst[key] = src[key];
+        dst[key] = dst[key];
     });
     return dst;
 }
