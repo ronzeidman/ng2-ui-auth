@@ -20,16 +20,16 @@ var storage_1 = require('./storage');
 var config_1 = require('./config');
 var jwtHttp_1 = require('./jwtHttp');
 function NG2_UI_AUTH_PROVIDERS(config) {
-    return [core_1.provide(config_1.Config, { useFactory: function () { return new config_1.Config(config); } }),
-        core_1.provide(storage_1.Storage, { useFactory: function (providedConfig) { return new storage_1.Storage(providedConfig); }, deps: [config_1.Config] }),
-        core_1.provide(shared_1.Shared, { useFactory: function (storage, providedConfig) { return new shared_1.Shared(storage, providedConfig); }, deps: [storage_1.Storage, config_1.Config] }),
-        core_1.provide(jwtHttp_1.JwtHttp, { useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new jwtHttp_1.JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [http_1.XHRBackend, http_1.RequestOptions, shared_1.Shared, config_1.Config] }),
-        core_1.provide(oauth_1.Oauth, { useFactory: function (http, injector, shared, providedConfig) { return new oauth_1.Oauth(http, injector, shared, providedConfig); }, deps: [jwtHttp_1.JwtHttp, core_1.Injector, shared_1.Shared, config_1.Config] }),
-        core_1.provide(popup_1.Popup, { useFactory: function (providedConfig) { return new popup_1.Popup(providedConfig); }, deps: [config_1.Config] }),
-        core_1.provide(oauth1_1.Oauth1, { useFactory: function (http, popup, providedConfig) { return new oauth1_1.Oauth1(http, popup, providedConfig); }, deps: [jwtHttp_1.JwtHttp, popup_1.Popup, config_1.Config] }),
-        core_1.provide(oauth2_1.Oauth2, { useFactory: function (http, popup, storage, providedConfig) { return new oauth2_1.Oauth2(http, popup, storage, providedConfig); }, deps: [jwtHttp_1.JwtHttp, popup_1.Popup, storage_1.Storage, config_1.Config] }),
-        core_1.provide(local_1.Local, { useFactory: function (http, shared, providedConfig) { return new local_1.Local(http, shared, providedConfig); }, deps: [jwtHttp_1.JwtHttp, shared_1.Shared, config_1.Config] }),
-        core_1.provide(Auth, { useFactory: function (shared, local, oauth) { return new Auth(shared, local, oauth); }, deps: [shared_1.Shared, local_1.Local, oauth_1.Oauth] }),
+    return [{ provide: config_1.Config, useFactory: function () { return new config_1.Config(config); } },
+        { provide: storage_1.Storage, useFactory: function (providedConfig) { return new storage_1.Storage(providedConfig); }, deps: [config_1.Config] },
+        { provide: shared_1.Shared, useFactory: function (storage, providedConfig) { return new shared_1.Shared(storage, providedConfig); }, deps: [storage_1.Storage, config_1.Config] },
+        { provide: jwtHttp_1.JwtHttp, useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new jwtHttp_1.JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [http_1.XHRBackend, http_1.RequestOptions, shared_1.Shared, config_1.Config] },
+        { provide: oauth_1.Oauth, useFactory: function (http, injector, shared, providedConfig) { return new oauth_1.Oauth(http, injector, shared, providedConfig); }, deps: [jwtHttp_1.JwtHttp, core_1.Injector, shared_1.Shared, config_1.Config] },
+        { provide: popup_1.Popup, useFactory: function (providedConfig) { return new popup_1.Popup(providedConfig); }, deps: [config_1.Config] },
+        { provide: oauth1_1.Oauth1, useFactory: function (http, popup, providedConfig) { return new oauth1_1.Oauth1(http, popup, providedConfig); }, deps: [jwtHttp_1.JwtHttp, popup_1.Popup, config_1.Config] },
+        { provide: oauth2_1.Oauth2, useFactory: function (http, popup, storage, providedConfig) { return new oauth2_1.Oauth2(http, popup, storage, providedConfig); }, deps: [jwtHttp_1.JwtHttp, popup_1.Popup, storage_1.Storage, config_1.Config] },
+        { provide: local_1.Local, useFactory: function (http, shared, providedConfig) { return new local_1.Local(http, shared, providedConfig); }, deps: [jwtHttp_1.JwtHttp, shared_1.Shared, config_1.Config] },
+        { provide: Auth, useFactory: function (shared, local, oauth) { return new Auth(shared, local, oauth); }, deps: [shared_1.Shared, local_1.Local, oauth_1.Oauth] },
     ];
 }
 exports.NG2_UI_AUTH_PROVIDERS = NG2_UI_AUTH_PROVIDERS;
