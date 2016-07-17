@@ -77,10 +77,10 @@ export class Popup {
             .fromEvent(this.popupWindow, 'loadstart')
             .concatMap((event: Event & { url: string }) => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return <any>['Popup Window Closed'];
+                    return ['Popup Window Closed'];
                 }
                 if (event.url.indexOf(redirectUri) !== 0) {
-                    return <any>[];
+                    return [];
                 }
 
                 let parser = document.createElement('a');
@@ -101,7 +101,7 @@ export class Popup {
                         return <any>[allParams];
                     }
                 }
-                return <any>[];
+                return [];
             })
             .take(1)
             .takeWhile((response) => response !== 'Popup Window Closed');
@@ -112,7 +112,7 @@ export class Popup {
             .interval(50)
             .concatMap(() => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return <any>['Popup Window Closed'];
+                    return ['Popup Window Closed'];
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';
@@ -132,10 +132,10 @@ export class Popup {
                     if (allParams.error) {
                         throw allParams.error;
                     } else {
-                        return <any>[allParams];
+                        return [allParams];
                     }
                 }
-                return <any>[];
+                return [];
             })
             .take(1)
             .takeWhile((response) => response !== 'Popup Window Closed');

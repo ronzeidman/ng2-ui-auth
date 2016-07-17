@@ -1,3 +1,6 @@
+#### 3.2.2
+* after testing issue #29 should be fixed
+
 #### 3.2.1
 * reverting to 3.1.2 since the 3.2.0 fix was not enough
 
