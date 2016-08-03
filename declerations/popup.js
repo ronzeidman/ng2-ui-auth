@@ -96,6 +96,10 @@ var Popup = (function () {
     };
     Popup.prototype.pollPopup = function () {
         var _this = this;
+        var redirectUris = [];
+        for (var provider in this.config.providers) {
+            redirectUris.push(this.config.providers[provider].redirectUri);
+        }
         return Observable_1.Observable
             .interval(50)
             .concatMap(function () {
@@ -109,7 +113,8 @@ var Popup = (function () {
             }
             catch (error) {
             }
-            if (popupWindowOrigin === documentOrigin && (_this.popupWindow.location.search || _this.popupWindow.location.hash)) {
+            var popupWindowURL = _this.popupWindow.location.protocol + "//" + _this.popupWindow.location.host + ((_this.popupWindow.location.port !== '') ? ":" + _this.popupWindow.location.port : "") + _this.popupWindow.location.pathname;
+            if (popupWindowOrigin === documentOrigin && (_this.popupWindow.location.search || _this.popupWindow.location.hash) && (redirectUris.indexOf(popupWindowURL) > -1)) {
                 var queryParams = _this.popupWindow.location.search.substring(1).replace(/\/$/, '');
                 var hashParams = _this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
                 var hash = Popup.parseQueryString(hashParams);

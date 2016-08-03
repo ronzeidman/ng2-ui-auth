@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {assign} from './utils';
-import {Config, IPopupOptions} from './config';
+import {Config, IPopupOptions, IProviders} from './config';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/concatMap';
@@ -108,6 +108,11 @@ export class Popup {
     }
 
     pollPopup() {
+        var redirectUris = [];
+        for(let provider in this.config.providers)
+        {
+             redirectUris.push(this.config.providers[provider].redirectUri);
+        }
         return Observable
             .interval(50)
             .concatMap(() => {
@@ -122,7 +127,10 @@ export class Popup {
                     // ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
                     //error instanceof DOMException && error.name === 'SecurityError'
                 }
-                if (popupWindowOrigin === documentOrigin && (this.popupWindow.location.search || this.popupWindow.location.hash)) {
+                
+                let popupWindowURL = this.popupWindow.location.protocol + "//" + this.popupWindow.location.host + ((this.popupWindow.location.port !== '') ? ":" + this.popupWindow.location.port : "") + this.popupWindow.location.pathname 
+
+                if (popupWindowOrigin === documentOrigin && (this.popupWindow.location.search || this.popupWindow.location.hash) && (redirectUris.indexOf(popupWindowURL) > -1)) {
                     const queryParams = this.popupWindow.location.search.substring(1).replace(/\/$/, '');
                     const hashParams = this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
                     const hash = Popup.parseQueryString(hashParams);
