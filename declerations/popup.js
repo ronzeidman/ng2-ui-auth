@@ -108,12 +108,13 @@ var Popup = (function () {
             }
             var documentOrigin = document.location.host;
             var popupWindowOrigin = '';
+            var popupWindowURL = '';
             try {
                 popupWindowOrigin = _this.popupWindow.location.host;
+                popupWindowURL = _this.popupWindow.location.protocol + "//" + _this.popupWindow.location.host + ((_this.popupWindow.location.port !== '') ? ":" + _this.popupWindow.location.port : "") + _this.popupWindow.location.pathname;
             }
             catch (error) {
             }
-            var popupWindowURL = _this.popupWindow.location.protocol + "//" + _this.popupWindow.location.host + ((_this.popupWindow.location.port !== '') ? ":" + _this.popupWindow.location.port : "") + _this.popupWindow.location.pathname;
             if (popupWindowOrigin === documentOrigin && (_this.popupWindow.location.search || _this.popupWindow.location.hash) && (redirectUris.indexOf(popupWindowURL) > -1)) {
                 var queryParams = _this.popupWindow.location.search.substring(1).replace(/\/$/, '');
                 var hashParams = _this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');

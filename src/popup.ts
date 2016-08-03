@@ -121,14 +121,16 @@ export class Popup {
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';
+                let popupWindowURL = '';
                 try {
                     popupWindowOrigin = this.popupWindow.location.host;
+                    popupWindowURL = this.popupWindow.location.protocol + "//" + this.popupWindow.location.host + ((this.popupWindow.location.port !== '') ? ":" + this.popupWindow.location.port : "") + this.popupWindow.location.pathname;
                 } catch (error) {
                     // ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
                     //error instanceof DOMException && error.name === 'SecurityError'
                 }
                 
-                let popupWindowURL = this.popupWindow.location.protocol + "//" + this.popupWindow.location.host + ((this.popupWindow.location.port !== '') ? ":" + this.popupWindow.location.port : "") + this.popupWindow.location.pathname 
+                
 
                 if (popupWindowOrigin === documentOrigin && (this.popupWindow.location.search || this.popupWindow.location.hash) && (redirectUris.indexOf(popupWindowURL) > -1)) {
                     const queryParams = this.popupWindow.location.search.substring(1).replace(/\/$/, '');
