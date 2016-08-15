@@ -530,7 +530,7 @@ var Popup = (function () {
             var popupWindowURL = '';
             try {
                 popupWindowOrigin = _this.popupWindow.location.host;
-                popupWindowURL = _this.popupWindow.location.protocol + "//" + _this.popupWindow.location.host + ((_this.popupWindow.location.port !== '') ? ":" + _this.popupWindow.location.port : "") + _this.popupWindow.location.pathname;
+                popupWindowURL = _this.popupWindow.location.protocol + "//" + _this.popupWindow.location.host + _this.popupWindow.location.pathname;
             }
             catch (error) {
             }

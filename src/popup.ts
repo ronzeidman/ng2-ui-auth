@@ -124,7 +124,7 @@ export class Popup {
                 let popupWindowURL = '';
                 try {
                     popupWindowOrigin = this.popupWindow.location.host;
-                    popupWindowURL = this.popupWindow.location.protocol + "//" + this.popupWindow.location.host + ((this.popupWindow.location.port !== '') ? ":" + this.popupWindow.location.port : "") + this.popupWindow.location.pathname;
+                    popupWindowURL = this.popupWindow.location.protocol + "//" + this.popupWindow.location.host + this.popupWindow.location.pathname;
                 } catch (error) {
                     // ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
                     //error instanceof DOMException && error.name === 'SecurityError'
