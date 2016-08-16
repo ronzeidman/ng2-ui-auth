@@ -5,19 +5,35 @@ To use this run `npm install ng2-ui-auth --save`.
 
 for a full client + server-side example: https://github.com/ronzeidman/ng2-ui-auth-example
 
-For configuration do the following:
+for RC.5 and hopefully above just modify your main app module:
+```typescript
+import {NG2_UI_AUTH_PROVIDERS} from 'ng2-ui-auth';
+
+const DEFAULT_POST_HEADER: {[name: string]: string} = {
+  'Content-Type': 'application/json'
+};
+const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
+@NgModule({
+    ....
+    providers: [NG2_UI_AUTH_PROVIDERS({defaultHeaders: DEFAULT_POST_HEADER, providers: {google: {clientId: GOOGLE_CLIENT_ID}}}), ...]
+    ....
+})
+AppModule {}
+```
+
+For configuration RC.4 and below do the following:
 ```typescript
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {provide} from '@angular/core';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {NG2_UI_AUTH_PROVIDERS, JwtHttp} from 'ng2-ui-auth';
-import {Main} from './main';
+import {MainComponent} from './main.component';
 const DEFAULT_POST_HEADER: {[name: string]: string} = {
   'Content-Type': 'application/json'
 };
 const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
 
-bootstrap(Main, [
+bootstrap(MainComponent, [
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({defaultHeaders: DEFAULT_POST_HEADER, providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
 ]);
@@ -52,22 +68,29 @@ export class MyHttp extends JwtHttp {
 }
 
 export const MY_HTTP_PROVIDERS = [
-    provide(
-        MyHttp, // If you replace the JwtHttp or the Http itself make sure you are not changing the response type since NG2_UI_AUTH_PROVIDERS is using JwtHttp and expects the default response type
-        {
-            useFactory:
-                (xhrBackend, requestOptions, shared, config, router) =>
-                    new MyHttp(xhrBackend, requestOptions, shared, config),
-            deps: [XHRBackend, RequestOptions, Shared, Config],
-        }),
+    { 
+        provide: MyHttp, // If you replace the JwtHttp or the Http itself make sure you are not changing the response type since NG2_UI_AUTH_PROVIDERS is using JwtHttp and expects the default response type
+        useFactory:
+            (xhrBackend, requestOptions, shared, config, router) =>
+                new MyHttp(xhrBackend, requestOptions, shared, config),
+        deps: [XHRBackend, RequestOptions, Shared, Config],
+    ),
+    //in rc.5 you don't need to provide the below classes, you need to import the http module instead
     DefaultHandlers,
     BrowserXhr,
-    provide(RequestOptions, {useClass: BaseRequestOptions}),
-    provide(ResponseOptions, {useClass: BaseResponseOptions}),
+    { provide: RequestOptions, useClass: BaseRequestOptions}),
+    { provide: ResponseOptions, useClass: BaseResponseOptions}),
     XHRBackend,
 ];
 
-//in the bootstrap file:
+//in the module file RC.5 and above:
+@NgModule({
+    ....
+    providers: [NG2_UI_AUTH_PROVIDERS({defaultHeaders: DEFAULT_POST_HEADER, providers: {google: {clientId: GOOGLE_CLIENT_ID}}}), MY_HTTP_PROVIDERS ...]
+    ....
+})
+AppModule {}
+//in the bootstrap file RC.4 and below:
 bootstrap(Main, [
     NG2_UI_AUTH_PROVIDERS({providers: {google: {clientId: GOOGLE_CLIENT_ID}}}),
     MY_HTTP_PROVIDERS,
