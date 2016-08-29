@@ -11,6 +11,7 @@ var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_operator_concatMap = require('rxjs/add/operator/concatMap');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
+var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 
 function __extends(d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -39,6 +40,7 @@ var Config = (function () {
         this.loginUrl = '/auth/login';
         this.signupUrl = '/auth/signup';
         this.unlinkUrl = '/auth/unlink/';
+        this.refreshUrl = '/auth/refresh';
         this.tokenName = 'token';
         this.tokenSeparator = '_';
         this.tokenPrefix = 'ng2-ui-auth';
@@ -46,6 +48,7 @@ var Config = (function () {
         this.authToken = 'Bearer';
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
+        this.autoRefreshToken = false;
         this.providers = {
             facebook: {
                 name: 'facebook',
@@ -742,15 +745,14 @@ var JwtHttp = (function (_super) {
         this._config = _config;
     }
     JwtHttp.prototype.request = function (url, options) {
-        if (url instanceof _angular_http.Request) {
-            url.headers = url.headers || new _angular_http.Headers();
-            this.setHeaders(url);
+        var _this = this;
+        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
+            options.autoRefreshToken ||
+            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+            return this.refreshToken()
+                .switchMap(function () { return _this.actualRequest(url, options); });
         }
-        else {
-            options = options || {};
-            this.setHeaders(options);
-        }
-        return _super.prototype.request.call(this, url, options);
+        return this.actualRequest(url, options);
     };
     JwtHttp.prototype.get = function (url, options) {
         options = options || {};
@@ -784,6 +786,27 @@ var JwtHttp = (function (_super) {
         options = options || {};
         options.method = _angular_http.RequestMethod.Head;
         return this.request(url, options);
+    };
+    JwtHttp.prototype.refreshToken = function () {
+        var _this = this;
+        var authHeader = new _angular_http.Headers();
+        authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
+        return _super.prototype
+            .get.call(this, this._config.refreshUrl, {
+            headers: authHeader
+        })
+            .do(function (res) { return _this._shared.setToken(res); });
+    };
+    JwtHttp.prototype.actualRequest = function (url, options) {
+        if (url instanceof _angular_http.Request) {
+            url.headers = url.headers || new _angular_http.Headers();
+            this.setHeaders(url);
+        }
+        else {
+            options = options || {};
+            this.setHeaders(options);
+        }
+        return _super.prototype.request.call(this, url, options);
     };
     JwtHttp.prototype.setHeaders = function (obj) {
         var _this = this;

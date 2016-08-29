@@ -56,7 +56,9 @@ export interface ICustomConfig {
     storageType?: string;
     providers?: IProviders;
     defaultHeaders?: { [name: string]: string };
-    withCredentials?: boolean
+    withCredentials?: boolean;
+    autoRefreshToken?: boolean;
+    refreshUrl?: string;
 }
 @Injectable()
 export class Config implements ICustomConfig {
@@ -84,6 +86,7 @@ export class Config implements ICustomConfig {
     loginUrl = '/auth/login';
     signupUrl = '/auth/signup';
     unlinkUrl = '/auth/unlink/';
+    refreshUrl = '/auth/refresh';
     tokenName = 'token';
     tokenSeparator = '_';
     tokenPrefix = 'ng2-ui-auth';
@@ -91,6 +94,7 @@ export class Config implements ICustomConfig {
     authToken = 'Bearer';
     storageType = 'localStorage';
     defaultHeaders = null;
+    autoRefreshToken = false;
     providers: IProviders = {
         facebook: {
             name: 'facebook',

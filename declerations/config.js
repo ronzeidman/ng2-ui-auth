@@ -19,6 +19,7 @@ var Config = (function () {
         this.loginUrl = '/auth/login';
         this.signupUrl = '/auth/signup';
         this.unlinkUrl = '/auth/unlink/';
+        this.refreshUrl = '/auth/refresh';
         this.tokenName = 'token';
         this.tokenSeparator = '_';
         this.tokenPrefix = 'ng2-ui-auth';
@@ -26,6 +27,7 @@ var Config = (function () {
         this.authToken = 'Bearer';
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
+        this.autoRefreshToken = false;
         this.providers = {
             facebook: {
                 name: 'facebook',
