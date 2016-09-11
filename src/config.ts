@@ -38,9 +38,11 @@ export interface IOauth2Options extends IOauth1Options {
     scope?: string[];
     display?: string;
 }
+
 export interface IProviders {
     [provider: string]: IOauth2Options;
 }
+
 export interface ICustomConfig {
     tokenRoot?: string;
     cordova?: boolean;
@@ -60,6 +62,7 @@ export interface ICustomConfig {
     autoRefreshToken?: boolean;
     refreshUrl?: string;
 }
+
 @Injectable()
 export class Config implements ICustomConfig {
     constructor(config?: ICustomConfig) {

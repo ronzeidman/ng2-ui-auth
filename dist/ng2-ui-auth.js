@@ -831,11 +831,19 @@ var Oauth = (function () {
     var _a, _b, _c, _d;
 }());
 
-var NG2_UI_AUTH_PROVIDERS = function (config) {
-    return [{ provide: Config, useValue: new Config(config) },
-        Storage, Shared, JwtHttp, Oauth, Popup, Oauth1, Oauth2, Local, Auth
+function NG2_UI_AUTH_PROVIDERS(config) {
+    return [{ provide: Config, useFactory: function () { return new Config(config); } },
+        { provide: Storage, useFactory: function (providedConfig) { return new Storage(providedConfig); }, deps: [Config] },
+        { provide: Shared, useFactory: function (storage, providedConfig) { return new Shared(storage, providedConfig); }, deps: [Storage, Config] },
+        { provide: JwtHttp, useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [_angular_http.XHRBackend, _angular_http.RequestOptions, Shared, Config] },
+        { provide: Oauth, useFactory: function (http, injector, shared, providedConfig) { return new Oauth(http, injector, shared, providedConfig); }, deps: [JwtHttp, _angular_core.Injector, Shared, Config] },
+        { provide: Popup, useFactory: function (providedConfig) { return new Popup(providedConfig); }, deps: [Config] },
+        { provide: Oauth1, useFactory: function (http, popup, providedConfig) { return new Oauth1(http, popup, providedConfig); }, deps: [JwtHttp, Popup, Config] },
+        { provide: Oauth2, useFactory: function (http, popup, storage, providedConfig) { return new Oauth2(http, popup, storage, providedConfig); }, deps: [JwtHttp, Popup, Storage, Config] },
+        { provide: Local, useFactory: function (http, shared, providedConfig) { return new Local(http, shared, providedConfig); }, deps: [JwtHttp, Shared, Config] },
+        { provide: Auth, useFactory: function (shared, local, oauth) { return new Auth(shared, local, oauth); }, deps: [Shared, Local, Oauth] },
     ];
-};
+}
 var Auth = (function () {
     function Auth(shared, local, oauth) {
         this.shared = shared;
