@@ -1,4 +1,4 @@
-#### 3.2.4
+#### 3.2.5
 * Added "refresh token" flow, if you configure 'autoRefreshToken' to true then if you call a webservice when the token expires this library automatically sends it to the server using 'refreshUrl' endpoint (can be set in config default = '/auth/refresh') first and then sets a new token if it receives it and tries to call the original request. (issue #41)
 * Added 'state' to the 'optionalUrlParams' of google according to issue #43
 
