@@ -15,11 +15,11 @@ import {JwtHttp} from './jwtHttp';
  * Created by Ron on 17/12/2015.
  */
 
-export function NG2_UI_AUTH_PROVIDERS(config: ICustomConfig): Array<any> {
+export const NG2_UI_AUTH_PROVIDERS = (config: ICustomConfig) => {
     return [{provide: Config, useValue: new Config(config)},
         Storage, Shared, JwtHttp, Oauth, Popup, Oauth1, Oauth2, Local, Auth
         ];
-}
+};
 
 @Injectable()
 export class Auth {

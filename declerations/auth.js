@@ -18,12 +18,11 @@ var oauth1_1 = require('./oauth1');
 var storage_1 = require('./storage');
 var config_1 = require('./config');
 var jwtHttp_1 = require('./jwtHttp');
-function NG2_UI_AUTH_PROVIDERS(config) {
+exports.NG2_UI_AUTH_PROVIDERS = function (config) {
     return [{ provide: config_1.Config, useValue: new config_1.Config(config) },
         storage_1.Storage, shared_1.Shared, jwtHttp_1.JwtHttp, oauth_1.Oauth, popup_1.Popup, oauth1_1.Oauth1, oauth2_1.Oauth2, local_1.Local, Auth
     ];
-}
-exports.NG2_UI_AUTH_PROVIDERS = NG2_UI_AUTH_PROVIDERS;
+};
 var Auth = (function () {
     function Auth(shared, local, oauth) {
         this.shared = shared;

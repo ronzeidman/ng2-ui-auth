@@ -73,13 +73,13 @@ export class JwtHttp extends Http {
 
 
     refreshToken(): Observable<Response> {
-        var authHeader = new Headers();
+        const authHeader = new Headers();
         authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
         return super
             .get(this._config.refreshUrl, {
                 headers: authHeader
             })
-            .do((res: Response) => this._shared.setToken(res))
+            .do((res: Response) => this._shared.setToken(res));
     }
 
     private actualRequest(url: string | Request, options?: JwtRequestOptionsArgs) {

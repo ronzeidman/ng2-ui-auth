@@ -47,7 +47,7 @@ var Config = (function () {
                 authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
                 redirectUri: window.location.origin,
                 requiredUrlParams: ['scope'],
-                optionalUrlParams: ['display'],
+                optionalUrlParams: ['display', 'state'],
                 scope: ['profile', 'email'],
                 scopePrefix: 'openid',
                 scopeDelimiter: ' ',
