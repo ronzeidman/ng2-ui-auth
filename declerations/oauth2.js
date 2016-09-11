@@ -9,12 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
 var utils_1 = require('./utils');
 var config_1 = require('./config');
 var popup_1 = require('./popup');
 var storage_1 = require('./storage');
 require('rxjs/add/operator/concatMap');
+var jwtHttp_1 = require('./jwtHttp');
 var Oauth2 = (function () {
     function Oauth2(http, popup, storage, config) {
         this.http = http;
@@ -102,7 +102,7 @@ var Oauth2 = (function () {
     };
     Oauth2 = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, popup_1.Popup, storage_1.Storage, config_1.Config])
+        __metadata('design:paramtypes', [jwtHttp_1.JwtHttp, popup_1.Popup, storage_1.Storage, config_1.Config])
     ], Oauth2);
     return Oauth2;
 }());

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {assign, joinUrl, merge, camelCase} from './utils';
 import {Config, IOauth2Options} from './config';
 import {Popup} from './popup';
 import {Storage} from './storage';
 import 'rxjs/add/operator/concatMap';
+import {JwtHttp} from './jwtHttp';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -26,7 +26,7 @@ export class Oauth2 {
 
     private defaults: IOauth2Options;
 
-    constructor(private http: Http,
+    constructor(private http: JwtHttp,
                 private popup: Popup,
                 private storage: Storage,
                 private config: Config) {

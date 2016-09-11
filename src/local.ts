@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Shared} from './shared';
 import {Config} from './config';
-import {Http, RequestOptionsArgs, Response} from '@angular/http';
+import {RequestOptionsArgs, Response} from '@angular/http';
 import {joinUrl} from './utils';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
+import {JwtHttp} from './jwtHttp';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -21,7 +22,7 @@ function getFullOpts(user: string | Object, userOpts?: RequestOptionsArgs) {
 
 @Injectable()
 export class Local {
-    constructor(private http: Http,
+    constructor(private http: JwtHttp,
                 private shared: Shared,
                 private config: Config) {}
 

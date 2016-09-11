@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var shared_1 = require('./shared');
 var config_1 = require('./config');
-var http_1 = require('@angular/http');
 var utils_1 = require('./utils');
 require('rxjs/add/operator/do');
+var jwtHttp_1 = require('./jwtHttp');
 function getFullOpts(user, userOpts) {
     var opts = userOpts || {};
     if (user) {
@@ -42,7 +42,7 @@ var Local = (function () {
     };
     Local = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, shared_1.Shared, config_1.Config])
+        __metadata('design:paramtypes', [jwtHttp_1.JwtHttp, shared_1.Shared, config_1.Config])
     ], Local);
     return Local;
 }());

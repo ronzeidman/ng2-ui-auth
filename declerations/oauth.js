@@ -12,10 +12,10 @@ var core_1 = require('@angular/core');
 var oauth1_1 = require('./oauth1');
 var oauth2_1 = require('./oauth2');
 var shared_1 = require('./shared');
-var http_1 = require('@angular/http');
 var utils_1 = require('./utils');
 var config_1 = require('./config');
 require('rxjs/add/operator/do');
+var jwtHttp_1 = require('./jwtHttp');
 var Oauth = (function () {
     function Oauth(http, injector, shared, config) {
         this.http = http;
@@ -42,7 +42,7 @@ var Oauth = (function () {
     };
     Oauth = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, core_1.Injector, shared_1.Shared, config_1.Config])
+        __metadata('design:paramtypes', [jwtHttp_1.JwtHttp, core_1.Injector, shared_1.Shared, config_1.Config])
     ], Oauth);
     return Oauth;
 }());

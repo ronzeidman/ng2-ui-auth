@@ -2,11 +2,12 @@ import {Injectable, Injector} from '@angular/core';
 import {Oauth1} from './oauth1';
 import {Oauth2} from './oauth2';
 import {Shared} from './shared';
-import {Http, Response, RequestOptionsArgs} from '@angular/http';
+import {Response, RequestOptionsArgs} from '@angular/http';
 import {joinUrl} from './utils';
 import {Config} from './config';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
+import {JwtHttp} from './jwtHttp';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -14,7 +15,7 @@ import 'rxjs/add/operator/do';
 
 @Injectable()
 export class Oauth {
-    constructor(private http: Http,
+    constructor(private http: JwtHttp,
                 private injector: Injector,
                 private shared: Shared,
                 private config: Config) {}

@@ -1,9 +1,9 @@
-import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { Config, IOauth2Options } from './config';
-import { Popup } from './popup';
-import { Storage } from './storage';
+import {Observable} from 'rxjs/Observable';
+import {Config, IOauth2Options} from './config';
+import {Popup} from './popup';
+import {Storage} from './storage';
 import 'rxjs/add/operator/concatMap';
+import {JwtHttp} from './jwtHttp';
 export declare class Oauth2 {
     private http;
     private popup;
@@ -11,7 +11,7 @@ export declare class Oauth2 {
     private config;
     private static base;
     private defaults;
-    constructor(http: Http, popup: Popup, storage: Storage, config: Config);
+    constructor(http: JwtHttp, popup: Popup, storage: Storage, config: Config);
     open(options: IOauth2Options, userData?: any): Observable<{}>;
     private exchangeForToken(oauthData, userData?);
     private buildQueryString();

@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Popup} from './popup';
-import {Http, Response} from '@angular/http';
+import {Response} from '@angular/http';
 import {joinUrl, assign} from './utils';
 import {Config, IOauth1Options} from './config';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/concatMap';
+import {JwtHttp} from './jwtHttp';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -21,7 +22,7 @@ export class Oauth1 {
         authorizationEndpoint: null
     };
     private defaults: IOauth1Options;
-    constructor(private http: Http, private popup: Popup, private config: Config) {}
+    constructor(private http: JwtHttp, private popup: Popup, private config: Config) {}
     open(options?: IOauth1Options, userData?: any): Observable<Response> {
         this.defaults = assign({}, Oauth1.base, options);
         let popupWindow;

@@ -4,14 +4,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var _angular_core = require('@angular/core');
 var rxjs_Observable = require('rxjs/Observable');
-var _angular_http = require('@angular/http');
 var rxjs_add_operator_do = require('rxjs/add/operator/do');
+var _angular_http = require('@angular/http');
+var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_operator_concatMap = require('rxjs/add/operator/concatMap');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
-var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 
 function __extends(d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -406,6 +406,99 @@ function camelCase(name) {
     });
 }
 
+var JwtHttp = (function (_super) {
+    __extends(JwtHttp, _super);
+    function JwtHttp(_backend, _defaultOptions, _shared, _config) {
+        _super.call(this, _backend, _defaultOptions);
+        this._shared = _shared;
+        this._config = _config;
+    }
+    JwtHttp.prototype.request = function (url, options) {
+        var _this = this;
+        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
+            options.autoRefreshToken ||
+            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+            return this.refreshToken()
+                .switchMap(function () { return _this.actualRequest(url, options); });
+        }
+        return this.actualRequest(url, options);
+    };
+    JwtHttp.prototype.get = function (url, options) {
+        options = options || {};
+        options.method = _angular_http.RequestMethod.Get;
+        return this.request(url, options);
+    };
+    JwtHttp.prototype.post = function (url, body, options) {
+        options = options || {};
+        options.method = _angular_http.RequestMethod.Post;
+        options.body = body;
+        return this.request(url, options);
+    };
+    JwtHttp.prototype.put = function (url, body, options) {
+        options = options || {};
+        options.method = _angular_http.RequestMethod.Put;
+        options.body = body;
+        return this.request(url, options);
+    };
+    JwtHttp.prototype.delete = function (url, options) {
+        options = options || {};
+        options.method = _angular_http.RequestMethod.Delete;
+        return this.request(url, options);
+    };
+    JwtHttp.prototype.patch = function (url, body, options) {
+        options = options || {};
+        options.method = _angular_http.RequestMethod.Patch;
+        options.body = body;
+        return this.request(url, options);
+    };
+    JwtHttp.prototype.head = function (url, options) {
+        options = options || {};
+        options.method = _angular_http.RequestMethod.Head;
+        return this.request(url, options);
+    };
+    JwtHttp.prototype.refreshToken = function () {
+        var _this = this;
+        var authHeader = new _angular_http.Headers();
+        authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
+        return _super.prototype
+            .get.call(this, this._config.refreshUrl, {
+            headers: authHeader
+        })
+            .do(function (res) { return _this._shared.setToken(res); });
+    };
+    JwtHttp.prototype.actualRequest = function (url, options) {
+        if (url instanceof _angular_http.Request) {
+            url.headers = url.headers || new _angular_http.Headers();
+            this.setHeaders(url);
+        }
+        else {
+            options = options || {};
+            this.setHeaders(options);
+        }
+        return _super.prototype.request.call(this, url, options);
+    };
+    JwtHttp.prototype.setHeaders = function (obj) {
+        var _this = this;
+        obj.headers = obj.headers || new _angular_http.Headers();
+        if (this._config.defaultHeaders) {
+            Object.keys(this._config.defaultHeaders).forEach(function (defaultHeader) {
+                if (!obj.headers.has(defaultHeader)) {
+                    obj.headers.set(defaultHeader, _this._config.defaultHeaders[defaultHeader]);
+                }
+            });
+        }
+        if (this._shared.isAuthenticated()) {
+            obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
+        }
+    };
+    JwtHttp = __decorate([
+        _angular_core.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.ConnectionBackend !== 'undefined' && _angular_http.ConnectionBackend) === 'function' && _a) || Object, (typeof (_b = typeof _angular_http.RequestOptions !== 'undefined' && _angular_http.RequestOptions) === 'function' && _b) || Object, (typeof (_c = typeof Shared !== 'undefined' && Shared) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
+    ], JwtHttp);
+    return JwtHttp;
+    var _a, _b, _c, _d;
+}(_angular_http.Http));
+
 function getFullOpts(user, userOpts) {
     var opts = userOpts || {};
     if (user) {
@@ -434,7 +527,7 @@ var Local = (function () {
     };
     Local = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof Shared !== 'undefined' && Shared) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof Shared !== 'undefined' && Shared) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
     ], Local);
     return Local;
     var _a, _b, _c;
@@ -646,7 +739,7 @@ var Oauth2 = (function () {
     };
     Oauth2 = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Storage !== 'undefined' && Storage) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Storage !== 'undefined' && Storage) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
     ], Oauth2);
     return Oauth2;
     var _a, _b, _c, _d;
@@ -700,7 +793,7 @@ var Oauth1 = (function () {
     };
     Oauth1 = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
     ], Oauth1);
     return Oauth1;
     var _a, _b, _c;
@@ -732,104 +825,11 @@ var Oauth = (function () {
     };
     Oauth = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof _angular_core.Injector !== 'undefined' && _angular_core.Injector) === 'function' && _b) || Object, (typeof (_c = typeof Shared !== 'undefined' && Shared) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof _angular_core.Injector !== 'undefined' && _angular_core.Injector) === 'function' && _b) || Object, (typeof (_c = typeof Shared !== 'undefined' && Shared) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
     ], Oauth);
     return Oauth;
     var _a, _b, _c, _d;
 }());
-
-var JwtHttp = (function (_super) {
-    __extends(JwtHttp, _super);
-    function JwtHttp(_backend, _defaultOptions, _shared, _config) {
-        _super.call(this, _backend, _defaultOptions);
-        this._shared = _shared;
-        this._config = _config;
-    }
-    JwtHttp.prototype.request = function (url, options) {
-        var _this = this;
-        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
-            options.autoRefreshToken ||
-            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
-            return this.refreshToken()
-                .switchMap(function () { return _this.actualRequest(url, options); });
-        }
-        return this.actualRequest(url, options);
-    };
-    JwtHttp.prototype.get = function (url, options) {
-        options = options || {};
-        options.method = _angular_http.RequestMethod.Get;
-        return this.request(url, options);
-    };
-    JwtHttp.prototype.post = function (url, body, options) {
-        options = options || {};
-        options.method = _angular_http.RequestMethod.Post;
-        options.body = body;
-        return this.request(url, options);
-    };
-    JwtHttp.prototype.put = function (url, body, options) {
-        options = options || {};
-        options.method = _angular_http.RequestMethod.Put;
-        options.body = body;
-        return this.request(url, options);
-    };
-    JwtHttp.prototype.delete = function (url, options) {
-        options = options || {};
-        options.method = _angular_http.RequestMethod.Delete;
-        return this.request(url, options);
-    };
-    JwtHttp.prototype.patch = function (url, body, options) {
-        options = options || {};
-        options.method = _angular_http.RequestMethod.Patch;
-        options.body = body;
-        return this.request(url, options);
-    };
-    JwtHttp.prototype.head = function (url, options) {
-        options = options || {};
-        options.method = _angular_http.RequestMethod.Head;
-        return this.request(url, options);
-    };
-    JwtHttp.prototype.refreshToken = function () {
-        var _this = this;
-        var authHeader = new _angular_http.Headers();
-        authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
-        return _super.prototype
-            .get.call(this, this._config.refreshUrl, {
-            headers: authHeader
-        })
-            .do(function (res) { return _this._shared.setToken(res); });
-    };
-    JwtHttp.prototype.actualRequest = function (url, options) {
-        if (url instanceof _angular_http.Request) {
-            url.headers = url.headers || new _angular_http.Headers();
-            this.setHeaders(url);
-        }
-        else {
-            options = options || {};
-            this.setHeaders(options);
-        }
-        return _super.prototype.request.call(this, url, options);
-    };
-    JwtHttp.prototype.setHeaders = function (obj) {
-        var _this = this;
-        obj.headers = obj.headers || new _angular_http.Headers();
-        if (this._config.defaultHeaders) {
-            Object.keys(this._config.defaultHeaders).forEach(function (defaultHeader) {
-                if (!obj.headers.has(defaultHeader)) {
-                    obj.headers.set(defaultHeader, _this._config.defaultHeaders[defaultHeader]);
-                }
-            });
-        }
-        if (this._shared.isAuthenticated()) {
-            obj.headers.set(this._config.authHeader, this._config.authToken + ' ' + this._shared.getToken());
-        }
-    };
-    JwtHttp = __decorate([
-        _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.ConnectionBackend !== 'undefined' && _angular_http.ConnectionBackend) === 'function' && _a) || Object, (typeof (_b = typeof _angular_http.RequestOptions !== 'undefined' && _angular_http.RequestOptions) === 'function' && _b) || Object, (typeof (_c = typeof Shared !== 'undefined' && Shared) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
-    ], JwtHttp);
-    return JwtHttp;
-    var _a, _b, _c, _d;
-}(_angular_http.Http));
 
 var NG2_UI_AUTH_PROVIDERS = function (config) {
     return [{ provide: Config, useValue: new Config(config) },
@@ -896,6 +896,7 @@ exports.Popup = Popup;
 exports.Oauth = Oauth;
 exports.JwtHttp = JwtHttp;
 exports.Shared = Shared;
+exports.Storage = Storage;
 exports.Auth = Auth;
 exports.NG2_UI_AUTH_PROVIDERS = NG2_UI_AUTH_PROVIDERS;
 exports.Config = Config;

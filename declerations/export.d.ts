@@ -5,5 +5,6 @@ export { Popup } from './popup';
 export { Oauth } from './oauth';
 export { JwtHttp } from './jwtHttp';
 export { Shared } from './shared';
+export { Storage } from './storage';
 export { Auth, NG2_UI_AUTH_PROVIDERS } from './auth';
 export { Config } from './config';
