@@ -1,5 +1,5 @@
-import {Injectable, Injector} from '@angular/core';
-import {Response, RequestOptionsArgs, XHRBackend, RequestOptions} from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Response, RequestOptionsArgs} from '@angular/http';
 import {Shared} from './shared';
 import {Local} from './local';
 import {Oauth} from './oauth';
@@ -15,19 +15,11 @@ import {JwtHttp} from './jwtHttp';
  * Created by Ron on 17/12/2015.
  */
 
-export function NG2_UI_AUTH_PROVIDERS(config: ICustomConfig): Array<any> {
-    return [{provide: Config, useFactory: () => { return new Config(config);}},
-            {provide: Storage, useFactory: (providedConfig) => { return new Storage(providedConfig);}, deps: [Config]},
-            {provide: Shared,  useFactory: (storage, providedConfig) => { return new Shared(storage, providedConfig);}, deps: [Storage, Config]},
-            {provide: JwtHttp, useFactory: (xhrBackend, requestOptions, shared, config, router) => new JwtHttp(xhrBackend, requestOptions, shared, config), deps: [XHRBackend, RequestOptions, Shared, Config]},
-            {provide: Oauth,  useFactory: (http, injector, shared, providedConfig) => { return new Oauth(http, injector, shared, providedConfig);}, deps: [JwtHttp, Injector, Shared, Config]} ,
-            {provide: Popup,  useFactory: (providedConfig) => { return new Popup(providedConfig);}, deps: [Config]},
-            {provide: Oauth1,  useFactory: (http, popup, providedConfig) => { return new Oauth1(http, popup, providedConfig);}, deps: [JwtHttp, Popup, Config]} ,
-            {provide: Oauth2,  useFactory: (http, popup, storage, providedConfig) => { return new Oauth2(http, popup, storage, providedConfig);}, deps: [JwtHttp, Popup, Storage, Config]} ,
-            {provide: Local,  useFactory: (http, shared, providedConfig) => { return new Local(http, shared, providedConfig);}, deps: [JwtHttp, Shared, Config]} ,
-            {provide: Auth,  useFactory: (shared, local, oauth) => { return new Auth(shared, local, oauth);}, deps: [Shared, Local, Oauth]} ,
+export const NG2_UI_AUTH_PROVIDERS = (config: ICustomConfig) => {
+    return [{provide: Config, useValue: new Config(config)},
+        Storage, Shared, JwtHttp, Oauth, Popup, Oauth1, Oauth2, Local, Auth
         ];
-}
+};
 
 @Injectable()
 export class Auth {

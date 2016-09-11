@@ -15,5 +15,5 @@ export declare class Popup {
     constructor(config: Config);
     open(url: string, name: string, options: IPopupOptions): this;
     eventListener(redirectUri: string): Observable<{}>;
-    pollPopup(): Observable<{}>;
+    pollPopup(): Observable<any>;
 }

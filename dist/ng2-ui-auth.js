@@ -3,14 +3,15 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var _angular_core = require('@angular/core');
-var _angular_http = require('@angular/http');
 var rxjs_Observable = require('rxjs/Observable');
+var _angular_http = require('@angular/http');
 var rxjs_add_operator_do = require('rxjs/add/operator/do');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_operator_concatMap = require('rxjs/add/operator/concatMap');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
+var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 
 function __extends(d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -39,6 +40,7 @@ var Config = (function () {
         this.loginUrl = '/auth/login';
         this.signupUrl = '/auth/signup';
         this.unlinkUrl = '/auth/unlink/';
+        this.refreshUrl = '/auth/refresh';
         this.tokenName = 'token';
         this.tokenSeparator = '_';
         this.tokenPrefix = 'ng2-ui-auth';
@@ -46,6 +48,7 @@ var Config = (function () {
         this.authToken = 'Bearer';
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
+        this.autoRefreshToken = false;
         this.providers = {
             facebook: {
                 name: 'facebook',
@@ -65,7 +68,7 @@ var Config = (function () {
                 authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
                 redirectUri: window.location.origin,
                 requiredUrlParams: ['scope'],
-                optionalUrlParams: ['display'],
+                optionalUrlParams: ['display', 'state'],
                 scope: ['profile', 'email'],
                 scopePrefix: 'openid',
                 scopeDelimiter: ' ',
@@ -555,60 +558,6 @@ var Popup = (function () {
     var _a;
 }());
 
-var Oauth1 = (function () {
-    function Oauth1(http, popup, config) {
-        this.http = http;
-        this.popup = popup;
-        this.config = config;
-    }
-    Oauth1.prototype.open = function (options, userData) {
-        var _this = this;
-        this.defaults = assign({}, Oauth1.base, options);
-        var popupWindow;
-        var serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        if (!this.config.cordova) {
-            popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
-        }
-        return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .concatMap(function (response) {
-            if (_this.config.cordova) {
-                popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
-            }
-            else {
-                popupWindow.popupWindow.location =
-                    [_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?');
-            }
-            return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
-        })
-            .concatMap(function (response) {
-            return _this.exchangeForToken(response, userData);
-        });
-    };
-    Oauth1.prototype.exchangeForToken = function (oauthData, userData) {
-        var data = assign({}, oauthData, userData);
-        var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
-    };
-    Oauth1.prototype.buildQueryString = function (obj) {
-        return Object.keys(obj).map(function (key) {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);
-        }).join('&');
-    };
-    Oauth1.base = {
-        url: null,
-        name: null,
-        popupOptions: null,
-        redirectUri: null,
-        authorizationEndpoint: null
-    };
-    Oauth1 = __decorate([
-        _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
-    ], Oauth1);
-    return Oauth1;
-    var _a, _b, _c;
-}());
-
 var Oauth2 = (function () {
     function Oauth2(http, popup, storage, config) {
         this.http = http;
@@ -702,6 +651,60 @@ var Oauth2 = (function () {
     var _a, _b, _c, _d;
 }());
 
+var Oauth1 = (function () {
+    function Oauth1(http, popup, config) {
+        this.http = http;
+        this.popup = popup;
+        this.config = config;
+    }
+    Oauth1.prototype.open = function (options, userData) {
+        var _this = this;
+        this.defaults = assign({}, Oauth1.base, options);
+        var popupWindow;
+        var serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
+        if (!this.config.cordova) {
+            popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
+        }
+        return this.http.post(serverUrl, JSON.stringify(this.defaults))
+            .concatMap(function (response) {
+            if (_this.config.cordova) {
+                popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
+            }
+            else {
+                popupWindow.popupWindow.location =
+                    [_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?');
+            }
+            return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
+        })
+            .concatMap(function (response) {
+            return _this.exchangeForToken(response, userData);
+        });
+    };
+    Oauth1.prototype.exchangeForToken = function (oauthData, userData) {
+        var data = assign({}, oauthData, userData);
+        var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
+        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
+    };
+    Oauth1.prototype.buildQueryString = function (obj) {
+        return Object.keys(obj).map(function (key) {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);
+        }).join('&');
+    };
+    Oauth1.base = {
+        url: null,
+        name: null,
+        popupOptions: null,
+        redirectUri: null,
+        authorizationEndpoint: null
+    };
+    Oauth1 = __decorate([
+        _angular_core.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
+    ], Oauth1);
+    return Oauth1;
+    var _a, _b, _c;
+}());
+
 var Oauth = (function () {
     function Oauth(http, injector, shared, config) {
         this.http = http;
@@ -742,15 +745,14 @@ var JwtHttp = (function (_super) {
         this._config = _config;
     }
     JwtHttp.prototype.request = function (url, options) {
-        if (url instanceof _angular_http.Request) {
-            url.headers = url.headers || new _angular_http.Headers();
-            this.setHeaders(url);
+        var _this = this;
+        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
+            options.autoRefreshToken ||
+            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+            return this.refreshToken()
+                .switchMap(function () { return _this.actualRequest(url, options); });
         }
-        else {
-            options = options || {};
-            this.setHeaders(options);
-        }
-        return _super.prototype.request.call(this, url, options);
+        return this.actualRequest(url, options);
     };
     JwtHttp.prototype.get = function (url, options) {
         options = options || {};
@@ -785,6 +787,27 @@ var JwtHttp = (function (_super) {
         options.method = _angular_http.RequestMethod.Head;
         return this.request(url, options);
     };
+    JwtHttp.prototype.refreshToken = function () {
+        var _this = this;
+        var authHeader = new _angular_http.Headers();
+        authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
+        return _super.prototype
+            .get.call(this, this._config.refreshUrl, {
+            headers: authHeader
+        })
+            .do(function (res) { return _this._shared.setToken(res); });
+    };
+    JwtHttp.prototype.actualRequest = function (url, options) {
+        if (url instanceof _angular_http.Request) {
+            url.headers = url.headers || new _angular_http.Headers();
+            this.setHeaders(url);
+        }
+        else {
+            options = options || {};
+            this.setHeaders(options);
+        }
+        return _super.prototype.request.call(this, url, options);
+    };
     JwtHttp.prototype.setHeaders = function (obj) {
         var _this = this;
         obj.headers = obj.headers || new _angular_http.Headers();
@@ -807,19 +830,11 @@ var JwtHttp = (function (_super) {
     var _a, _b, _c, _d;
 }(_angular_http.Http));
 
-function NG2_UI_AUTH_PROVIDERS(config) {
-    return [{ provide: Config, useFactory: function () { return new Config(config); } },
-        { provide: Storage, useFactory: function (providedConfig) { return new Storage(providedConfig); }, deps: [Config] },
-        { provide: Shared, useFactory: function (storage, providedConfig) { return new Shared(storage, providedConfig); }, deps: [Storage, Config] },
-        { provide: JwtHttp, useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [_angular_http.XHRBackend, _angular_http.RequestOptions, Shared, Config] },
-        { provide: Oauth, useFactory: function (http, injector, shared, providedConfig) { return new Oauth(http, injector, shared, providedConfig); }, deps: [JwtHttp, _angular_core.Injector, Shared, Config] },
-        { provide: Popup, useFactory: function (providedConfig) { return new Popup(providedConfig); }, deps: [Config] },
-        { provide: Oauth1, useFactory: function (http, popup, providedConfig) { return new Oauth1(http, popup, providedConfig); }, deps: [JwtHttp, Popup, Config] },
-        { provide: Oauth2, useFactory: function (http, popup, storage, providedConfig) { return new Oauth2(http, popup, storage, providedConfig); }, deps: [JwtHttp, Popup, Storage, Config] },
-        { provide: Local, useFactory: function (http, shared, providedConfig) { return new Local(http, shared, providedConfig); }, deps: [JwtHttp, Shared, Config] },
-        { provide: Auth, useFactory: function (shared, local, oauth) { return new Auth(shared, local, oauth); }, deps: [Shared, Local, Oauth] },
+var NG2_UI_AUTH_PROVIDERS = function (config) {
+    return [{ provide: Config, useValue: new Config(config) },
+        Storage, Shared, JwtHttp, Oauth, Popup, Oauth1, Oauth2, Local, Auth
     ];
-}
+};
 var Auth = (function () {
     function Auth(shared, local, oauth) {
         this.shared = shared;
@@ -873,9 +888,14 @@ var Auth = (function () {
     var _a, _b, _c;
 }());
 
+exports.Local = Local;
+exports.Oauth2 = Oauth2;
+exports.Oauth1 = Oauth1;
+exports.Popup = Popup;
+exports.Oauth = Oauth;
+exports.JwtHttp = JwtHttp;
+exports.Shared = Shared;
 exports.Auth = Auth;
 exports.NG2_UI_AUTH_PROVIDERS = NG2_UI_AUTH_PROVIDERS;
 exports.Config = Config;
-exports.Shared = Shared;
-exports.JwtHttp = JwtHttp;
 //# sourceMappingURL=ng2-ui-auth.js.map

@@ -15,6 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+require('rxjs/add/operator/switchMap');
 var config_1 = require('./config');
 var shared_1 = require('./shared');
 var JwtHttp = (function (_super) {
@@ -25,15 +26,14 @@ var JwtHttp = (function (_super) {
         this._config = _config;
     }
     JwtHttp.prototype.request = function (url, options) {
-        if (url instanceof http_1.Request) {
-            url.headers = url.headers || new http_1.Headers();
-            this.setHeaders(url);
+        var _this = this;
+        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
+            options.autoRefreshToken ||
+            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+            return this.refreshToken()
+                .switchMap(function () { return _this.actualRequest(url, options); });
         }
-        else {
-            options = options || {};
-            this.setHeaders(options);
-        }
-        return _super.prototype.request.call(this, url, options);
+        return this.actualRequest(url, options);
     };
     JwtHttp.prototype.get = function (url, options) {
         options = options || {};
@@ -67,6 +67,27 @@ var JwtHttp = (function (_super) {
         options = options || {};
         options.method = http_1.RequestMethod.Head;
         return this.request(url, options);
+    };
+    JwtHttp.prototype.refreshToken = function () {
+        var _this = this;
+        var authHeader = new http_1.Headers();
+        authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
+        return _super.prototype
+            .get.call(this, this._config.refreshUrl, {
+            headers: authHeader
+        })
+            .do(function (res) { return _this._shared.setToken(res); });
+    };
+    JwtHttp.prototype.actualRequest = function (url, options) {
+        if (url instanceof http_1.Request) {
+            url.headers = url.headers || new http_1.Headers();
+            this.setHeaders(url);
+        }
+        else {
+            options = options || {};
+            this.setHeaders(options);
+        }
+        return _super.prototype.request.call(this, url, options);
     };
     JwtHttp.prototype.setHeaders = function (obj) {
         var _this = this;

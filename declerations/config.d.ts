@@ -50,6 +50,8 @@ export interface ICustomConfig {
         [name: string]: string;
     };
     withCredentials?: boolean;
+    autoRefreshToken?: boolean;
+    refreshUrl?: string;
 }
 export declare class Config implements ICustomConfig {
     constructor(config?: ICustomConfig);
@@ -60,6 +62,7 @@ export declare class Config implements ICustomConfig {
     loginUrl: string;
     signupUrl: string;
     unlinkUrl: string;
+    refreshUrl: string;
     tokenName: string;
     tokenSeparator: string;
     tokenPrefix: string;
@@ -67,5 +70,6 @@ export declare class Config implements ICustomConfig {
     authToken: string;
     storageType: string;
     defaultHeaders: any;
+    autoRefreshToken: boolean;
     providers: IProviders;
 }
