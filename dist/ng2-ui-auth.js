@@ -69,6 +69,7 @@ var Config = (function () {
                 redirectUri: window.location.origin,
                 requiredUrlParams: ['scope'],
                 optionalUrlParams: ['display', 'state'],
+                state: 'STATE',
                 scope: ['profile', 'email'],
                 scopePrefix: 'openid',
                 scopeDelimiter: ' ',
