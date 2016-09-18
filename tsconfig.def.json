@@ -8,10 +8,10 @@
     "removeComments": true,
     "sourceMap": true,
     "declaration": true,
-    "outDir": "declerations"
+    "outDir": "declerations",
+    "types": ["es6-shim"]
   },
   "files": [
-    "typings/index",
-    "src/export"
+    "src/ng2-ui-auth.module.ts"
   ]
 }

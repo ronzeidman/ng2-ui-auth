@@ -1,3 +1,25 @@
+#### 4.0.0
+* Aligned default config with Satellizer (added Spotify)
+* AOT compilation now works
+* Peer dependency is now ^2.0.0
+* **BREAKING CHANGE:** Changed service names to have "Service" postfix ("Auth" is now AuthService) all except JwtHttp which remains the same.
+* **BREAKING CHANGE:** Initializing the library works like this now:
+```typescript
+export class MyAuthConfig extends CustomConfig {
+    defaultHeaders = {'Content-Type': 'application/json'};
+    providers = {google: {clientId: GOOGLE_CLIENT_ID}};
+}
+
+@NgModule({
+    imports: [
+        BrowserModule,
+        HttpModule,
+        Ng2UiAuthModule.getWithConfig(MyAuthConfig),
+        ...
+    ]
+    ...
+```
+
 #### 3.2.5
 * Added "refresh token" flow, if you configure 'autoRefreshToken' to true then if you call a webservice when the token expires this library automatically sends it to the server using 'refreshUrl' endpoint (can be set in config default = '/auth/refresh') first and then sets a new token if it receives it and tries to call the original request. (issue #41)
 * Added 'state' to the 'optionalUrlParams' of google according to issue #43

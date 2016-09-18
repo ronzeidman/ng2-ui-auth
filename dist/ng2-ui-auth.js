@@ -4,7 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var _angular_core = require('@angular/core');
 var rxjs_Observable = require('rxjs/Observable');
-var rxjs_add_operator_do = require('rxjs/add/operator/do');
 var _angular_http = require('@angular/http');
 var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
@@ -12,6 +11,7 @@ var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_operator_concatMap = require('rxjs/add/operator/concatMap');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
+var rxjs_add_operator_do = require('rxjs/add/operator/do');
 
 function __extends(d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -30,8 +30,13 @@ function __metadata(k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 }
 
-var Config = (function () {
-    function Config(config) {
+var CustomConfig = (function () {
+    function CustomConfig() {
+    }
+    return CustomConfig;
+}());
+var ConfigService = (function () {
+    function ConfigService(config) {
         var _this = this;
         this.withCredentials = false;
         this.tokenRoot = null;
@@ -59,7 +64,7 @@ var Config = (function () {
                 scope: ['email'],
                 scopeDelimiter: ',',
                 display: 'popup',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 580, height: 400 }
             },
             google: {
@@ -69,13 +74,13 @@ var Config = (function () {
                 redirectUri: window.location.origin,
                 requiredUrlParams: ['scope'],
                 optionalUrlParams: ['display', 'state'],
-                state: 'STATE',
                 scope: ['profile', 'email'],
                 scopePrefix: 'openid',
                 scopeDelimiter: ' ',
                 display: 'popup',
-                type: '2.0',
-                popupOptions: { width: 452, height: 633 }
+                oauthType: '2.0',
+                popupOptions: { width: 452, height: 633 },
+                state: function () { return encodeURIComponent(Math.random().toString(36).substr(2)); },
             },
             github: {
                 name: 'github',
@@ -85,7 +90,7 @@ var Config = (function () {
                 optionalUrlParams: ['scope'],
                 scope: ['user:email'],
                 scopeDelimiter: ' ',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 1020, height: 618 }
             },
             instagram: {
@@ -96,7 +101,7 @@ var Config = (function () {
                 requiredUrlParams: ['scope'],
                 scope: ['basic'],
                 scopeDelimiter: '+',
-                type: '2.0'
+                oauthType: '2.0'
             },
             linkedin: {
                 name: 'linkedin',
@@ -107,7 +112,7 @@ var Config = (function () {
                 scope: ['r_emailaddress'],
                 scopeDelimiter: ' ',
                 state: 'STATE',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 527, height: 582 }
             },
             twitter: {
@@ -115,7 +120,7 @@ var Config = (function () {
                 url: '/auth/twitter',
                 authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
                 redirectUri: window.location.origin,
-                type: '1.0',
+                oauthType: '1.0',
                 popupOptions: { width: 495, height: 645 }
             },
             twitch: {
@@ -127,7 +132,7 @@ var Config = (function () {
                 scope: ['user_read'],
                 scopeDelimiter: ' ',
                 display: 'popup',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 500, height: 560 }
             },
             live: {
@@ -139,7 +144,7 @@ var Config = (function () {
                 scope: ['wl.emails'],
                 scopeDelimiter: ' ',
                 display: 'popup',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 500, height: 560 }
             },
             yahoo: {
@@ -149,7 +154,7 @@ var Config = (function () {
                 redirectUri: window.location.origin,
                 scope: [],
                 scopeDelimiter: ',',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 559, height: 519 }
             },
             bitbucket: {
@@ -160,11 +165,28 @@ var Config = (function () {
                 requiredUrlParams: ['scope'],
                 scope: ['email'],
                 scopeDelimiter: ',',
-                type: '2.0',
+                oauthType: '2.0',
                 popupOptions: { width: 1028, height: 529 }
+            },
+            spotify: {
+                name: 'spotify',
+                url: '/auth/spotify',
+                authorizationEndpoint: 'https://accounts.spotify.com/authorize',
+                redirectUri: window.location.origin,
+                optionalUrlParams: ['state'],
+                requiredUrlParams: ['scope'],
+                scope: ['user-read-email'],
+                scopePrefix: '',
+                scopeDelimiter: ',',
+                oauthType: '2.0',
+                popupOptions: { width: 500, height: 530 },
+                state: function () { return encodeURIComponent(Math.random().toString(36).substr(2)); }
             }
         };
         Object.keys(config).forEach(function (key) {
+            if (typeof config[key] === "undefined") {
+                return;
+            }
             if (key !== 'providers') {
                 _this[key] = config[key];
             }
@@ -182,15 +204,15 @@ var Config = (function () {
             }
         });
     }
-    Config = __decorate([
+    ConfigService = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [Object])
-    ], Config);
-    return Config;
+        __metadata('design:paramtypes', [CustomConfig])
+    ], ConfigService);
+    return ConfigService;
 }());
 
-var Storage = (function () {
-    function Storage(config) {
+var StorageService = (function () {
+    function StorageService(config) {
         var _this = this;
         this.config = config;
         this.store = {};
@@ -212,33 +234,33 @@ var Storage = (function () {
             console.warn(config.storageType + ' is not available.');
         }
     }
-    Storage.prototype.get = function (key) {
+    StorageService.prototype.get = function (key) {
         return this.isStorageAvailable ? window[this.config.storageType].getItem(key) : this.store[key];
     };
-    Storage.prototype.set = function (key, value) {
+    StorageService.prototype.set = function (key, value) {
         return this.isStorageAvailable ? window[this.config.storageType].setItem(key, value) : this.store[key] = value;
     };
-    Storage.prototype.remove = function (key) {
+    StorageService.prototype.remove = function (key) {
         return this.isStorageAvailable ? window[this.config.storageType].removeItem(key) : delete this.store[key];
     };
-    Storage = __decorate([
+    StorageService = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof Config !== 'undefined' && Config) === 'function' && _a) || Object])
-    ], Storage);
-    return Storage;
+        __metadata('design:paramtypes', [(typeof (_a = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _a) || Object])
+    ], StorageService);
+    return StorageService;
     var _a;
 }());
 
-var Shared = (function () {
-    function Shared(storage, config) {
+var SharedService = (function () {
+    function SharedService(storage, config) {
         this.storage = storage;
         this.config = config;
         this.tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join(this.config.tokenSeparator) : this.config.tokenName;
     }
-    Shared.prototype.getToken = function () {
+    SharedService.prototype.getToken = function () {
         return this.storage.get(this.tokenName);
     };
-    Shared.prototype.getPayload = function () {
+    SharedService.prototype.getPayload = function () {
         var token = this.getToken();
         if (token && token.split('.').length === 3) {
             try {
@@ -251,7 +273,7 @@ var Shared = (function () {
             }
         }
     };
-    Shared.prototype.setToken = function (response) {
+    SharedService.prototype.setToken = function (response) {
         if (!response) {
             console.warn('Can\'t set token without passing a value');
             return;
@@ -286,10 +308,10 @@ var Shared = (function () {
         }
         this.storage.set(this.tokenName, token);
     };
-    Shared.prototype.removeToken = function () {
+    SharedService.prototype.removeToken = function () {
         this.storage.remove(this.tokenName);
     };
-    Shared.prototype.isAuthenticated = function () {
+    SharedService.prototype.isAuthenticated = function () {
         var token = this.getToken();
         if (token) {
             if (token.split('.').length === 3) {
@@ -316,7 +338,7 @@ var Shared = (function () {
         }
         return false;
     };
-    Shared.prototype.getExpirationDate = function () {
+    SharedService.prototype.getExpirationDate = function () {
         var payload = this.getPayload();
         if (payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
             var date = new Date(0);
@@ -325,86 +347,23 @@ var Shared = (function () {
         }
         return null;
     };
-    Shared.prototype.logout = function () {
+    SharedService.prototype.logout = function () {
         this.storage.remove(this.tokenName);
         return rxjs_Observable.Observable.create(function (observer) {
             observer.next();
             observer.complete();
         });
     };
-    Shared.prototype.setStorageType = function (type) {
+    SharedService.prototype.setStorageType = function (type) {
         this.config.storageType = type;
     };
-    Shared = __decorate([
+    SharedService = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof Storage !== 'undefined' && Storage) === 'function' && _a) || Object, (typeof (_b = typeof Config !== 'undefined' && Config) === 'function' && _b) || Object])
-    ], Shared);
-    return Shared;
+        __metadata('design:paramtypes', [(typeof (_a = typeof StorageService !== 'undefined' && StorageService) === 'function' && _a) || Object, (typeof (_b = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _b) || Object])
+    ], SharedService);
+    return SharedService;
     var _a, _b;
 }());
-
-function assign(target) {
-    var src = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        src[_i - 1] = arguments[_i];
-    }
-    if (target == null) {
-        throw new TypeError('Cannot convert undefined or null to object');
-    }
-    target = Object(target);
-    for (var index = 1; index < arguments.length; index++) {
-        var source = arguments[index];
-        if (source != null) {
-            for (var key in source) {
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-    }
-    return target;
-}
-function joinUrl(baseUrl, url) {
-    if (/^(?:[a-z]+:)?\/\//i.test(url)) {
-        return url;
-    }
-    var joined = [baseUrl, url].join('/');
-    var normalize = function (str) {
-        return str
-            .replace(/[\/]+/g, '/')
-            .replace(/\/\?/g, '?')
-            .replace(/\/\#/g, '#')
-            .replace(/\:\//g, '://');
-    };
-    return normalize(joined);
-}
-function merge(obj1, obj2) {
-    var result = {};
-    for (var i in obj1) {
-        if (obj1.hasOwnProperty(i)) {
-            if ((i in obj2) && (typeof obj1[i] === 'object') && (i !== null)) {
-                result[i] = merge(obj1[i], obj2[i]);
-            }
-            else {
-                result[i] = obj1[i];
-            }
-        }
-    }
-    for (i in obj2) {
-        if (obj2.hasOwnProperty(i)) {
-            if (i in result) {
-                continue;
-            }
-            result[i] = obj2[i];
-        }
-    }
-    return result;
-}
-function camelCase(name) {
-    return name.replace(/([\:\-\_]+(.))/g, function (_, separator, letter, offset) {
-        return offset ? letter.toUpperCase() : letter;
-    });
-}
 
 var JwtHttp = (function (_super) {
     __extends(JwtHttp, _super);
@@ -493,53 +452,82 @@ var JwtHttp = (function (_super) {
     };
     JwtHttp = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.ConnectionBackend !== 'undefined' && _angular_http.ConnectionBackend) === 'function' && _a) || Object, (typeof (_b = typeof _angular_http.RequestOptions !== 'undefined' && _angular_http.RequestOptions) === 'function' && _b) || Object, (typeof (_c = typeof Shared !== 'undefined' && Shared) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.ConnectionBackend !== 'undefined' && _angular_http.ConnectionBackend) === 'function' && _a) || Object, (typeof (_b = typeof _angular_http.RequestOptions !== 'undefined' && _angular_http.RequestOptions) === 'function' && _b) || Object, (typeof (_c = typeof SharedService !== 'undefined' && SharedService) === 'function' && _c) || Object, (typeof (_d = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _d) || Object])
     ], JwtHttp);
     return JwtHttp;
     var _a, _b, _c, _d;
 }(_angular_http.Http));
 
-function getFullOpts(user, userOpts) {
-    var opts = userOpts || {};
-    if (user) {
-        opts.body = typeof user === 'string' ? user : JSON.stringify(user);
+function assign(target) {
+    var src = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        src[_i - 1] = arguments[_i];
     }
-    opts.method = opts.method || 'POST';
-    return opts;
+    if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+    }
+    target = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source != null) {
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
 }
-var Local = (function () {
-    function Local(http, shared, config) {
-        this.http = http;
-        this.shared = shared;
-        this.config = config;
+function joinUrl(baseUrl, url) {
+    if (/^(?:[a-z]+:)?\/\//i.test(url)) {
+        return url;
     }
-    Local.prototype.login = function (user, opts) {
-        var _this = this;
-        var fullOpts = getFullOpts(user, opts);
-        var url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
-        return this.http.request(url, fullOpts)
-            .do(function (response) { return _this.shared.setToken(response); });
+    var joined = [baseUrl, url].join('/');
+    var normalize = function (str) {
+        return str
+            .replace(/[\/]+/g, '/')
+            .replace(/\/\?/g, '?')
+            .replace(/\/\#/g, '#')
+            .replace(/\:\//g, '://');
     };
-    Local.prototype.signup = function (user, opts) {
-        var fullOpts = getFullOpts(user, opts);
-        var url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
-        return this.http.request(url, getFullOpts(user, fullOpts));
-    };
-    Local = __decorate([
-        _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof Shared !== 'undefined' && Shared) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
-    ], Local);
-    return Local;
-    var _a, _b, _c;
-}());
+    return normalize(joined);
+}
+function merge(obj1, obj2) {
+    var result = {};
+    for (var i in obj1) {
+        if (obj1.hasOwnProperty(i)) {
+            if ((i in obj2) && (typeof obj1[i] === 'object') && (i !== null)) {
+                result[i] = merge(obj1[i], obj2[i]);
+            }
+            else {
+                result[i] = obj1[i];
+            }
+        }
+    }
+    for (i in obj2) {
+        if (obj2.hasOwnProperty(i)) {
+            if (i in result) {
+                continue;
+            }
+            result[i] = obj2[i];
+        }
+    }
+    return result;
+}
+function camelCase(name) {
+    return name.replace(/([\:\-\_]+(.))/g, function (_, separator, letter, offset) {
+        return offset ? letter.toUpperCase() : letter;
+    });
+}
 
-var Popup = (function () {
-    function Popup(config) {
+var PopupService = (function () {
+    function PopupService(config) {
         this.config = config;
         this.url = '';
         this.popupWindow = null;
     }
-    Popup.prepareOptions = function (options) {
+    PopupService.prepareOptions = function (options) {
         options = options || {};
         var width = options.width || 500;
         var height = options.height || 500;
@@ -550,12 +538,12 @@ var Popup = (function () {
             top: window.screenY + ((window.outerHeight - height) / 2.5)
         }, options);
     };
-    Popup.stringifyOptions = function (options) {
+    PopupService.stringifyOptions = function (options) {
         return Object.keys(options).map(function (key) {
             return key + '=' + options[key];
         }).join(',');
     };
-    Popup.parseQueryString = function (joinedKeyValue) {
+    PopupService.parseQueryString = function (joinedKeyValue) {
         var key, value;
         return joinedKeyValue.split('&').reduce(function (obj, keyValue) {
             if (keyValue) {
@@ -566,9 +554,9 @@ var Popup = (function () {
             return obj;
         }, {});
     };
-    Popup.prototype.open = function (url, name, options) {
+    PopupService.prototype.open = function (url, name, options) {
         this.url = url;
-        var stringifiedOptions = Popup.stringifyOptions(Popup.prepareOptions(options));
+        var stringifiedOptions = PopupService.stringifyOptions(PopupService.prepareOptions(options));
         var UA = window.navigator.userAgent;
         var windowName = (this.config.cordova || UA.indexOf('CriOS') > -1) ? '_blank' : name;
         this.popupWindow = window.open(url, windowName, stringifiedOptions);
@@ -578,7 +566,7 @@ var Popup = (function () {
         }
         return this;
     };
-    Popup.prototype.eventListener = function (redirectUri) {
+    PopupService.prototype.eventListener = function (redirectUri) {
         var _this = this;
         return rxjs_Observable.Observable
             .fromEvent(this.popupWindow, 'loadstart')
@@ -594,8 +582,8 @@ var Popup = (function () {
             if (parser.search || parser.hash) {
                 var queryParams = parser.search.substring(1).replace(/\/$/, '');
                 var hashParams = parser.hash.substring(1).replace(/\/$/, '');
-                var hash = Popup.parseQueryString(hashParams);
-                var qs = Popup.parseQueryString(queryParams);
+                var hash = PopupService.parseQueryString(hashParams);
+                var qs = PopupService.parseQueryString(queryParams);
                 var allParams = assign({}, qs, hash);
                 _this.popupWindow.close();
                 if (allParams.error) {
@@ -610,7 +598,7 @@ var Popup = (function () {
             .take(1)
             .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
     };
-    Popup.prototype.pollPopup = function () {
+    PopupService.prototype.pollPopup = function () {
         var _this = this;
         return rxjs_Observable.Observable
             .interval(50)
@@ -628,8 +616,8 @@ var Popup = (function () {
             if (popupWindowOrigin === documentOrigin && (_this.popupWindow.location.search || _this.popupWindow.location.hash)) {
                 var queryParams = _this.popupWindow.location.search.substring(1).replace(/\/$/, '');
                 var hashParams = _this.popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
-                var hash = Popup.parseQueryString(hashParams);
-                var qs = Popup.parseQueryString(queryParams);
+                var hash = PopupService.parseQueryString(hashParams);
+                var qs = PopupService.parseQueryString(queryParams);
                 _this.popupWindow.close();
                 var allParams = assign({}, qs, hash);
                 if (allParams.error) {
@@ -644,24 +632,78 @@ var Popup = (function () {
             .take(1)
             .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
     };
-    Popup = __decorate([
+    PopupService = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof Config !== 'undefined' && Config) === 'function' && _a) || Object])
-    ], Popup);
-    return Popup;
+        __metadata('design:paramtypes', [(typeof (_a = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _a) || Object])
+    ], PopupService);
+    return PopupService;
     var _a;
 }());
 
-var Oauth2 = (function () {
-    function Oauth2(http, popup, storage, config) {
+var Oauth1Service = (function () {
+    function Oauth1Service(http, popup, config) {
+        this.http = http;
+        this.popup = popup;
+        this.config = config;
+    }
+    Oauth1Service.prototype.open = function (options, userData) {
+        var _this = this;
+        this.defaults = assign({}, Oauth1Service.base, options);
+        var popupWindow;
+        var serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
+        if (!this.config.cordova) {
+            popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
+        }
+        return this.http.post(serverUrl, JSON.stringify(this.defaults))
+            .concatMap(function (response) {
+            if (_this.config.cordova) {
+                popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
+            }
+            else {
+                popupWindow.popupWindow.location =
+                    [_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?');
+            }
+            return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
+        })
+            .concatMap(function (response) {
+            return _this.exchangeForToken(response, userData);
+        });
+    };
+    Oauth1Service.prototype.exchangeForToken = function (oauthData, userData) {
+        var data = assign({}, oauthData, userData);
+        var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
+        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
+    };
+    Oauth1Service.prototype.buildQueryString = function (obj) {
+        return Object.keys(obj).map(function (key) {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);
+        }).join('&');
+    };
+    Oauth1Service.base = {
+        url: null,
+        name: null,
+        popupOptions: null,
+        redirectUri: null,
+        authorizationEndpoint: null
+    };
+    Oauth1Service = __decorate([
+        _angular_core.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof PopupService !== 'undefined' && PopupService) === 'function' && _b) || Object, (typeof (_c = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _c) || Object])
+    ], Oauth1Service);
+    return Oauth1Service;
+    var _a, _b, _c;
+}());
+
+var Oauth2Service = (function () {
+    function Oauth2Service(http, popup, storage, config) {
         this.http = http;
         this.popup = popup;
         this.storage = storage;
         this.config = config;
     }
-    Oauth2.prototype.open = function (options, userData) {
+    Oauth2Service.prototype.open = function (options, userData) {
         var _this = this;
-        this.defaults = merge(options, Oauth2.base);
+        this.defaults = merge(options, Oauth2Service.base);
         var url;
         var openPopup;
         var stateName = this.defaults.name + '_state';
@@ -694,12 +736,12 @@ var Oauth2 = (function () {
             return _this.exchangeForToken(oauthData, userData);
         });
     };
-    Oauth2.prototype.exchangeForToken = function (oauthData, userData) {
+    Oauth2Service.prototype.exchangeForToken = function (oauthData, userData) {
         var data = assign({}, this.defaults, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, JSON.stringify(data), { withCredentials: this.config.withCredentials });
     };
-    Oauth2.prototype.buildQueryString = function () {
+    Oauth2Service.prototype.buildQueryString = function () {
         var _this = this;
         var keyValuePairs = [];
         var urlParams = ['defaultUrlParams', 'requiredUrlParams', 'optionalUrlParams'];
@@ -728,7 +770,7 @@ var Oauth2 = (function () {
             return pair.join('=');
         }).join('&');
     };
-    Oauth2.base = {
+    Oauth2Service.base = {
         defaultUrlParams: ['response_type', 'client_id', 'redirect_uri'],
         responseType: 'code',
         responseParams: {
@@ -737,78 +779,24 @@ var Oauth2 = (function () {
             redirectUri: 'redirectUri'
         }
     };
-    Oauth2 = __decorate([
+    Oauth2Service = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Storage !== 'undefined' && Storage) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
-    ], Oauth2);
-    return Oauth2;
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof PopupService !== 'undefined' && PopupService) === 'function' && _b) || Object, (typeof (_c = typeof StorageService !== 'undefined' && StorageService) === 'function' && _c) || Object, (typeof (_d = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _d) || Object])
+    ], Oauth2Service);
+    return Oauth2Service;
     var _a, _b, _c, _d;
 }());
 
-var Oauth1 = (function () {
-    function Oauth1(http, popup, config) {
-        this.http = http;
-        this.popup = popup;
-        this.config = config;
-    }
-    Oauth1.prototype.open = function (options, userData) {
-        var _this = this;
-        this.defaults = assign({}, Oauth1.base, options);
-        var popupWindow;
-        var serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        if (!this.config.cordova) {
-            popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
-        }
-        return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .concatMap(function (response) {
-            if (_this.config.cordova) {
-                popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
-            }
-            else {
-                popupWindow.popupWindow.location =
-                    [_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?');
-            }
-            return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
-        })
-            .concatMap(function (response) {
-            return _this.exchangeForToken(response, userData);
-        });
-    };
-    Oauth1.prototype.exchangeForToken = function (oauthData, userData) {
-        var data = assign({}, oauthData, userData);
-        var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
-    };
-    Oauth1.prototype.buildQueryString = function (obj) {
-        return Object.keys(obj).map(function (key) {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);
-        }).join('&');
-    };
-    Oauth1.base = {
-        url: null,
-        name: null,
-        popupOptions: null,
-        redirectUri: null,
-        authorizationEndpoint: null
-    };
-    Oauth1 = __decorate([
-        _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof Popup !== 'undefined' && Popup) === 'function' && _b) || Object, (typeof (_c = typeof Config !== 'undefined' && Config) === 'function' && _c) || Object])
-    ], Oauth1);
-    return Oauth1;
-    var _a, _b, _c;
-}());
-
-var Oauth = (function () {
-    function Oauth(http, injector, shared, config) {
+var OauthService = (function () {
+    function OauthService(http, injector, shared, config) {
         this.http = http;
         this.injector = injector;
         this.shared = shared;
         this.config = config;
     }
-    Oauth.prototype.authenticate = function (name, userData) {
+    OauthService.prototype.authenticate = function (name, userData) {
         var _this = this;
-        var provider = this.config.providers[name].type === '1.0' ? this.injector.get(Oauth1) : this.injector.get(Oauth2);
+        var provider = this.config.providers[name].oauthType === '1.0' ? this.injector.get(Oauth1Service) : this.injector.get(Oauth2Service);
         return provider.open(this.config.providers[name], userData || {})
             .do(function (response) {
             if (_this.config.providers[name].url) {
@@ -816,96 +804,147 @@ var Oauth = (function () {
             }
         });
     };
-    Oauth.prototype.unlink = function (provider, opts) {
+    OauthService.prototype.unlink = function (provider, opts) {
         opts = opts || {};
         var url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.unlinkUrl);
         opts.body = JSON.stringify({ provider: provider }) || opts.body;
         opts.method = opts.method || 'POST';
         return this.http.request(url, opts);
     };
-    Oauth = __decorate([
+    OauthService = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof _angular_core.Injector !== 'undefined' && _angular_core.Injector) === 'function' && _b) || Object, (typeof (_c = typeof Shared !== 'undefined' && Shared) === 'function' && _c) || Object, (typeof (_d = typeof Config !== 'undefined' && Config) === 'function' && _d) || Object])
-    ], Oauth);
-    return Oauth;
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof _angular_core.Injector !== 'undefined' && _angular_core.Injector) === 'function' && _b) || Object, (typeof (_c = typeof SharedService !== 'undefined' && SharedService) === 'function' && _c) || Object, (typeof (_d = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _d) || Object])
+    ], OauthService);
+    return OauthService;
     var _a, _b, _c, _d;
 }());
 
-function NG2_UI_AUTH_PROVIDERS(config) {
-    return [{ provide: Config, useFactory: function () { return new Config(config); } },
-        { provide: Storage, useFactory: function (providedConfig) { return new Storage(providedConfig); }, deps: [Config] },
-        { provide: Shared, useFactory: function (storage, providedConfig) { return new Shared(storage, providedConfig); }, deps: [Storage, Config] },
-        { provide: JwtHttp, useFactory: function (xhrBackend, requestOptions, shared, config, router) { return new JwtHttp(xhrBackend, requestOptions, shared, config); }, deps: [_angular_http.XHRBackend, _angular_http.RequestOptions, Shared, Config] },
-        { provide: Oauth, useFactory: function (http, injector, shared, providedConfig) { return new Oauth(http, injector, shared, providedConfig); }, deps: [JwtHttp, _angular_core.Injector, Shared, Config] },
-        { provide: Popup, useFactory: function (providedConfig) { return new Popup(providedConfig); }, deps: [Config] },
-        { provide: Oauth1, useFactory: function (http, popup, providedConfig) { return new Oauth1(http, popup, providedConfig); }, deps: [JwtHttp, Popup, Config] },
-        { provide: Oauth2, useFactory: function (http, popup, storage, providedConfig) { return new Oauth2(http, popup, storage, providedConfig); }, deps: [JwtHttp, Popup, Storage, Config] },
-        { provide: Local, useFactory: function (http, shared, providedConfig) { return new Local(http, shared, providedConfig); }, deps: [JwtHttp, Shared, Config] },
-        { provide: Auth, useFactory: function (shared, local, oauth) { return new Auth(shared, local, oauth); }, deps: [Shared, Local, Oauth] },
-    ];
+function getFullOpts(user, userOpts) {
+    var opts = userOpts || {};
+    if (user) {
+        opts.body = typeof user === 'string' ? user : JSON.stringify(user);
+    }
+    opts.method = opts.method || 'POST';
+    return opts;
 }
-var Auth = (function () {
-    function Auth(shared, local, oauth) {
+var LocalService = (function () {
+    function LocalService(http, shared, config) {
+        this.http = http;
+        this.shared = shared;
+        this.config = config;
+    }
+    LocalService.prototype.login = function (user, opts) {
+        var _this = this;
+        var fullOpts = getFullOpts(user, opts);
+        var url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.loginUrl);
+        return this.http.request(url, fullOpts)
+            .do(function (response) { return _this.shared.setToken(response); });
+    };
+    LocalService.prototype.signup = function (user, opts) {
+        var fullOpts = getFullOpts(user, opts);
+        var url = fullOpts.url ? fullOpts.url : joinUrl(this.config.baseUrl, this.config.signupUrl);
+        return this.http.request(url, getFullOpts(user, fullOpts));
+    };
+    LocalService = __decorate([
+        _angular_core.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof JwtHttp !== 'undefined' && JwtHttp) === 'function' && _a) || Object, (typeof (_b = typeof SharedService !== 'undefined' && SharedService) === 'function' && _b) || Object, (typeof (_c = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _c) || Object])
+    ], LocalService);
+    return LocalService;
+    var _a, _b, _c;
+}());
+
+var AuthService = (function () {
+    function AuthService(shared, local, oauth) {
         this.shared = shared;
         this.local = local;
         this.oauth = oauth;
     }
-    Auth.prototype.login = function (user, opts) {
+    AuthService.prototype.login = function (user, opts) {
         return this.local.login(user, opts);
     };
-    Auth.prototype.signup = function (user, opts) {
+    AuthService.prototype.signup = function (user, opts) {
         return this.local.signup(user, opts);
     };
-    Auth.prototype.logout = function () {
+    AuthService.prototype.logout = function () {
         return this.shared.logout();
     };
-    Auth.prototype.authenticate = function (name, userData) {
+    AuthService.prototype.authenticate = function (name, userData) {
         return this.oauth.authenticate(name, userData);
     };
-    Auth.prototype.link = function (name, userData) {
+    AuthService.prototype.link = function (name, userData) {
         return this.oauth.authenticate(name, userData);
     };
-    Auth.prototype.unlink = function (provider, opts) {
+    AuthService.prototype.unlink = function (provider, opts) {
         return this.oauth.unlink(provider, opts);
     };
-    Auth.prototype.isAuthenticated = function () {
+    AuthService.prototype.isAuthenticated = function () {
         return this.shared.isAuthenticated();
     };
-    Auth.prototype.getToken = function () {
+    AuthService.prototype.getToken = function () {
         return this.shared.getToken();
     };
-    Auth.prototype.setToken = function (token) {
+    AuthService.prototype.setToken = function (token) {
         this.shared.setToken(token);
     };
-    Auth.prototype.removeToken = function () {
+    AuthService.prototype.removeToken = function () {
         this.shared.removeToken();
     };
-    Auth.prototype.getPayload = function () {
+    AuthService.prototype.getPayload = function () {
         return this.shared.getPayload();
     };
-    Auth.prototype.setStorageType = function (type) {
+    AuthService.prototype.setStorageType = function (type) {
         this.shared.setStorageType(type);
     };
-    Auth.prototype.getExpirationDate = function () {
+    AuthService.prototype.getExpirationDate = function () {
         return this.shared.getExpirationDate();
     };
-    Auth = __decorate([
+    AuthService = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof Shared !== 'undefined' && Shared) === 'function' && _a) || Object, (typeof (_b = typeof Local !== 'undefined' && Local) === 'function' && _b) || Object, (typeof (_c = typeof Oauth !== 'undefined' && Oauth) === 'function' && _c) || Object])
-    ], Auth);
-    return Auth;
+        __metadata('design:paramtypes', [(typeof (_a = typeof SharedService !== 'undefined' && SharedService) === 'function' && _a) || Object, (typeof (_b = typeof LocalService !== 'undefined' && LocalService) === 'function' && _b) || Object, (typeof (_c = typeof OauthService !== 'undefined' && OauthService) === 'function' && _c) || Object])
+    ], AuthService);
+    return AuthService;
     var _a, _b, _c;
 }());
 
-exports.Local = Local;
-exports.Oauth2 = Oauth2;
-exports.Oauth1 = Oauth1;
-exports.Popup = Popup;
-exports.Oauth = Oauth;
+var Ng2UiAuthModule = (function () {
+    function Ng2UiAuthModule() {
+    }
+    Ng2UiAuthModule.getWithConfig = function (config) {
+        return {
+            ngModule: Ng2UiAuthModule,
+            providers: [
+                { provide: CustomConfig, useClass: config },
+                { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
+                { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
+                { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
+                { provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.XHRBackend, _angular_http.RequestOptions, SharedService, ConfigService] },
+                { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
+                { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
+                { provide: Oauth1Service, useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService] },
+                { provide: Oauth2Service, useClass: Oauth2Service, deps: [JwtHttp, PopupService, StorageService, ConfigService] },
+                { provide: LocalService, useClass: LocalService, deps: [JwtHttp, SharedService, ConfigService] },
+                { provide: AuthService, useClass: AuthService, deps: [SharedService, LocalService, OauthService] },]
+        };
+    };
+    Ng2UiAuthModule = __decorate([
+        _angular_core.NgModule({
+            imports: [_angular_http.HttpModule]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], Ng2UiAuthModule);
+    return Ng2UiAuthModule;
+}());
+
+exports.Ng2UiAuthModule = Ng2UiAuthModule;
+exports.LocalService = LocalService;
+exports.Oauth2Service = Oauth2Service;
+exports.Oauth1Service = Oauth1Service;
+exports.PopupService = PopupService;
+exports.OauthService = OauthService;
 exports.JwtHttp = JwtHttp;
-exports.Shared = Shared;
-exports.Storage = Storage;
-exports.Auth = Auth;
-exports.NG2_UI_AUTH_PROVIDERS = NG2_UI_AUTH_PROVIDERS;
-exports.Config = Config;
+exports.SharedService = SharedService;
+exports.StorageService = StorageService;
+exports.AuthService = AuthService;
+exports.ConfigService = ConfigService;
+exports.CustomConfig = CustomConfig;
 //# sourceMappingURL=ng2-ui-auth.js.map

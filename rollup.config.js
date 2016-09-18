@@ -5,7 +5,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript';
 
 export default {
-    entry: 'src/export.ts',
+    entry: 'src/ng2-ui-auth.module.ts',
     dest: 'dist/ng2-ui-auth.js',
     sourceMap: 'dist/ng2-ui-auth.js.map',
     format: 'cjs',
