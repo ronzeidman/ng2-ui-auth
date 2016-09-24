@@ -1,3 +1,6 @@
+#### master
+* fix issue #47 using this library without server url causes exception.
+
 #### 4.0.0
 * Aligned default config with Satellizer (added Spotify)
 * AOT compilation now works

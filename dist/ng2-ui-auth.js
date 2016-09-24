@@ -11,6 +11,7 @@ var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_operator_concatMap = require('rxjs/add/operator/concatMap');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
+var rxjs_add_observable_of = require('rxjs/add/observable/of');
 var rxjs_add_operator_do = require('rxjs/add/operator/do');
 
 function __extends(d, b) {
@@ -728,7 +729,7 @@ var Oauth2Service = (function () {
         return openPopup
             .concatMap(function (oauthData) {
             if (_this.defaults.responseType === 'token' || !_this.defaults.url) {
-                return oauthData;
+                return rxjs_Observable.Observable.of(oauthData);
             }
             if (oauthData.state && oauthData.state !== _this.storage.get(stateName)) {
                 throw 'OAuth "state" mismatch';

@@ -4,7 +4,7 @@ import {Oauth2Service} from './oauth2.service';
 import {SharedService} from './shared.service';
 import {Response, RequestOptionsArgs} from '@angular/http';
 import {joinUrl} from './utils';
-import {ConfigService} from './config.service';
+import {ConfigService, IOauth1Options} from './config.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import {JwtHttp} from './jwt-http.service';
@@ -21,7 +21,7 @@ export class OauthService {
                 private config: ConfigService) {}
     authenticate(name: string, userData?: any): Observable<Response> {
         // var injector = Injector.resolveAndCreate([Oauth1, Oauth2]);
-        let provider: Oauth1Service | Oauth2Service = this.config.providers[name].oauthType === '1.0' ? this.injector.get(Oauth1Service) : this.injector.get(Oauth2Service);
+        const provider: { open(options?: IOauth1Options, userData?: any): Observable<Response> } = this.config.providers[name].oauthType === '1.0' ? this.injector.get(Oauth1Service) : this.injector.get(Oauth2Service);
         return provider.open(this.config.providers[name], userData || {})
             .do((response: Response) => {
                 // this is for a scenario when someone wishes to opt out from

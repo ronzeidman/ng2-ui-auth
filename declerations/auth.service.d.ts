@@ -1,8 +1,8 @@
-import {Response, RequestOptionsArgs} from '@angular/http';
-import {SharedService} from './shared.service';
-import {LocalService} from './local.service';
-import {OauthService} from './oauth.service';
-import {Observable} from 'rxjs/Observable';
+import { Response, RequestOptionsArgs } from '@angular/http';
+import { SharedService } from './shared.service';
+import { LocalService } from './local.service';
+import { OauthService } from './oauth.service';
+import { Observable } from 'rxjs/Observable';
 export declare class AuthService {
     private shared;
     private local;

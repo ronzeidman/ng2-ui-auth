@@ -5,6 +5,7 @@ import {ConfigService, IOauth2Options} from './config.service';
 import {PopupService} from './popup.service';
 import {StorageService} from './storage.service';
 import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/observable/of';
 import {JwtHttp} from './jwt-http.service';
 
 /**
@@ -64,7 +65,7 @@ export class Oauth2Service {
                 // satellizer's magic by doing authorization code exchange and
                 // saving a token manually.
                 if (this.defaults.responseType === 'token' || !this.defaults.url) {
-                    return oauthData;
+                    return Observable.of(oauthData);
                 }
 
                 if (oauthData.state && oauthData.state !== this.storage.get(stateName)) {

@@ -9,11 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var Observable_1 = require('rxjs/Observable');
 var utils_1 = require('./utils');
 var config_service_1 = require('./config.service');
 var popup_service_1 = require('./popup.service');
 var storage_service_1 = require('./storage.service');
 require('rxjs/add/operator/concatMap');
+require('rxjs/add/observable/of');
 var jwt_http_service_1 = require('./jwt-http.service');
 var Oauth2Service = (function () {
     function Oauth2Service(http, popup, storage, config) {
@@ -49,7 +51,7 @@ var Oauth2Service = (function () {
         return openPopup
             .concatMap(function (oauthData) {
             if (_this.defaults.responseType === 'token' || !_this.defaults.url) {
-                return oauthData;
+                return Observable_1.Observable.of(oauthData);
             }
             if (oauthData.state && oauthData.state !== _this.storage.get(stateName)) {
                 throw 'OAuth "state" mismatch';
