@@ -14,7 +14,7 @@ var utils_1 = require('./utils');
 var config_service_1 = require('./config.service');
 var popup_service_1 = require('./popup.service');
 var storage_service_1 = require('./storage.service');
-require('rxjs/add/operator/concatMap');
+require('rxjs/add/operator/switchMap');
 require('rxjs/add/observable/of');
 var jwt_http_service_1 = require('./jwt-http.service');
 var Oauth2Service = (function () {
@@ -49,14 +49,18 @@ var Oauth2Service = (function () {
                 .pollPopup();
         }
         return openPopup
-            .concatMap(function (oauthData) {
-            if (_this.defaults.responseType === 'token' || !_this.defaults.url) {
+            .switchMap(function (oauthData) {
+            if (!options.exchangeForToken && (_this.defaults.responseType === 'token' || !_this.defaults.url)) {
                 return Observable_1.Observable.of(oauthData);
             }
             if (oauthData.state && oauthData.state !== _this.storage.get(stateName)) {
                 throw 'OAuth "state" mismatch';
             }
-            return _this.exchangeForToken(oauthData, userData);
+            var exchangeForToken = options.exchangeForToken;
+            if (typeof exchangeForToken !== 'function') {
+                exchangeForToken = _this.exchangeForToken.bind(_this);
+            }
+            return exchangeForToken(oauthData, userData);
         });
     };
     Oauth2Service.prototype.exchangeForToken = function (oauthData, userData) {

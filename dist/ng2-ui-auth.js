@@ -8,7 +8,7 @@ var _angular_http = require('@angular/http');
 var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
-var rxjs_add_operator_concatMap = require('rxjs/add/operator/concatMap');
+var rxjs_add_observable_empty = require('rxjs/add/observable/empty');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
 var rxjs_add_observable_of = require('rxjs/add/observable/of');
@@ -571,12 +571,12 @@ var PopupService = (function () {
         var _this = this;
         return rxjs_Observable.Observable
             .fromEvent(this.popupWindow, 'loadstart')
-            .concatMap(function (event) {
+            .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return ['Popup Window Closed'];
+                return rxjs_Observable.Observable.of('Popup Window Closed');
             }
             if (event.url.indexOf(redirectUri) !== 0) {
-                return [];
+                return rxjs_Observable.Observable.empty();
             }
             var parser = document.createElement('a');
             parser.href = event.url;
@@ -591,10 +591,10 @@ var PopupService = (function () {
                     throw allParams.error;
                 }
                 else {
-                    return [allParams];
+                    return rxjs_Observable.Observable.of(allParams);
                 }
             }
-            return [];
+            return rxjs_Observable.Observable.empty();
         })
             .take(1)
             .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
@@ -603,9 +603,9 @@ var PopupService = (function () {
         var _this = this;
         return rxjs_Observable.Observable
             .interval(50)
-            .concatMap(function () {
+            .switchMap(function () {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return ['Popup Window Closed'];
+                return rxjs_Observable.Observable.of('Popup Window Closed');
             }
             var documentOrigin = document.location.host;
             var popupWindowOrigin = '';
@@ -625,10 +625,10 @@ var PopupService = (function () {
                     throw allParams.error;
                 }
                 else {
-                    return [allParams];
+                    return rxjs_Observable.Observable.of(allParams);
                 }
             }
-            return [];
+            return rxjs_Observable.Observable.empty();
         })
             .take(1)
             .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
@@ -656,7 +656,7 @@ var Oauth1Service = (function () {
             popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
         }
         return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .concatMap(function (response) {
+            .switchMap(function (response) {
             if (_this.config.cordova) {
                 popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
             }
@@ -666,8 +666,12 @@ var Oauth1Service = (function () {
             }
             return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
         })
-            .concatMap(function (response) {
-            return _this.exchangeForToken(response, userData);
+            .switchMap(function (response) {
+            var exchangeForToken = options.exchangeForToken;
+            if (typeof exchangeForToken !== 'function') {
+                exchangeForToken = _this.exchangeForToken;
+            }
+            return exchangeForToken(response, userData);
         });
     };
     Oauth1Service.prototype.exchangeForToken = function (oauthData, userData) {
@@ -727,14 +731,18 @@ var Oauth2Service = (function () {
                 .pollPopup();
         }
         return openPopup
-            .concatMap(function (oauthData) {
-            if (_this.defaults.responseType === 'token' || !_this.defaults.url) {
+            .switchMap(function (oauthData) {
+            if (!options.exchangeForToken && (_this.defaults.responseType === 'token' || !_this.defaults.url)) {
                 return rxjs_Observable.Observable.of(oauthData);
             }
             if (oauthData.state && oauthData.state !== _this.storage.get(stateName)) {
                 throw 'OAuth "state" mismatch';
             }
-            return _this.exchangeForToken(oauthData, userData);
+            var exchangeForToken = options.exchangeForToken;
+            if (typeof exchangeForToken !== 'function') {
+                exchangeForToken = _this.exchangeForToken.bind(_this);
+            }
+            return exchangeForToken(oauthData, userData);
         });
     };
     Oauth2Service.prototype.exchangeForToken = function (oauthData, userData) {

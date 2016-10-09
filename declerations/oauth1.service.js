@@ -12,7 +12,7 @@ var core_1 = require('@angular/core');
 var popup_service_1 = require('./popup.service');
 var utils_1 = require('./utils');
 var config_service_1 = require('./config.service');
-require('rxjs/add/operator/concatMap');
+require('rxjs/add/operator/switchMap');
 var jwt_http_service_1 = require('./jwt-http.service');
 var Oauth1Service = (function () {
     function Oauth1Service(http, popup, config) {
@@ -29,7 +29,7 @@ var Oauth1Service = (function () {
             popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions);
         }
         return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .concatMap(function (response) {
+            .switchMap(function (response) {
             if (_this.config.cordova) {
                 popupWindow = _this.popup.open([_this.defaults.authorizationEndpoint, _this.buildQueryString(response.json())].join('?'), _this.defaults.name, _this.defaults.popupOptions);
             }
@@ -39,8 +39,12 @@ var Oauth1Service = (function () {
             }
             return _this.config.cordova ? popupWindow.eventListener(_this.defaults.redirectUri) : popupWindow.pollPopup();
         })
-            .concatMap(function (response) {
-            return _this.exchangeForToken(response, userData);
+            .switchMap(function (response) {
+            var exchangeForToken = options.exchangeForToken;
+            if (typeof exchangeForToken !== 'function') {
+                exchangeForToken = _this.exchangeForToken;
+            }
+            return exchangeForToken(response, userData);
         });
     };
     Oauth1Service.prototype.exchangeForToken = function (oauthData, userData) {

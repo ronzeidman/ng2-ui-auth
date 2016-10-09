@@ -4,7 +4,7 @@ import {assign, joinUrl, merge, camelCase} from './utils';
 import {ConfigService, IOauth2Options} from './config.service';
 import {PopupService} from './popup.service';
 import {StorageService} from './storage.service';
-import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
 import {JwtHttp} from './jwt-http.service';
 
@@ -59,24 +59,27 @@ export class Oauth2Service {
         }
 
         return openPopup
-            .concatMap((oauthData) => {
+            .switchMap((oauthData) => {
                 // when no server URL provided, return popup params as-is.
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and
                 // saving a token manually.
-                if (this.defaults.responseType === 'token' || !this.defaults.url) {
+                if (!options.exchangeForToken && (this.defaults.responseType === 'token' || !this.defaults.url)) {
                     return Observable.of(oauthData);
                 }
 
                 if (oauthData.state && oauthData.state !== this.storage.get(stateName)) {
                     throw 'OAuth "state" mismatch';
                 }
-
-                return this.exchangeForToken(oauthData, userData);
+                let exchangeForToken: any = options.exchangeForToken;
+                if (typeof exchangeForToken !== 'function') {
+                    exchangeForToken = this.exchangeForToken.bind(this);
+                }
+                return exchangeForToken(oauthData, userData);
             });
     }
 
-    private exchangeForToken(oauthData: {code?, state?}, userData?: {}) {
+    private exchangeForToken(oauthData: {code?: string, state?: string}, userData?: {}) {
         let data: any = assign({}, this.defaults, oauthData, userData);
 
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;

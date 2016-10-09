@@ -4,7 +4,7 @@ import {Response} from '@angular/http';
 import {joinUrl, assign} from './utils';
 import {ConfigService, IOauth1Options} from './config.service';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/switchMap';
 import {JwtHttp} from './jwt-http.service';
 
 /**
@@ -33,7 +33,7 @@ export class Oauth1Service {
         }
 
         return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .concatMap((response: Response) => {
+            .switchMap((response: Response) => {
                 if (this.config.cordova) {
                     popupWindow = this.popup.open(
                         [this.defaults.authorizationEndpoint, this.buildQueryString(response.json())].join('?'),
@@ -46,8 +46,12 @@ export class Oauth1Service {
 
                 return this.config.cordova ? popupWindow.eventListener(this.defaults.redirectUri) : popupWindow.pollPopup();
             })
-            .concatMap((response) => {
-                return this.exchangeForToken(response, userData);
+            .switchMap((response) => {
+                let exchangeForToken = options.exchangeForToken;
+                if (typeof exchangeForToken !== 'function') {
+                    exchangeForToken = this.exchangeForToken;
+                }
+                return exchangeForToken(response, userData);
             });
     }
     private exchangeForToken(oauthData, userData?: any) {

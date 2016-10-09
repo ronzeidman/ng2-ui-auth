@@ -4,7 +4,8 @@ import {assign} from './utils';
 import {ConfigService, IPopupOptions} from './config.service';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeWhile';
 
@@ -75,12 +76,12 @@ export class PopupService {
     eventListener(redirectUri: string) {
         return Observable
             .fromEvent<Event>(this.popupWindow, 'loadstart')
-            .concatMap((event: Event & { url: string }) => {
+            .switchMap((event: Event & { url: string }) => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return ['Popup Window Closed'];
+                    return Observable.of('Popup Window Closed');
                 }
                 if (event.url.indexOf(redirectUri) !== 0) {
-                    return [];
+                    return Observable.empty();
                 }
 
                 let parser = document.createElement('a');
@@ -98,10 +99,10 @@ export class PopupService {
                     if (allParams.error) {
                         throw allParams.error;
                     } else {
-                        return <any>[allParams];
+                        return Observable.of(allParams);
                     }
                 }
-                return [];
+                return Observable.empty();
             })
             .take(1)
             .takeWhile((response) => response !== 'Popup Window Closed');
@@ -110,9 +111,9 @@ export class PopupService {
     pollPopup() {
         return Observable
             .interval(50)
-            .concatMap(() => {
+            .switchMap(() => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return ['Popup Window Closed'];
+                    return Observable.of('Popup Window Closed');
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';
@@ -132,10 +133,10 @@ export class PopupService {
                     if (allParams.error) {
                         throw allParams.error;
                     } else {
-                        return [allParams];
+                        return Observable.of(allParams);
                     }
                 }
-                return [];
+                return Observable.empty();
             })
             .take(1)
             .takeWhile((response) => response !== 'Popup Window Closed');

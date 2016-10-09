@@ -14,7 +14,8 @@ var utils_1 = require('./utils');
 var config_service_1 = require('./config.service');
 require('rxjs/add/observable/interval');
 require('rxjs/add/observable/fromEvent');
-require('rxjs/add/operator/concatMap');
+require('rxjs/add/observable/empty');
+require('rxjs/add/operator/switchMap');
 require('rxjs/add/operator/take');
 require('rxjs/add/operator/takeWhile');
 var PopupService = (function () {
@@ -66,12 +67,12 @@ var PopupService = (function () {
         var _this = this;
         return Observable_1.Observable
             .fromEvent(this.popupWindow, 'loadstart')
-            .concatMap(function (event) {
+            .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return ['Popup Window Closed'];
+                return Observable_1.Observable.of('Popup Window Closed');
             }
             if (event.url.indexOf(redirectUri) !== 0) {
-                return [];
+                return Observable_1.Observable.empty();
             }
             var parser = document.createElement('a');
             parser.href = event.url;
@@ -86,10 +87,10 @@ var PopupService = (function () {
                     throw allParams.error;
                 }
                 else {
-                    return [allParams];
+                    return Observable_1.Observable.of(allParams);
                 }
             }
-            return [];
+            return Observable_1.Observable.empty();
         })
             .take(1)
             .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
@@ -98,9 +99,9 @@ var PopupService = (function () {
         var _this = this;
         return Observable_1.Observable
             .interval(50)
-            .concatMap(function () {
+            .switchMap(function () {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return ['Popup Window Closed'];
+                return Observable_1.Observable.of('Popup Window Closed');
             }
             var documentOrigin = document.location.host;
             var popupWindowOrigin = '';
@@ -120,10 +121,10 @@ var PopupService = (function () {
                     throw allParams.error;
                 }
                 else {
-                    return [allParams];
+                    return Observable_1.Observable.of(allParams);
                 }
             }
-            return [];
+            return Observable_1.Observable.empty();
         })
             .take(1)
             .takeWhile(function (response) { return response !== 'Popup Window Closed'; });

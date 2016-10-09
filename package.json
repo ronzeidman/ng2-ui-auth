@@ -32,22 +32,22 @@
   },
   "typings": "./dist/ng2-ui-auth.d.ts",
   "devDependencies": {
-    "@angular/common": "^2.0.0",
-    "@angular/compiler": "^2.0.0",
-    "@angular/compiler-cli": "^0.6.2",
-    "@angular/core": "^2.0.0",
-    "@angular/http": "^2.0.0",
-    "@angular/platform-browser": "^2.0.0",
-    "@angular/platform-server": "^2.0.0",
+    "@angular/common": "2.0.0",
+    "@angular/compiler": "2.0.0",
+    "@angular/compiler-cli": "0.6.2",
+    "@angular/core": "2.0.0",
+    "@angular/http": "2.0.0",
+    "@angular/platform-browser": "2.0.0",
+    "@angular/platform-server": "2.0.0",
     "@types/es6-shim": "^0.31.32",
     "es6-shim": "^0.35.1",
-    "reflect-metadata": "^0.1.8",
+    "reflect-metadata": "0.1.8",
     "rollup": "^0.36.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-uglify": "^1.0.1",
-    "rxjs": "^5.0.0-beta.12",
+    "rxjs": "5.0.0-beta.12",
     "typescript": "^2.0.3",
-    "zone.js": "^0.6.25"
+    "zone.js": "0.6.25"
   }
 }

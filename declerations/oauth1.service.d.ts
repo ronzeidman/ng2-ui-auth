@@ -2,7 +2,7 @@ import { PopupService } from './popup.service';
 import { Response } from '@angular/http';
 import { ConfigService, IOauth1Options } from './config.service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/switchMap';
 import { JwtHttp } from './jwt-http.service';
 export declare class Oauth1Service {
     private http;

@@ -2,7 +2,8 @@ import { Observable } from 'rxjs/Observable';
 import { ConfigService, IPopupOptions } from './config.service';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeWhile';
 export declare class PopupService {
@@ -14,6 +15,6 @@ export declare class PopupService {
     private static parseQueryString(joinedKeyValue);
     constructor(config: ConfigService);
     open(url: string, name: string, options: IPopupOptions): this;
-    eventListener(redirectUri: string): Observable<{}>;
+    eventListener(redirectUri: string): Observable<any>;
     pollPopup(): Observable<any>;
 }
