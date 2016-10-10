@@ -16,7 +16,7 @@ export declare class AuthService {
     unlink(provider: string, opts: RequestOptionsArgs): Observable<Response>;
     isAuthenticated(): boolean;
     getToken(): string;
-    setToken(token: string): void;
+    setToken(token: string | Response): void;
     removeToken(): void;
     getPayload(): any;
     setStorageType(type: string): void;

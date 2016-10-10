@@ -41,34 +41,8 @@ export class SharedService {
         if (typeof response === 'string') {
             token = response;
         } else {
-            let accessToken = response && response.json() && (response.json().access_token || response.json().token);
-            let tokenObject: { data: any };
-
-            if (accessToken) {
-                if (typeof accessToken === 'object' && typeof accessToken.data === 'object') {
-                    tokenObject = <{data: any}>accessToken;
-                } else if (typeof accessToken === 'string') {
-                    token = accessToken;
-                }
-            }
-
-            if (!token && tokenObject) {
-                let tokenRootData = this.config.tokenRoot &&
-                    this.config.tokenRoot.split('.').reduce(
-                        (o, x) => {
-                            return o[x];
-                        },
-                        tokenObject.data);
-                token = tokenRootData ? tokenRootData[this.config.tokenName] : tokenObject.data[this.config.tokenName];
-            }
-
-            if (!token) {
-                let tokenPath = this.config.tokenRoot ? this.config.tokenRoot + '.' + this.config.tokenName : this.config.tokenName;
-                console.warn('Expecting a token named "' + tokenPath);
-                return;
-            }
+            token = this.config.resolveToken(response)
         }
-
         this.storage.set(this.tokenName, token);
     }
     removeToken() {

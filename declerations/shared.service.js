@@ -44,28 +44,7 @@ var SharedService = (function () {
             token = response;
         }
         else {
-            var accessToken = response && response.json() && (response.json().access_token || response.json().token);
-            var tokenObject = void 0;
-            if (accessToken) {
-                if (typeof accessToken === 'object' && typeof accessToken.data === 'object') {
-                    tokenObject = accessToken;
-                }
-                else if (typeof accessToken === 'string') {
-                    token = accessToken;
-                }
-            }
-            if (!token && tokenObject) {
-                var tokenRootData = this.config.tokenRoot &&
-                    this.config.tokenRoot.split('.').reduce(function (o, x) {
-                        return o[x];
-                    }, tokenObject.data);
-                token = tokenRootData ? tokenRootData[this.config.tokenName] : tokenObject.data[this.config.tokenName];
-            }
-            if (!token) {
-                var tokenPath = this.config.tokenRoot ? this.config.tokenRoot + '.' + this.config.tokenName : this.config.tokenName;
-                console.warn('Expecting a token named "' + tokenPath);
-                return;
-            }
+            token = this.config.resolveToken(response);
         }
         this.storage.set(this.tokenName, token);
     };

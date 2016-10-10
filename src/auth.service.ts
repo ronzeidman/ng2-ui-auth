@@ -48,7 +48,7 @@ export class AuthService {
         return this.shared.getToken();
     }
 
-    setToken(token: string): void {
+    setToken(token: string | Response): void {
         this.shared.setToken(token);
     }
 

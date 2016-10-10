@@ -64,6 +64,7 @@ export abstract class CustomConfig {
     withCredentials: boolean;
     autoRefreshToken: boolean;
     refreshUrl: string;
+    resolveToken: (response: Response) => string;
 }
 
 @Injectable()
@@ -104,6 +105,34 @@ export class ConfigService {
     storageType = 'localStorage';
     defaultHeaders = null;
     autoRefreshToken = false;
+    resolveToken = (response: Response) => {
+        const accessToken = response && response.json() && (response.json().access_token || response.json().token);
+        if (!accessToken) {
+            console.warn('No token found');
+            return null;
+        }
+        if (typeof accessToken === 'string') {
+            return accessToken;
+        }
+        if (typeof accessToken !== 'object' || typeof accessToken.data !== 'object') {
+            console.warn('No token found');
+            return null;
+        }
+        const tokenObject = <{data: any}>accessToken;
+        const tokenRootData = this.tokenRoot &&
+            this.tokenRoot.split('.').reduce(
+                (o, x) => {
+                    return o[x];
+                },
+                tokenObject.data);
+        const token = tokenRootData ? tokenRootData[this.tokenName] : tokenObject.data[this.tokenName];
+        if (token) {
+            return token;
+        }
+        let tokenPath = this.tokenRoot ? this.tokenRoot + '.' + this.tokenName : this.tokenName;
+        console.warn('Expecting a token named "' + tokenPath);
+        return null;
+    };
     providers: IProviders = {
         facebook: {
             name: 'facebook',

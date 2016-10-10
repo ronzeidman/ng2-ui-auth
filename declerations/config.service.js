@@ -34,6 +34,32 @@ var ConfigService = (function () {
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
         this.autoRefreshToken = false;
+        this.resolveToken = function (response) {
+            var accessToken = response && response.json() && (response.json().access_token || response.json().token);
+            if (!accessToken) {
+                console.warn('No token found');
+                return null;
+            }
+            if (typeof accessToken === 'string') {
+                return accessToken;
+            }
+            if (typeof accessToken !== 'object' || typeof accessToken.data !== 'object') {
+                console.warn('No token found');
+                return null;
+            }
+            var tokenObject = accessToken;
+            var tokenRootData = _this.tokenRoot &&
+                _this.tokenRoot.split('.').reduce(function (o, x) {
+                    return o[x];
+                }, tokenObject.data);
+            var token = tokenRootData ? tokenRootData[_this.tokenName] : tokenObject.data[_this.tokenName];
+            if (token) {
+                return token;
+            }
+            var tokenPath = _this.tokenRoot ? _this.tokenRoot + '.' + _this.tokenName : _this.tokenName;
+            console.warn('Expecting a token named "' + tokenPath);
+            return null;
+        };
         this.providers = {
             facebook: {
                 name: 'facebook',

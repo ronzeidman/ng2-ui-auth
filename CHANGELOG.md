@@ -3,6 +3,7 @@
 * switched concatMap with switchMap (should be a better fit for that scenerio)
 * added ability to force "exchangeForToken" by setting it to true in `IOauthOptions`
 * added ability to force "exchangeForToken" and provide your own implementation by providing an exchangeForToken function in `IOauthOptions`
+* fix issue #50 added ability to manually configure the `resolveToken` method via config
 
 #### 4.0.0
 * Aligned default config with Satellizer (added Spotify)

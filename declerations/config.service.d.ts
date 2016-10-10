@@ -58,6 +58,7 @@ export declare abstract class CustomConfig {
     withCredentials: boolean;
     autoRefreshToken: boolean;
     refreshUrl: string;
+    resolveToken: (response: Response) => string;
 }
 export declare class ConfigService {
     constructor(config?: CustomConfig);
@@ -77,5 +78,6 @@ export declare class ConfigService {
     storageType: string;
     defaultHeaders: any;
     autoRefreshToken: boolean;
+    resolveToken: (response: Response) => any;
     providers: IProviders;
 }
