@@ -56,7 +56,8 @@ var ConfigService = (function () {
         this.defaultHeaders = null;
         this.autoRefreshToken = false;
         this.resolveToken = function (response) {
-            var accessToken = response && response.json() && (response.json().access_token || response.json().token);
+            var accessToken = response && response.json() &&
+                (response.json().access_token || response.json().token || response.json().data);
             if (!accessToken) {
                 console.warn('No token found');
                 return null;
@@ -64,16 +65,15 @@ var ConfigService = (function () {
             if (typeof accessToken === 'string') {
                 return accessToken;
             }
-            if (typeof accessToken !== 'object' || typeof accessToken.data !== 'object') {
+            if (typeof accessToken !== 'object') {
                 console.warn('No token found');
                 return null;
             }
-            var tokenObject = accessToken;
             var tokenRootData = _this.tokenRoot &&
                 _this.tokenRoot.split('.').reduce(function (o, x) {
                     return o[x];
-                }, tokenObject.data);
-            var token = tokenRootData ? tokenRootData[_this.tokenName] : tokenObject.data[_this.tokenName];
+                }, accessToken);
+            var token = tokenRootData ? tokenRootData[_this.tokenName] : accessToken[_this.tokenName];
             if (token) {
                 return token;
             }

@@ -106,7 +106,8 @@ export class ConfigService {
     defaultHeaders = null;
     autoRefreshToken = false;
     resolveToken = (response: Response) => {
-        const accessToken = response && response.json() && (response.json().access_token || response.json().token);
+        const accessToken: string | Object | null | undefined = response && response.json() &&
+            (response.json().access_token || response.json().token || response.json().data);
         if (!accessToken) {
             console.warn('No token found');
             return null;
@@ -114,18 +115,17 @@ export class ConfigService {
         if (typeof accessToken === 'string') {
             return accessToken;
         }
-        if (typeof accessToken !== 'object' || typeof accessToken.data !== 'object') {
+        if (typeof accessToken !== 'object') {
             console.warn('No token found');
             return null;
         }
-        const tokenObject = <{data: any}>accessToken;
         const tokenRootData = this.tokenRoot &&
             this.tokenRoot.split('.').reduce(
                 (o, x) => {
                     return o[x];
                 },
-                tokenObject.data);
-        const token = tokenRootData ? tokenRootData[this.tokenName] : tokenObject.data[this.tokenName];
+                accessToken);
+        const token = tokenRootData ? tokenRootData[this.tokenName] : accessToken[this.tokenName];
         if (token) {
             return token;
         }
