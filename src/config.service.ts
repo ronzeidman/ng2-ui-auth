@@ -105,6 +105,7 @@ export class ConfigService {
     storageType = 'localStorage';
     defaultHeaders = null;
     autoRefreshToken = false;
+    cordova = !!window.cordova;
     resolveToken = (response: Response) => {
         const accessToken: string | Object | null | undefined = response && response.json() &&
             (response.json().access_token || response.json().token || response.json().data);
