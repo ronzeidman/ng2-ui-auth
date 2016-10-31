@@ -91,7 +91,6 @@ export class ConfigService {
     }
     withCredentials = false;
     tokenRoot = null;
-    cordova = false;
     baseUrl = '/';
     loginUrl = '/auth/login';
     signupUrl = '/auth/signup';
@@ -105,7 +104,7 @@ export class ConfigService {
     storageType = 'localStorage';
     defaultHeaders = null;
     autoRefreshToken = false;
-    cordova = !!window.cordova;
+    cordova = !!(<any>window).cordova;
     resolveToken = (response: Response) => {
         const accessToken: string | Object | null | undefined = response && response.json() &&
             (response.json().access_token || response.json().token || response.json().data);
