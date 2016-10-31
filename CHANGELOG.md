@@ -1,3 +1,6 @@
+#### Master
+* `cordova` variable defaults to `window.cordova`
+
 #### 4.1.0
 * fix issue #47 using this library without server url causes exception.
 * switched concatMap with switchMap (should be a better fit for that scenerio)

@@ -41,7 +41,6 @@ var ConfigService = (function () {
         var _this = this;
         this.withCredentials = false;
         this.tokenRoot = null;
-        this.cordova = false;
         this.baseUrl = '/';
         this.loginUrl = '/auth/login';
         this.signupUrl = '/auth/signup';
@@ -55,6 +54,7 @@ var ConfigService = (function () {
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
         this.autoRefreshToken = false;
+        this.cordova = !!window['cordova'];
         this.resolveToken = function (response) {
             var accessToken = response && response.json() &&
                 (response.json().access_token || response.json().token || response.json().data);

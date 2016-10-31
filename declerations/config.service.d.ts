@@ -64,7 +64,6 @@ export declare class ConfigService {
     constructor(config?: CustomConfig);
     withCredentials: boolean;
     tokenRoot: any;
-    cordova: boolean;
     baseUrl: string;
     loginUrl: string;
     signupUrl: string;
@@ -78,6 +77,7 @@ export declare class ConfigService {
     storageType: string;
     defaultHeaders: any;
     autoRefreshToken: boolean;
+    cordova: boolean;
     resolveToken: (response: Response) => any;
     providers: IProviders;
 }
