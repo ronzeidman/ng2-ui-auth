@@ -55,7 +55,7 @@ export class Oauth1Service {
             });
     }
     private exchangeForToken(oauthData, userData?: any) {
-        let data = assign({}, oauthData, userData);
+        let data = assign({}, this.defaults, oauthData, userData);
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     }
