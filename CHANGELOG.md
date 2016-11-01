@@ -1,5 +1,6 @@
 #### Master
 * `cordova` variable defaults to `window.cordova`
+* fixed issue with oauth 1
 
 #### 4.1.0
 * fix issue #47 using this library without server url causes exception.

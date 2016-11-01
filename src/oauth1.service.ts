@@ -47,9 +47,9 @@ export class Oauth1Service {
                 return this.config.cordova ? popupWindow.eventListener(this.defaults.redirectUri) : popupWindow.pollPopup();
             })
             .switchMap((response) => {
-                let exchangeForToken = options.exchangeForToken;
+                let exchangeForToken: any = options.exchangeForToken;
                 if (typeof exchangeForToken !== 'function') {
-                    exchangeForToken = this.exchangeForToken;
+                    exchangeForToken = this.exchangeForToken.bind(this);
                 }
                 return exchangeForToken(response, userData);
             });

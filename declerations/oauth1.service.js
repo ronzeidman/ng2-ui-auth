@@ -42,7 +42,7 @@ var Oauth1Service = (function () {
             .switchMap(function (response) {
             var exchangeForToken = options.exchangeForToken;
             if (typeof exchangeForToken !== 'function') {
-                exchangeForToken = _this.exchangeForToken;
+                exchangeForToken = _this.exchangeForToken.bind(_this);
             }
             return exchangeForToken(response, userData);
         });
