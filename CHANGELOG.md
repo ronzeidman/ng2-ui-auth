@@ -1,4 +1,4 @@
-#### Master
+#### 4.1.1
 * `cordova` variable defaults to `window.cordova`
 * fixed issue with oauth 1
 
