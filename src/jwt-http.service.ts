@@ -38,14 +38,14 @@ export class JwtHttp extends Http {
         return this.request(url, options);
     }
 
-    post(url: string, body: string, options?: JwtRequestOptionsArgs): Observable<Response> {
+    post(url: string, body: any, options?: JwtRequestOptionsArgs): Observable<Response> {
         options = options || {};
         options.method = RequestMethod.Post;
         options.body = body;
         return this.request(url, options);
     }
 
-    put(url: string, body: string, options?: JwtRequestOptionsArgs): Observable<Response> {
+    put(url: string, body: any, options?: JwtRequestOptionsArgs): Observable<Response> {
         options = options || {};
         options.method = RequestMethod.Put;
         options.body = body;
@@ -58,7 +58,7 @@ export class JwtHttp extends Http {
         return this.request(url, options);
     }
 
-    patch(url: string, body: string, options?: JwtRequestOptionsArgs): Observable<Response> {
+    patch(url: string, body: any, options?: JwtRequestOptionsArgs): Observable<Response> {
         options = options || {};
         options.method = RequestMethod.Patch;
         options.body = body;
