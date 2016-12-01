@@ -85,7 +85,7 @@ export class SharedService {
     }
     getExpirationDate() {
         let payload = this.getPayload();
-        if (payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
+        if (payload && payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
             let date = new Date(0);
             date.setUTCSeconds(payload.exp);
             return date;
