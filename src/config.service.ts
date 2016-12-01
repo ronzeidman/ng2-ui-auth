@@ -38,7 +38,7 @@ export interface IOauth2Options extends IOauth1Options {
 
     requiredUrlParams?: string[];
     optionalUrlParams?: string[];
-    scope?: string[];
+    scope?: string[]|string;
     display?: string;
 }
 
