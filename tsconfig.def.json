@@ -8,7 +8,7 @@
     "removeComments": true,
     "sourceMap": true,
     "declaration": true,
-    "outDir": "declerations",
+    "outDir": "commonjs",
     "types": ["es6-shim"]
   },
   "files": [

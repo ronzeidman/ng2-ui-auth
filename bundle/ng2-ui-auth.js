@@ -312,7 +312,9 @@ var SharedService = (function () {
         else {
             token = this.config.resolveToken(response);
         }
-        this.storage.set(this.tokenName, token);
+        if (token) {
+            this.storage.set(this.tokenName, token);
+        }
     };
     SharedService.prototype.removeToken = function () {
         this.storage.remove(this.tokenName);
@@ -346,7 +348,7 @@ var SharedService = (function () {
     };
     SharedService.prototype.getExpirationDate = function () {
         var payload = this.getPayload();
-        if (payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
+        if (payload && payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
             var date = new Date(0);
             date.setUTCSeconds(payload.exp);
             return date;

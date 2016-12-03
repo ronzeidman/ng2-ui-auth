@@ -6,8 +6,8 @@ import typescript from 'rollup-plugin-typescript';
 
 export default {
     entry: 'src/ng2-ui-auth.module.ts',
-    dest: 'dist/ng2-ui-auth.js',
-    sourceMap: 'dist/ng2-ui-auth.js.map',
+    dest: 'bundle/ng2-ui-auth.js',
+    sourceMap: 'bundle/ng2-ui-auth.js.map',
     format: 'cjs',
     plugins: [
         typescript({

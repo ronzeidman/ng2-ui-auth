@@ -1,3 +1,11 @@
+#### 5.0.0
+* might be breaking: changed out folder names, not linking to the bundled version by default because of webpack issues with the pre-bundled version
+* pull request #63 set token only when it's available
+* pull request #61 [expiration date] check payload is defined. 
+* pull request #60 allow string as a scope option.
+* pull request #57 allow any type in http body.
+
+
 #### 4.1.1
 * `cordova` variable defaults to `window.cordova`
 * fixed issue with oauth 1

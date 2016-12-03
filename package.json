@@ -1,8 +1,8 @@
 {
   "name": "ng2-ui-auth",
-  "version": "4.1.1",
+  "version": "5.0.0",
   "description": "angular2 migration for satellizer",
-  "main": "./dist/ng2-ui-auth.js",
+  "main": "./commonjs/ng2-ui-auth.module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ngc": "ngc --project tsconfig.def.json",
@@ -29,7 +29,7 @@
     "@angular/http": "^2.0.0",
     "@angular/core": "^2.0.0"
   },
-  "typings": "./dist/ng2-ui-auth.d.ts",
+  "typings": "./commonjs/ng2-ui-auth.module.d.ts",
   "devDependencies": {
     "@angular/common": "2.0.0",
     "@angular/compiler": "2.0.0",
