@@ -31,6 +31,7 @@ export class SharedService {
             }
         }
     }
+
     setToken(response: string | Response) {
         if (!response) {
             console.warn('Can\'t set token without passing a value');
@@ -43,7 +44,10 @@ export class SharedService {
         } else {
             token = this.config.resolveToken(response)
         }
-        this.storage.set(this.tokenName, token);
+
+        if (token) {
+            this.storage.set(this.tokenName, token);
+        }
     }
     removeToken() {
         this.storage.remove(this.tokenName);
