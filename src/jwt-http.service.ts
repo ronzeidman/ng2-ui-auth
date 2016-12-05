@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestMethod, Response, RequestOptionsArgs, Headers, Request, RequestOptions, ConnectionBackend} from '@angular/http';
+import {Http, RequestMethod, Response, RequestOptionsArgs, Headers, Request} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import {ConfigService} from './config.service';
@@ -13,13 +13,12 @@ export interface JwtRequestOptionsArgs extends RequestOptionsArgs {
 }
 
 @Injectable()
-export class JwtHttp extends Http {
-    constructor(_backend: ConnectionBackend,
-                _defaultOptions: RequestOptions,
-                private _shared: SharedService,
-                private _config: ConfigService) {
-        super(_backend, _defaultOptions);
-    }
+export class JwtHttp {
+    constructor(
+        private _http: Http,
+        private _shared: SharedService,
+        private _config: ConfigService
+    ) {}
 
     request(url: string | Request, options?: JwtRequestOptionsArgs): Observable<Response> {
         //if the token is expired the "getExpirationDate" function returns null
@@ -75,7 +74,7 @@ export class JwtHttp extends Http {
     refreshToken(): Observable<Response> {
         const authHeader = new Headers();
         authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
-        return super
+        return this._http
             .get(this._config.refreshUrl, {
                 headers: authHeader
             })
@@ -90,7 +89,7 @@ export class JwtHttp extends Http {
             options = options || {};
             this.setHeaders(options);
         }
-        return super.request(url, options);
+        return this._http.request(url, options);
     }
 
     private setHeaders(obj: { headers?: Headers, [index: string]: any }) {
