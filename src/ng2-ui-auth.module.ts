@@ -13,7 +13,7 @@ import {LocalService} from './local.service';
 import {AuthService} from './auth.service';
 import {StorageService} from './storage.service';
 import {ModuleWithProviders, NgModule, Injector} from '@angular/core';
-import {HttpModule, RequestOptions, XHRBackend} from '@angular/http';
+import {HttpModule, Http} from '@angular/http';
 import {Type} from '@angular/core/src/type';
 export {LocalService} from './local.service';
 export {Oauth2Service} from './oauth2.service';
@@ -38,7 +38,7 @@ export class Ng2UiAuthModule {
                 {provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
                 {provide: StorageService, useClass: StorageService, deps: [ConfigService]},
                 {provide: SharedService,  useClass: SharedService, deps: [StorageService, ConfigService]},
-                {provide: JwtHttp, useClass: JwtHttp, deps: [XHRBackend, RequestOptions, SharedService, ConfigService]},
+                {provide: JwtHttp, useClass: JwtHttp, deps: [Http, SharedService, ConfigService]},
                 {provide: OauthService,  useClass: OauthService, deps: [JwtHttp, Injector, SharedService, ConfigService]} ,
                 {provide: PopupService,  useClass: PopupService, deps: [ConfigService]},
                 {provide: Oauth1Service,  useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService]} ,
