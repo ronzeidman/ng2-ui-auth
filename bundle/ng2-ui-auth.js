@@ -14,12 +14,6 @@ var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
 var rxjs_add_observable_of = require('rxjs/add/observable/of');
 var rxjs_add_operator_do = require('rxjs/add/operator/do');
 
-function __extends(d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -373,10 +367,9 @@ var SharedService = (function () {
     var _a, _b;
 }());
 
-var JwtHttp = (function (_super) {
-    __extends(JwtHttp, _super);
-    function JwtHttp(_backend, _defaultOptions, _shared, _config) {
-        _super.call(this, _backend, _defaultOptions);
+var JwtHttp = (function () {
+    function JwtHttp(_http, _shared, _config) {
+        this._http = _http;
         this._shared = _shared;
         this._config = _config;
     }
@@ -427,8 +420,8 @@ var JwtHttp = (function (_super) {
         var _this = this;
         var authHeader = new _angular_http.Headers();
         authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
-        return _super.prototype
-            .get.call(this, this._config.refreshUrl, {
+        return this._http
+            .get(this._config.refreshUrl, {
             headers: authHeader
         })
             .do(function (res) { return _this._shared.setToken(res); });
@@ -442,7 +435,7 @@ var JwtHttp = (function (_super) {
             options = options || {};
             this.setHeaders(options);
         }
-        return _super.prototype.request.call(this, url, options);
+        return this._http.request(url, options);
     };
     JwtHttp.prototype.setHeaders = function (obj) {
         var _this = this;
@@ -460,11 +453,11 @@ var JwtHttp = (function (_super) {
     };
     JwtHttp = __decorate([
         _angular_core.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.ConnectionBackend !== 'undefined' && _angular_http.ConnectionBackend) === 'function' && _a) || Object, (typeof (_b = typeof _angular_http.RequestOptions !== 'undefined' && _angular_http.RequestOptions) === 'function' && _b) || Object, (typeof (_c = typeof SharedService !== 'undefined' && SharedService) === 'function' && _c) || Object, (typeof (_d = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _d) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof _angular_http.Http !== 'undefined' && _angular_http.Http) === 'function' && _a) || Object, (typeof (_b = typeof SharedService !== 'undefined' && SharedService) === 'function' && _b) || Object, (typeof (_c = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _c) || Object])
     ], JwtHttp);
     return JwtHttp;
-    var _a, _b, _c, _d;
-}(_angular_http.Http));
+    var _a, _b, _c;
+}());
 
 function assign(target) {
     var src = [];
@@ -925,6 +918,26 @@ var AuthService = (function () {
 var Ng2UiAuthModule = (function () {
     function Ng2UiAuthModule() {
     }
+    Ng2UiAuthModule.forRoot = function (config, httpProvider) {
+        if (httpProvider === void 0) { httpProvider = {
+            provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.Http, SharedService, ConfigService]
+        }; }
+        return {
+            ngModule: Ng2UiAuthModule,
+            providers: [
+                { provide: CustomConfig, useClass: config },
+                { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
+                { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
+                { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
+                httpProvider,
+                { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
+                { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
+                { provide: Oauth1Service, useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService] },
+                { provide: Oauth2Service, useClass: Oauth2Service, deps: [JwtHttp, PopupService, StorageService, ConfigService] },
+                { provide: LocalService, useClass: LocalService, deps: [JwtHttp, SharedService, ConfigService] },
+                { provide: AuthService, useClass: AuthService, deps: [SharedService, LocalService, OauthService] },]
+        };
+    };
     Ng2UiAuthModule.getWithConfig = function (config) {
         return {
             ngModule: Ng2UiAuthModule,
@@ -933,7 +946,7 @@ var Ng2UiAuthModule = (function () {
                 { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
                 { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
                 { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
-                { provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.XHRBackend, _angular_http.RequestOptions, SharedService, ConfigService] },
+                { provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.Http, SharedService, ConfigService] },
                 { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
                 { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
                 { provide: Oauth1Service, useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService] },

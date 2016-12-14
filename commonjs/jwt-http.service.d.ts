@@ -1,4 +1,4 @@
-import { Http, Response, RequestOptionsArgs, Request, RequestOptions, ConnectionBackend } from '@angular/http';
+import { Http, Response, RequestOptionsArgs, Request } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import { ConfigService } from './config.service';
@@ -6,10 +6,11 @@ import { SharedService } from './shared.service';
 export interface JwtRequestOptionsArgs extends RequestOptionsArgs {
     autoRefreshToken?: boolean;
 }
-export declare class JwtHttp extends Http {
+export declare class JwtHttp {
+    private _http;
     private _shared;
     private _config;
-    constructor(_backend: ConnectionBackend, _defaultOptions: RequestOptions, _shared: SharedService, _config: ConfigService);
+    constructor(_http: Http, _shared: SharedService, _config: ConfigService);
     request(url: string | Request, options?: JwtRequestOptionsArgs): Observable<Response>;
     get(url: string, options?: JwtRequestOptionsArgs): Observable<Response>;
     post(url: string, body: any, options?: JwtRequestOptionsArgs): Observable<Response>;

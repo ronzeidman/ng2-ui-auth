@@ -30,6 +30,26 @@ export {ConfigService, CustomConfig} from './config.service';
     imports: [HttpModule]
 })
 export class Ng2UiAuthModule {
+    static forRoot(config: Type<CustomConfig>, httpProvider = {
+        provide: JwtHttp, useClass: JwtHttp, deps: [Http, SharedService, ConfigService]
+    }): ModuleWithProviders {
+        return {
+            ngModule: Ng2UiAuthModule,
+            providers: [
+                {provide: CustomConfig, useClass: config },
+                {provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
+                {provide: StorageService, useClass: StorageService, deps: [ConfigService]},
+                {provide: SharedService,  useClass: SharedService, deps: [StorageService, ConfigService]},
+                httpProvider,
+                {provide: OauthService,  useClass: OauthService, deps: [JwtHttp, Injector, SharedService, ConfigService]} ,
+                {provide: PopupService,  useClass: PopupService, deps: [ConfigService]},
+                {provide: Oauth1Service,  useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService]} ,
+                {provide: Oauth2Service,  useClass: Oauth2Service, deps: [JwtHttp, PopupService, StorageService, ConfigService]} ,
+                {provide: LocalService,  useClass: LocalService, deps: [JwtHttp, SharedService, ConfigService]} ,
+                {provide: AuthService,  useClass: AuthService, deps: [SharedService, LocalService, OauthService]} ,]
+        }
+    }
+
     static getWithConfig(config: Type<CustomConfig>): ModuleWithProviders {
         return {
             ngModule: Ng2UiAuthModule,
