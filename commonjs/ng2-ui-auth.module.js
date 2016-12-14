@@ -64,23 +64,6 @@ var Ng2UiAuthModule = (function () {
                 { provide: auth_service_1.AuthService, useClass: auth_service_1.AuthService, deps: [shared_service_1.SharedService, local_service_1.LocalService, oauth_service_1.OauthService] },]
         };
     };
-    Ng2UiAuthModule.getWithConfig = function (config) {
-        return {
-            ngModule: Ng2UiAuthModule,
-            providers: [
-                { provide: config_service_1.CustomConfig, useClass: config },
-                { provide: config_service_1.ConfigService, useClass: config_service_1.ConfigService, deps: [config_service_1.CustomConfig] },
-                { provide: storage_service_1.StorageService, useClass: storage_service_1.StorageService, deps: [config_service_1.ConfigService] },
-                { provide: shared_service_1.SharedService, useClass: shared_service_1.SharedService, deps: [storage_service_1.StorageService, config_service_1.ConfigService] },
-                { provide: jwt_http_service_1.JwtHttp, useClass: jwt_http_service_1.JwtHttp, deps: [http_1.Http, shared_service_1.SharedService, config_service_1.ConfigService] },
-                { provide: oauth_service_1.OauthService, useClass: oauth_service_1.OauthService, deps: [jwt_http_service_1.JwtHttp, core_1.Injector, shared_service_1.SharedService, config_service_1.ConfigService] },
-                { provide: popup_service_1.PopupService, useClass: popup_service_1.PopupService, deps: [config_service_1.ConfigService] },
-                { provide: oauth1_service_1.Oauth1Service, useClass: oauth1_service_1.Oauth1Service, deps: [jwt_http_service_1.JwtHttp, popup_service_1.PopupService, config_service_1.ConfigService] },
-                { provide: oauth2_service_1.Oauth2Service, useClass: oauth2_service_1.Oauth2Service, deps: [jwt_http_service_1.JwtHttp, popup_service_1.PopupService, storage_service_1.StorageService, config_service_1.ConfigService] },
-                { provide: local_service_1.LocalService, useClass: local_service_1.LocalService, deps: [jwt_http_service_1.JwtHttp, shared_service_1.SharedService, config_service_1.ConfigService] },
-                { provide: auth_service_1.AuthService, useClass: auth_service_1.AuthService, deps: [shared_service_1.SharedService, local_service_1.LocalService, oauth_service_1.OauthService] },]
-        };
-    };
     Ng2UiAuthModule = __decorate([
         core_1.NgModule({
             imports: [http_1.HttpModule]
