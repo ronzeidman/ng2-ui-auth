@@ -1,9 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,10 +13,9 @@ var http_1 = require('@angular/http');
 require('rxjs/add/operator/switchMap');
 var config_service_1 = require('./config.service');
 var shared_service_1 = require('./shared.service');
-var JwtHttp = (function (_super) {
-    __extends(JwtHttp, _super);
-    function JwtHttp(_backend, _defaultOptions, _shared, _config) {
-        _super.call(this, _backend, _defaultOptions);
+var JwtHttp = (function () {
+    function JwtHttp(_http, _shared, _config) {
+        this._http = _http;
         this._shared = _shared;
         this._config = _config;
     }
@@ -72,8 +66,8 @@ var JwtHttp = (function (_super) {
         var _this = this;
         var authHeader = new http_1.Headers();
         authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
-        return _super.prototype
-            .get.call(this, this._config.refreshUrl, {
+        return this._http
+            .get(this._config.refreshUrl, {
             headers: authHeader
         })
             .do(function (res) { return _this._shared.setToken(res); });
@@ -87,7 +81,7 @@ var JwtHttp = (function (_super) {
             options = options || {};
             this.setHeaders(options);
         }
-        return _super.prototype.request.call(this, url, options);
+        return this._http.request(url, options);
     };
     JwtHttp.prototype.setHeaders = function (obj) {
         var _this = this;
@@ -105,9 +99,9 @@ var JwtHttp = (function (_super) {
     };
     JwtHttp = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.ConnectionBackend, http_1.RequestOptions, shared_service_1.SharedService, config_service_1.ConfigService])
+        __metadata('design:paramtypes', [http_1.Http, shared_service_1.SharedService, config_service_1.ConfigService])
     ], JwtHttp);
     return JwtHttp;
-}(http_1.Http));
+}());
 exports.JwtHttp = JwtHttp;
 //# sourceMappingURL=jwt-http.service.js.map

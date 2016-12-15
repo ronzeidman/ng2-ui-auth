@@ -44,7 +44,10 @@ exports.CustomConfig = config_service_2.CustomConfig;
 var Ng2UiAuthModule = (function () {
     function Ng2UiAuthModule() {
     }
-    Ng2UiAuthModule.getWithConfig = function (config) {
+    Ng2UiAuthModule.forRoot = function (config, httpProvider) {
+        if (httpProvider === void 0) { httpProvider = {
+            provide: jwt_http_service_1.JwtHttp, useClass: jwt_http_service_1.JwtHttp, deps: [http_1.Http, shared_service_1.SharedService, config_service_1.ConfigService]
+        }; }
         return {
             ngModule: Ng2UiAuthModule,
             providers: [
@@ -52,7 +55,7 @@ var Ng2UiAuthModule = (function () {
                 { provide: config_service_1.ConfigService, useClass: config_service_1.ConfigService, deps: [config_service_1.CustomConfig] },
                 { provide: storage_service_1.StorageService, useClass: storage_service_1.StorageService, deps: [config_service_1.ConfigService] },
                 { provide: shared_service_1.SharedService, useClass: shared_service_1.SharedService, deps: [storage_service_1.StorageService, config_service_1.ConfigService] },
-                { provide: jwt_http_service_1.JwtHttp, useClass: jwt_http_service_1.JwtHttp, deps: [http_1.XHRBackend, http_1.RequestOptions, shared_service_1.SharedService, config_service_1.ConfigService] },
+                httpProvider,
                 { provide: oauth_service_1.OauthService, useClass: oauth_service_1.OauthService, deps: [jwt_http_service_1.JwtHttp, core_1.Injector, shared_service_1.SharedService, config_service_1.ConfigService] },
                 { provide: popup_service_1.PopupService, useClass: popup_service_1.PopupService, deps: [config_service_1.ConfigService] },
                 { provide: oauth1_service_1.Oauth1Service, useClass: oauth1_service_1.Oauth1Service, deps: [jwt_http_service_1.JwtHttp, popup_service_1.PopupService, config_service_1.ConfigService] },
