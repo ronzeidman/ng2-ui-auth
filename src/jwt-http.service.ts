@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, RequestMethod, Response, RequestOptionsArgs, Headers, Request} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/catch';
 import {ConfigService} from './config.service';
 import {SharedService} from './shared.service';
 /**
@@ -22,11 +23,23 @@ export class JwtHttp {
 
     request(url: string | Request, options?: JwtRequestOptionsArgs): Observable<Response> {
         //if the token is expired the "getExpirationDate" function returns null
-        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
-            options.autoRefreshToken ||
-            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+        const exp = this._shared.getExpirationDate();
+        if (this._shared.getToken() &&
+            (!exp || exp.getTime() + this._config.refreshBeforeExpiration > Date.now())  &&
+            (options.autoRefreshToken ||
+            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken)) {
             return this.refreshToken()
                 .switchMap(() => this.actualRequest(url, options));
+        }
+        if (this._config.tryTokenRefreshIfUnauthorized) {
+            return this.actualRequest(url, options)
+                .catch((response: Response) => {
+                    if (response.status === 401) {
+                        return this.refreshToken()
+                            .switchMap(() => this.actualRequest(url, options));
+                    }
+                    throw response;
+                })
         }
         return this.actualRequest(url, options);
     }

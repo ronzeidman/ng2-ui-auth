@@ -64,6 +64,8 @@ export abstract class CustomConfig {
     withCredentials: boolean;
     autoRefreshToken: boolean;
     refreshUrl: string;
+    refreshBeforeExpiration: number;
+    tryTokenRefreshIfUnauthorized: boolean;
     resolveToken: (response: Response) => string;
 }
 
@@ -104,10 +106,16 @@ export class ConfigService {
     storageType = 'localStorage';
     defaultHeaders = null;
     autoRefreshToken = false;
+    refreshBeforeExpiration = 600000; //10 minutes
+    tryTokenRefreshIfUnauthorized = false;
     cordova = !!window['cordova'];
-    resolveToken = (response: Response) => {
-        const accessToken: string | Object | null | undefined = response && response.json() &&
-            (response.json().access_token || response.json().token || response.json().data);
+    resolveToken = (response: Response|Object) => {
+        let tokenObj = response;
+        if (response instanceof Response) {
+            tokenObj = response.json();
+        }
+        const accessToken: string | Object | null | undefined = tokenObj &&
+            (tokenObj['access_token'] || tokenObj['token'] || tokenObj['data']);
         if (!accessToken) {
             console.warn('No token found');
             return null;

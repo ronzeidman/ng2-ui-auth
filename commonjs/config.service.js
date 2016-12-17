@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
 var CustomConfig = (function () {
     function CustomConfig() {
     }
@@ -33,10 +34,16 @@ var ConfigService = (function () {
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
         this.autoRefreshToken = false;
+        this.refreshBeforeExpiration = 600000;
+        this.tryTokenRefreshIfUnauthorized = false;
         this.cordova = !!window['cordova'];
         this.resolveToken = function (response) {
-            var accessToken = response && response.json() &&
-                (response.json().access_token || response.json().token || response.json().data);
+            var tokenObj = response;
+            if (response instanceof http_1.Response) {
+                tokenObj = response.json();
+            }
+            var accessToken = tokenObj &&
+                (tokenObj['access_token'] || tokenObj['token'] || tokenObj['data']);
             if (!accessToken) {
                 console.warn('No token found');
                 return null;

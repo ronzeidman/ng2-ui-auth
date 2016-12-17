@@ -3,9 +3,10 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var _angular_core = require('@angular/core');
-var rxjs_Observable = require('rxjs/Observable');
 var _angular_http = require('@angular/http');
+var rxjs_Observable = require('rxjs/Observable');
 var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
+var rxjs_add_operator_catch = require('rxjs/add/operator/catch');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_observable_empty = require('rxjs/add/observable/empty');
@@ -48,10 +49,16 @@ var ConfigService = (function () {
         this.storageType = 'localStorage';
         this.defaultHeaders = null;
         this.autoRefreshToken = false;
+        this.refreshBeforeExpiration = 600000;
+        this.tryTokenRefreshIfUnauthorized = false;
         this.cordova = !!window['cordova'];
         this.resolveToken = function (response) {
-            var accessToken = response && response.json() &&
-                (response.json().access_token || response.json().token || response.json().data);
+            var tokenObj = response;
+            if (response instanceof _angular_http.Response) {
+                tokenObj = response.json();
+            }
+            var accessToken = tokenObj &&
+                (tokenObj['access_token'] || tokenObj['token'] || tokenObj['data']);
             if (!accessToken) {
                 console.warn('No token found');
                 return null;
@@ -375,11 +382,23 @@ var JwtHttp = (function () {
     }
     JwtHttp.prototype.request = function (url, options) {
         var _this = this;
-        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
-            options.autoRefreshToken ||
-            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+        var exp = this._shared.getExpirationDate();
+        if (this._shared.getToken() &&
+            (!exp || exp.getTime() + this._config.refreshBeforeExpiration > Date.now()) &&
+            (options.autoRefreshToken ||
+                typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken)) {
             return this.refreshToken()
                 .switchMap(function () { return _this.actualRequest(url, options); });
+        }
+        if (this._config.tryTokenRefreshIfUnauthorized) {
+            return this.actualRequest(url, options)
+                .catch(function (response) {
+                if (response.status === 401) {
+                    return _this.refreshToken()
+                        .switchMap(function () { return _this.actualRequest(url, options); });
+                }
+                throw response;
+            });
         }
         return this.actualRequest(url, options);
     };
@@ -918,6 +937,9 @@ var AuthService = (function () {
 var Ng2UiAuthModule = (function () {
     function Ng2UiAuthModule() {
     }
+    Ng2UiAuthModule.getWithConfig = function (config) {
+        return Ng2UiAuthModule.forRoot(config);
+    };
     Ng2UiAuthModule.forRoot = function (config, httpProvider) {
         if (httpProvider === void 0) { httpProvider = {
             provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.Http, SharedService, ConfigService]

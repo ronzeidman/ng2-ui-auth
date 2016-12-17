@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/switchMap');
+require('rxjs/add/operator/catch');
 var config_service_1 = require('./config.service');
 var shared_service_1 = require('./shared.service');
 var JwtHttp = (function () {
@@ -21,11 +22,23 @@ var JwtHttp = (function () {
     }
     JwtHttp.prototype.request = function (url, options) {
         var _this = this;
-        if (this._shared.getToken() && !this._shared.getExpirationDate() &&
-            options.autoRefreshToken ||
-            typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken) {
+        var exp = this._shared.getExpirationDate();
+        if (this._shared.getToken() &&
+            (!exp || exp.getTime() + this._config.refreshBeforeExpiration > Date.now()) &&
+            (options.autoRefreshToken ||
+                typeof options.autoRefreshToken === 'undefined' && this._config.autoRefreshToken)) {
             return this.refreshToken()
                 .switchMap(function () { return _this.actualRequest(url, options); });
+        }
+        if (this._config.tryTokenRefreshIfUnauthorized) {
+            return this.actualRequest(url, options)
+                .catch(function (response) {
+                if (response.status === 401) {
+                    return _this.refreshToken()
+                        .switchMap(function () { return _this.actualRequest(url, options); });
+                }
+                throw response;
+            });
         }
         return this.actualRequest(url, options);
     };

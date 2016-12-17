@@ -9,7 +9,7 @@ export declare class SharedService {
     constructor(storage: StorageService, config: ConfigService);
     getToken(): any;
     getPayload(): any;
-    setToken(response: string | Response): void;
+    setToken(response: string | Response | Object): void;
     removeToken(): void;
     isAuthenticated(): boolean;
     getExpirationDate(): Date;

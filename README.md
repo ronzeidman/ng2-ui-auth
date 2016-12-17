@@ -12,14 +12,14 @@ import {Ng2UiAuthModule, CustomConfig} from 'ng2-ui-auth';
 export const GOOGLE_CLIENT_ID = '******************************.apps.googleusercontent.com';
 export class MyAuthConfig extends CustomConfig {
     defaultHeaders = {'Content-Type': 'application/json'};
-    providers: { [provider: string]: IProvider } = {google: {clientId: GOOGLE_CLIENT_ID}};
+    providers = {google: {clientId: GOOGLE_CLIENT_ID}};
 }
 
 @NgModule({
     imports: [
         BrowserModule,
         HttpModule,
-        Ng2UiAuthModule.getWithConfig(MyAuthConfig),
+        Ng2UiAuthModule.forRoot(MyAuthConfig),
         ...
     ]
     ...

@@ -12,5 +12,6 @@ export { StorageService } from './storage.service';
 export { AuthService } from './auth.service';
 export { ConfigService, CustomConfig } from './config.service';
 export declare class Ng2UiAuthModule {
+    static getWithConfig(config: Type<CustomConfig>): ModuleWithProviders;
     static forRoot(config: Type<CustomConfig>, httpProvider?: any): ModuleWithProviders;
 }

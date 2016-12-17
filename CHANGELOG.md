@@ -1,3 +1,8 @@
+#### master (5.1.0)
+* issue #68 - fixed issue with responseType='token'
+* issue #65 - added tryTokenRefreshIfUnauthorized (off by default)
+* pull request #64 & pull request #67 - added ability to change the httpService `Ng2UiAuthModule.forRoot(config, MyJwtHttp)`
+
 #### 5.0.0
 * might be breaking: changed out folder names, not linking to the bundled version by default because of webpack issues with the pre-bundled version
 * pull request #63 set token only when it's available

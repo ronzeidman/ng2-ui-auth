@@ -32,7 +32,7 @@ export class SharedService {
         }
     }
 
-    setToken(response: string | Response) {
+    setToken(response: string | Response | Object) {
         if (!response) {
             console.warn('Can\'t set token without passing a value');
             return;

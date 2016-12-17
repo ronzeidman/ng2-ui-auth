@@ -58,6 +58,8 @@ export declare abstract class CustomConfig {
     withCredentials: boolean;
     autoRefreshToken: boolean;
     refreshUrl: string;
+    refreshBeforeExpiration: number;
+    tryTokenRefreshIfUnauthorized: boolean;
     resolveToken: (response: Response) => string;
 }
 export declare class ConfigService {
@@ -77,7 +79,9 @@ export declare class ConfigService {
     storageType: string;
     defaultHeaders: any;
     autoRefreshToken: boolean;
+    refreshBeforeExpiration: number;
+    tryTokenRefreshIfUnauthorized: boolean;
     cordova: boolean;
-    resolveToken: (response: Response) => any;
+    resolveToken: (response: Object | Response) => any;
     providers: IProviders;
 }

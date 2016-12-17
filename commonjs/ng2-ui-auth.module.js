@@ -44,6 +44,9 @@ exports.CustomConfig = config_service_2.CustomConfig;
 var Ng2UiAuthModule = (function () {
     function Ng2UiAuthModule() {
     }
+    Ng2UiAuthModule.getWithConfig = function (config) {
+        return Ng2UiAuthModule.forRoot(config);
+    };
     Ng2UiAuthModule.forRoot = function (config, httpProvider) {
         if (httpProvider === void 0) { httpProvider = {
             provide: jwt_http_service_1.JwtHttp, useClass: jwt_http_service_1.JwtHttp, deps: [http_1.Http, shared_service_1.SharedService, config_service_1.ConfigService]
