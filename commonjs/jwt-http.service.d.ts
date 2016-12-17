@@ -1,4 +1,4 @@
-import { Http, Response, RequestOptionsArgs, Request } from '@angular/http';
+import { Http, Response, RequestOptionsArgs, Headers, Request } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
@@ -20,6 +20,9 @@ export declare class JwtHttp {
     patch(url: string, body: any, options?: JwtRequestOptionsArgs): Observable<Response>;
     head(url: string, options?: JwtRequestOptionsArgs): Observable<Response>;
     refreshToken(): Observable<Response>;
-    private actualRequest(url, options?);
-    private setHeaders(obj);
+    protected actualRequest(url: string | Request, options?: JwtRequestOptionsArgs): Observable<Response>;
+    protected setHeaders(obj: {
+        headers?: Headers;
+        [index: string]: any;
+    }): void;
 }

@@ -94,7 +94,7 @@ export class JwtHttp {
             .do((res: Response) => this._shared.setToken(res));
     }
 
-    private actualRequest(url: string | Request, options?: JwtRequestOptionsArgs) {
+    protected actualRequest(url: string | Request, options?: JwtRequestOptionsArgs) {
         if (url instanceof Request) {
             url.headers = url.headers || new Headers();
             this.setHeaders(url);
@@ -105,7 +105,7 @@ export class JwtHttp {
         return this._http.request(url, options);
     }
 
-    private setHeaders(obj: { headers?: Headers, [index: string]: any }) {
+    protected setHeaders(obj: { headers?: Headers, [index: string]: any }) {
         obj.headers = obj.headers || new Headers();
         if (this._config.defaultHeaders) {
             Object.keys(this._config.defaultHeaders).forEach((defaultHeader) => {
