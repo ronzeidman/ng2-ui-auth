@@ -1,4 +1,4 @@
-import { ConfigService } from './config.service';
+import {ConfigService} from './config.service';
 export declare class StorageService {
     private config;
     private store;

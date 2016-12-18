@@ -937,13 +937,7 @@ var AuthService = (function () {
 var Ng2UiAuthModule = (function () {
     function Ng2UiAuthModule() {
     }
-    Ng2UiAuthModule.getWithConfig = function (config) {
-        return Ng2UiAuthModule.forRoot(config);
-    };
-    Ng2UiAuthModule.forRoot = function (config, httpProvider) {
-        if (httpProvider === void 0) { httpProvider = {
-            provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.Http, SharedService, ConfigService]
-        }; }
+    Ng2UiAuthModule.forRootWithCustomHttp = function (config, httpProvider) {
         return {
             ngModule: Ng2UiAuthModule,
             providers: [
@@ -952,6 +946,23 @@ var Ng2UiAuthModule = (function () {
                 { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
                 { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
                 httpProvider,
+                { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
+                { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
+                { provide: Oauth1Service, useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService] },
+                { provide: Oauth2Service, useClass: Oauth2Service, deps: [JwtHttp, PopupService, StorageService, ConfigService] },
+                { provide: LocalService, useClass: LocalService, deps: [JwtHttp, SharedService, ConfigService] },
+                { provide: AuthService, useClass: AuthService, deps: [SharedService, LocalService, OauthService] },]
+        };
+    };
+    Ng2UiAuthModule.forRoot = function (config) {
+        return {
+            ngModule: Ng2UiAuthModule,
+            providers: [
+                { provide: CustomConfig, useClass: config },
+                { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
+                { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
+                { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
+                { provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.Http, SharedService, ConfigService] },
                 { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
                 { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
                 { provide: Oauth1Service, useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService] },

@@ -1,7 +1,6 @@
 /**
  * Created by Ron on 25/12/2015.
  */
-
 import {CustomConfig, ConfigService} from './config.service';
 import {SharedService} from './shared.service';
 import {JwtHttp} from './jwt-http.service';
@@ -30,13 +29,7 @@ export {ConfigService, CustomConfig} from './config.service';
     imports: [HttpModule]
 })
 export class Ng2UiAuthModule {
-    static getWithConfig(config: Type<CustomConfig>) {
-        return Ng2UiAuthModule.forRoot(config);
-    }
-
-    static forRoot(config: Type<CustomConfig>, httpProvider: any = {
-        provide: JwtHttp, useClass: JwtHttp, deps: [Http, SharedService, ConfigService]
-    }): ModuleWithProviders {
+    static forRootWithCustomHttp(config: Type<CustomConfig>, httpProvider: any): ModuleWithProviders {
         return {
             ngModule: Ng2UiAuthModule,
             providers: [
@@ -45,6 +38,24 @@ export class Ng2UiAuthModule {
                 {provide: StorageService, useClass: StorageService, deps: [ConfigService]},
                 {provide: SharedService,  useClass: SharedService, deps: [StorageService, ConfigService]},
                 httpProvider,
+                {provide: OauthService,  useClass: OauthService, deps: [JwtHttp, Injector, SharedService, ConfigService]} ,
+                {provide: PopupService,  useClass: PopupService, deps: [ConfigService]},
+                {provide: Oauth1Service,  useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService]} ,
+                {provide: Oauth2Service,  useClass: Oauth2Service, deps: [JwtHttp, PopupService, StorageService, ConfigService]} ,
+                {provide: LocalService,  useClass: LocalService, deps: [JwtHttp, SharedService, ConfigService]} ,
+                {provide: AuthService,  useClass: AuthService, deps: [SharedService, LocalService, OauthService]} ,]
+        }
+    }
+
+    static forRoot(config: Type<CustomConfig>): ModuleWithProviders {
+        return {
+            ngModule: Ng2UiAuthModule,
+            providers: [
+                {provide: CustomConfig, useClass: config },
+                {provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
+                {provide: StorageService, useClass: StorageService, deps: [ConfigService]},
+                {provide: SharedService,  useClass: SharedService, deps: [StorageService, ConfigService]},
+                {provide: JwtHttp, useClass: JwtHttp, deps: [Http, SharedService, ConfigService]},
                 {provide: OauthService,  useClass: OauthService, deps: [JwtHttp, Injector, SharedService, ConfigService]} ,
                 {provide: PopupService,  useClass: PopupService, deps: [ConfigService]},
                 {provide: Oauth1Service,  useClass: Oauth1Service, deps: [JwtHttp, PopupService, ConfigService]} ,

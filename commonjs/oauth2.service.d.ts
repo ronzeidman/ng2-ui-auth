@@ -1,10 +1,10 @@
-import { Observable } from 'rxjs/Observable';
-import { ConfigService, IOauth2Options } from './config.service';
-import { PopupService } from './popup.service';
-import { StorageService } from './storage.service';
+import {Observable} from 'rxjs/Observable';
+import {ConfigService, IOauth2Options} from './config.service';
+import {PopupService} from './popup.service';
+import {StorageService} from './storage.service';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
-import { JwtHttp } from './jwt-http.service';
+import {JwtHttp} from './jwt-http.service';
 export declare class Oauth2Service {
     private http;
     private popup;

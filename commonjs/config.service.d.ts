@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import {Response} from '@angular/http';
 export interface IPopupOptions {
     width?: number;
     height?: number;
