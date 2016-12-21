@@ -1,7 +1,7 @@
-#### master (6.0.0)
+#### 6.0.0
 * issue #68 - fixed issue with responseType='token'
 * issue #65 - added tryTokenRefreshIfUnauthorized (off by default)
-* pull request #64 & pull request #67 - added ability to change the httpService `Ng2UiAuthModule.forRootWithCustomHttp(config, MyJwtHttp)`
+* pull request #64 & pull request #67 - added ability to change the httpService `Ng2UiAuthModule.forRootWithCustomHttp(config, {provide: JwtHttp, useClass: MyHttp, deps: [Http, SharedService, ConfigService]})`
 * **BREAKING CHANGE:** Replaced `Ng2UiAuthModule.getWithConfig(MyAuthConfig)` with `Ng2UiAuthModule.forRoot(MyAuthConfig)` to look more like other modules
 
 #### 5.0.0
