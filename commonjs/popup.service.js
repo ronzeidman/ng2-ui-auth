@@ -69,7 +69,7 @@ var PopupService = (function () {
             .fromEvent(this.popupWindow, 'loadstart')
             .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return Observable_1.Observable.of('Popup Window Closed');
+                return Observable_1.Observable.throw('Popup Window Closed');
             }
             if (event.url.indexOf(redirectUri) !== 0) {
                 return Observable_1.Observable.empty();

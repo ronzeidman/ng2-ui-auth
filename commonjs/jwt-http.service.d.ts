@@ -1,9 +1,9 @@
-import {Http, Response, RequestOptionsArgs, Headers, Request} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Http, Response, RequestOptionsArgs, Headers, Request } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
-import {ConfigService} from './config.service';
-import {SharedService} from './shared.service';
+import { ConfigService } from './config.service';
+import { SharedService } from './shared.service';
 export interface JwtRequestOptionsArgs extends RequestOptionsArgs {
     autoRefreshToken?: boolean;
 }

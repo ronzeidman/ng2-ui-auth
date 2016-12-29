@@ -78,7 +78,7 @@ export class PopupService {
             .fromEvent<Event>(this.popupWindow, 'loadstart')
             .switchMap((event: Event & { url: string }) => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return Observable.of('Popup Window Closed');
+                    return Observable.throw('Popup Window Closed');
                 }
                 if (event.url.indexOf(redirectUri) !== 0) {
                     return Observable.empty();
