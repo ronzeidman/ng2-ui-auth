@@ -113,7 +113,7 @@ export class PopupService {
             .interval(50)
             .switchMap(() => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return Observable.of('Popup Window Closed');
+                    return Observable.throw('Popup Window Closed');
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';

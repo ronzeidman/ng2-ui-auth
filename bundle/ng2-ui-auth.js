@@ -624,7 +624,7 @@ var PopupService = (function () {
             .interval(50)
             .switchMap(function () {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return rxjs_Observable.Observable.of('Popup Window Closed');
+                return rxjs_Observable.Observable.throw('Popup Window Closed');
             }
             var documentOrigin = document.location.host;
             var popupWindowOrigin = '';

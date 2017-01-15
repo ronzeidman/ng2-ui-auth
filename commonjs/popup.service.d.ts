@@ -1,5 +1,5 @@
-import {Observable} from 'rxjs/Observable';
-import {ConfigService, IPopupOptions} from './config.service';
+import { Observable } from 'rxjs/Observable';
+import { ConfigService, IPopupOptions } from './config.service';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/empty';

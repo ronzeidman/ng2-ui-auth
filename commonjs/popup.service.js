@@ -101,7 +101,7 @@ var PopupService = (function () {
             .interval(50)
             .switchMap(function () {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return Observable_1.Observable.of('Popup Window Closed');
+                return Observable_1.Observable.throw('Popup Window Closed');
             }
             var documentOrigin = document.location.host;
             var popupWindowOrigin = '';
