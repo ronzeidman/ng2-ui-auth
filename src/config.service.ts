@@ -79,14 +79,11 @@ export class ConfigService {
             if (key !== 'providers') {
                 this[key] = config[key];
             } else {
-                Object.keys(config[key]).forEach((provider) => {
-                    if (typeof this.providers[provider] === 'undefined') {
-                        this.providers[provider] = config.providers[provider];
-                    } else {
-                        Object.keys(config.providers[provider]).forEach((prop) => {
-                            this.providers[provider][prop] = config.providers[provider][prop];
-                        });
-                    }
+                Object.keys(config[key]).map(provider => {
+                    this.providers[provider] = Object.assign(
+                        this.providers[provider] || {}, 
+                        config.providers[provider]
+                    );
                 });
             }
         });
@@ -108,7 +105,7 @@ export class ConfigService {
     autoRefreshToken = false;
     refreshBeforeExpiration = 600000; //10 minutes
     tryTokenRefreshIfUnauthorized = false;
-    cordova = !!window['cordova'];
+    cordova = this.isCordovaApp();
     resolveToken = (response: Response|Object) => {
         let tokenObj = response;
         if (response instanceof Response) {
@@ -146,7 +143,7 @@ export class ConfigService {
             name: 'facebook',
             url: '/auth/facebook',
             authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
-            redirectUri: window.location.origin + '/',
+            redirectUri: this.getHttpHost('/'),
             requiredUrlParams: ['display', 'scope'],
             scope: ['email'],
             scopeDelimiter: ',',
@@ -158,7 +155,7 @@ export class ConfigService {
             name: 'google',
             url: '/auth/google',
             authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             requiredUrlParams: ['scope'],
             optionalUrlParams: ['display', 'state'],
             scope: ['profile', 'email'],
@@ -173,7 +170,7 @@ export class ConfigService {
             name: 'github',
             url: '/auth/github',
             authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             optionalUrlParams: ['scope'],
             scope: ['user:email'],
             scopeDelimiter: ' ',
@@ -184,7 +181,7 @@ export class ConfigService {
             name: 'instagram',
             url: '/auth/instagram',
             authorizationEndpoint: 'https://api.instagram.com/oauth/authorize',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             requiredUrlParams: ['scope'],
             scope: ['basic'],
             scopeDelimiter: '+',
@@ -194,7 +191,7 @@ export class ConfigService {
             name: 'linkedin',
             url: '/auth/linkedin',
             authorizationEndpoint: 'https://www.linkedin.com/uas/oauth2/authorization',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             requiredUrlParams: ['state'],
             scope: ['r_emailaddress'],
             scopeDelimiter: ' ',
@@ -206,7 +203,7 @@ export class ConfigService {
             name: 'twitter',
             url: '/auth/twitter',
             authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             oauthType: '1.0',
             popupOptions: {width: 495, height: 645}
         },
@@ -214,7 +211,7 @@ export class ConfigService {
             name: 'twitch',
             url: '/auth/twitch',
             authorizationEndpoint: 'https://api.twitch.tv/kraken/oauth2/authorize',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             requiredUrlParams: ['scope'],
             scope: ['user_read'],
             scopeDelimiter: ' ',
@@ -226,7 +223,7 @@ export class ConfigService {
             name: 'live',
             url: '/auth/live',
             authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             requiredUrlParams: ['display', 'scope'],
             scope: ['wl.emails'],
             scopeDelimiter: ' ',
@@ -238,7 +235,7 @@ export class ConfigService {
             name: 'yahoo',
             url: '/auth/yahoo',
             authorizationEndpoint: 'https://api.login.yahoo.com/oauth2/request_auth',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             scope: [],
             scopeDelimiter: ',',
             oauthType: '2.0',
@@ -248,7 +245,7 @@ export class ConfigService {
             name: 'bitbucket',
             url: '/auth/bitbucket',
             authorizationEndpoint: 'https://bitbucket.org/site/oauth2/authorize',
-            redirectUri: window.location.origin + '/',
+            redirectUri: this.getHttpHost('/'),
             requiredUrlParams: ['scope'],
             scope: ['email'],
             scopeDelimiter: ',',
@@ -259,7 +256,7 @@ export class ConfigService {
             name: 'spotify',
             url: '/auth/spotify',
             authorizationEndpoint: 'https://accounts.spotify.com/authorize',
-            redirectUri: window.location.origin,
+            redirectUri: this.getHttpHost(),
             optionalUrlParams: ['state'],
             requiredUrlParams: ['scope'],
             scope: ['user-read-email'],
@@ -270,4 +267,12 @@ export class ConfigService {
             state: () => encodeURIComponent(Math.random().toString(36).substr(2))
         }
     };
+
+    getHttpHost(path = '') {
+        return window.location.origin + path;
+    }
+
+    isCordovaApp() {
+        return !!window['cordova'];
+    }
 }
