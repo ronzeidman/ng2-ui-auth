@@ -82,7 +82,10 @@ var SharedService = (function () {
     };
     SharedService.prototype.getExpirationDate = function () {
         var payload = this.getPayload();
-        if (payload && payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
+        if (!(payload && payload.exp)) {
+            return null;
+        }
+        if (Math.round(new Date().getTime() / 1000) < payload.exp) {
             var date = new Date(0);
             date.setUTCSeconds(payload.exp);
             return date;
