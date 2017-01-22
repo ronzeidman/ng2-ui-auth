@@ -78,7 +78,7 @@ export class PopupService {
             .fromEvent<Event>(this.popupWindow, 'loadstart')
             .switchMap((event: Event & { url: string }) => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return Observable.of('Popup Window Closed');
+                    return Observable.throw(new Error('Authentication Canceled'));
                 }
                 if (event.url.indexOf(redirectUri) !== 0) {
                     return Observable.empty();
@@ -104,8 +104,7 @@ export class PopupService {
                 }
                 return Observable.empty();
             })
-            .take(1)
-            .takeWhile((response) => response !== 'Popup Window Closed');
+            .take(1);
     }
 
     pollPopup() {
@@ -113,7 +112,7 @@ export class PopupService {
             .interval(50)
             .switchMap(() => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return Observable.of('Popup Window Closed');
+                    return Observable.throw(new Error('Authentication Canceled'));
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';
@@ -138,7 +137,6 @@ export class PopupService {
                 }
                 return Observable.empty();
             })
-            .take(1)
-            .takeWhile((response) => response !== 'Popup Window Closed');
+            .take(1);
     }
 }

@@ -1,3 +1,7 @@
+#### 6.1.0
+* pull request #73: universal support
+* throwing `new Error('Authentication Canceled')` when popup is closed prematurely so you could stop your spinners on `subscribe({..., error: err => <stop spinners here>, complete: () => <and here>})`
+
 #### 6.0.0
 * issue #68 - fixed issue with responseType='token'
 * issue #65 - added tryTokenRefreshIfUnauthorized (off by default)
