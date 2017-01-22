@@ -14,6 +14,7 @@ var utils_1 = require('./utils');
 var config_service_1 = require('./config.service');
 require('rxjs/add/observable/interval');
 require('rxjs/add/observable/fromEvent');
+require('rxjs/add/observable/throw');
 require('rxjs/add/observable/empty');
 require('rxjs/add/operator/switchMap');
 require('rxjs/add/operator/take');

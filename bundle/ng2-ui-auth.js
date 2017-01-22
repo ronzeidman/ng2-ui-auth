@@ -9,6 +9,7 @@ var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
 var rxjs_add_operator_catch = require('rxjs/add/operator/catch');
 var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
+var rxjs_add_observable_throw = require('rxjs/add/observable/throw');
 var rxjs_add_observable_empty = require('rxjs/add/observable/empty');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');

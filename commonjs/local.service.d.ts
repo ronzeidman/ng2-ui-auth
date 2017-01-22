@@ -1,9 +1,9 @@
-import {SharedService} from './shared.service';
-import {ConfigService} from './config.service';
-import {RequestOptionsArgs, Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { SharedService } from './shared.service';
+import { ConfigService } from './config.service';
+import { RequestOptionsArgs, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
-import {JwtHttp} from './jwt-http.service';
+import { JwtHttp } from './jwt-http.service';
 export declare class LocalService {
     private http;
     private shared;
