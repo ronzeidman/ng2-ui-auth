@@ -84,4 +84,6 @@ export declare class ConfigService {
     cordova: boolean;
     resolveToken: (response: Object | Response) => any;
     providers: IProviders;
+    getHttpHost(path?: string): string;
+    isCordovaApp(): boolean;
 }

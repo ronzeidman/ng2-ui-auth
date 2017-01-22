@@ -69,7 +69,7 @@ var PopupService = (function () {
             .fromEvent(this.popupWindow, 'loadstart')
             .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return Observable_1.Observable.of('Popup Window Closed');
+                return Observable_1.Observable.throw(new Error('Authentication Canceled'));
             }
             if (event.url.indexOf(redirectUri) !== 0) {
                 return Observable_1.Observable.empty();
@@ -92,8 +92,7 @@ var PopupService = (function () {
             }
             return Observable_1.Observable.empty();
         })
-            .take(1)
-            .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
+            .take(1);
     };
     PopupService.prototype.pollPopup = function () {
         var _this = this;
@@ -101,7 +100,7 @@ var PopupService = (function () {
             .interval(50)
             .switchMap(function () {
             if (!_this.popupWindow || _this.popupWindow.closed) {
-                return Observable_1.Observable.of('Popup Window Closed');
+                return Observable_1.Observable.throw(new Error('Authentication Canceled'));
             }
             var documentOrigin = document.location.host;
             var popupWindowOrigin = '';
@@ -126,8 +125,7 @@ var PopupService = (function () {
             }
             return Observable_1.Observable.empty();
         })
-            .take(1)
-            .takeWhile(function (response) { return response !== 'Popup Window Closed'; });
+            .take(1);
     };
     PopupService = __decorate([
         core_1.Injectable(), 

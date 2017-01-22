@@ -36,7 +36,7 @@ var ConfigService = (function () {
         this.autoRefreshToken = false;
         this.refreshBeforeExpiration = 600000;
         this.tryTokenRefreshIfUnauthorized = false;
-        this.cordova = !!window['cordova'];
+        this.cordova = this.isCordovaApp();
         this.resolveToken = function (response) {
             var tokenObj = response;
             if (response instanceof http_1.Response) {
@@ -72,7 +72,7 @@ var ConfigService = (function () {
                 name: 'facebook',
                 url: '/auth/facebook',
                 authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
-                redirectUri: window.location.origin + '/',
+                redirectUri: this.getHttpHost('/'),
                 requiredUrlParams: ['display', 'scope'],
                 scope: ['email'],
                 scopeDelimiter: ',',
@@ -84,7 +84,7 @@ var ConfigService = (function () {
                 name: 'google',
                 url: '/auth/google',
                 authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 requiredUrlParams: ['scope'],
                 optionalUrlParams: ['display', 'state'],
                 scope: ['profile', 'email'],
@@ -99,7 +99,7 @@ var ConfigService = (function () {
                 name: 'github',
                 url: '/auth/github',
                 authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 optionalUrlParams: ['scope'],
                 scope: ['user:email'],
                 scopeDelimiter: ' ',
@@ -110,7 +110,7 @@ var ConfigService = (function () {
                 name: 'instagram',
                 url: '/auth/instagram',
                 authorizationEndpoint: 'https://api.instagram.com/oauth/authorize',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 requiredUrlParams: ['scope'],
                 scope: ['basic'],
                 scopeDelimiter: '+',
@@ -120,7 +120,7 @@ var ConfigService = (function () {
                 name: 'linkedin',
                 url: '/auth/linkedin',
                 authorizationEndpoint: 'https://www.linkedin.com/uas/oauth2/authorization',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 requiredUrlParams: ['state'],
                 scope: ['r_emailaddress'],
                 scopeDelimiter: ' ',
@@ -132,7 +132,7 @@ var ConfigService = (function () {
                 name: 'twitter',
                 url: '/auth/twitter',
                 authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 oauthType: '1.0',
                 popupOptions: { width: 495, height: 645 }
             },
@@ -140,7 +140,7 @@ var ConfigService = (function () {
                 name: 'twitch',
                 url: '/auth/twitch',
                 authorizationEndpoint: 'https://api.twitch.tv/kraken/oauth2/authorize',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 requiredUrlParams: ['scope'],
                 scope: ['user_read'],
                 scopeDelimiter: ' ',
@@ -152,7 +152,7 @@ var ConfigService = (function () {
                 name: 'live',
                 url: '/auth/live',
                 authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 requiredUrlParams: ['display', 'scope'],
                 scope: ['wl.emails'],
                 scopeDelimiter: ' ',
@@ -164,7 +164,7 @@ var ConfigService = (function () {
                 name: 'yahoo',
                 url: '/auth/yahoo',
                 authorizationEndpoint: 'https://api.login.yahoo.com/oauth2/request_auth',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 scope: [],
                 scopeDelimiter: ',',
                 oauthType: '2.0',
@@ -174,7 +174,7 @@ var ConfigService = (function () {
                 name: 'bitbucket',
                 url: '/auth/bitbucket',
                 authorizationEndpoint: 'https://bitbucket.org/site/oauth2/authorize',
-                redirectUri: window.location.origin + '/',
+                redirectUri: this.getHttpHost('/'),
                 requiredUrlParams: ['scope'],
                 scope: ['email'],
                 scopeDelimiter: ',',
@@ -185,7 +185,7 @@ var ConfigService = (function () {
                 name: 'spotify',
                 url: '/auth/spotify',
                 authorizationEndpoint: 'https://accounts.spotify.com/authorize',
-                redirectUri: window.location.origin,
+                redirectUri: this.getHttpHost(),
                 optionalUrlParams: ['state'],
                 requiredUrlParams: ['scope'],
                 scope: ['user-read-email'],
@@ -204,19 +204,19 @@ var ConfigService = (function () {
                 _this[key] = config[key];
             }
             else {
-                Object.keys(config[key]).forEach(function (provider) {
-                    if (typeof _this.providers[provider] === 'undefined') {
-                        _this.providers[provider] = config.providers[provider];
-                    }
-                    else {
-                        Object.keys(config.providers[provider]).forEach(function (prop) {
-                            _this.providers[provider][prop] = config.providers[provider][prop];
-                        });
-                    }
+                Object.keys(config[key]).map(function (provider) {
+                    _this.providers[provider] = Object.assign(_this.providers[provider] || {}, config.providers[provider]);
                 });
             }
         });
     }
+    ConfigService.prototype.getHttpHost = function (path) {
+        if (path === void 0) { path = ''; }
+        return window.location.origin + path;
+    };
+    ConfigService.prototype.isCordovaApp = function () {
+        return !!window['cordova'];
+    };
     ConfigService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [CustomConfig])
