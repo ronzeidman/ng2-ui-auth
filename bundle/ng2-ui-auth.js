@@ -591,8 +591,10 @@ var PopupService = (function () {
     PopupService.prototype.eventListener = function (redirectUri) {
         var _this = this;
         return rxjs_Observable.Observable
-            .merge(rxjs_Observable.Observable.fromEvent(this.popupWindow, 'close')
-            .switchMap(function () { return rxjs_Observable.Observable.throw(new Error('Authentication Canceled')); }), rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstart')
+            .merge(rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstop')
+            .switchMap(function () {
+            return rxjs_Observable.Observable.throw(new Error('Authentication Canceled'));
+        }), rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstart')
             .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
                 return rxjs_Observable.Observable.throw(new Error('Authentication Canceled'));
