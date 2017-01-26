@@ -37,7 +37,7 @@ export class OauthService {
         let url = opts.url ? opts.url : joinUrl(this.config.baseUrl, this.config.unlinkUrl);
         opts.body = JSON.stringify({ provider: provider }) || opts.body;
         opts.method = opts.method || 'POST';
-        
+
         return this.http.request(url, opts);
     }
 }

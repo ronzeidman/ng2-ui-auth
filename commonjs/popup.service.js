@@ -16,6 +16,7 @@ require('rxjs/add/observable/interval');
 require('rxjs/add/observable/fromEvent');
 require('rxjs/add/observable/throw');
 require('rxjs/add/observable/empty');
+require('rxjs/add/observable/merge');
 require('rxjs/add/operator/switchMap');
 require('rxjs/add/operator/take');
 require('rxjs/add/operator/takeWhile');
@@ -67,7 +68,8 @@ var PopupService = (function () {
     PopupService.prototype.eventListener = function (redirectUri) {
         var _this = this;
         return Observable_1.Observable
-            .fromEvent(this.popupWindow, 'loadstart')
+            .merge(Observable_1.Observable.fromEvent(this.popupWindow, 'close')
+            .switchMap(function () { return Observable_1.Observable.throw(new Error('Authentication Canceled')); }), Observable_1.Observable.fromEvent(this.popupWindow, 'loadstart')
             .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
                 return Observable_1.Observable.throw(new Error('Authentication Canceled'));
@@ -93,7 +95,7 @@ var PopupService = (function () {
             }
             return Observable_1.Observable.empty();
         })
-            .take(1);
+            .take(1));
     };
     PopupService.prototype.pollPopup = function () {
         var _this = this;

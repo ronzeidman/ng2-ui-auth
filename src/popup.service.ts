@@ -6,6 +6,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeWhile';
@@ -75,36 +76,38 @@ export class PopupService {
 
     eventListener(redirectUri: string) {
         return Observable
-            .fromEvent<Event>(this.popupWindow, 'loadstart')
-            .switchMap((event: Event & { url: string }) => {
-                if (!this.popupWindow || this.popupWindow.closed) {
-                    return Observable.throw(new Error('Authentication Canceled'));
-                }
-                if (event.url.indexOf(redirectUri) !== 0) {
-                    return Observable.empty();
-                }
-
-                let parser = document.createElement('a');
-                parser.href = event.url;
-
-                if (parser.search || parser.hash) {
-                    const queryParams = parser.search.substring(1).replace(/\/$/, '');
-                    const hashParams = parser.hash.substring(1).replace(/\/$/, '');
-                    const hash = PopupService.parseQueryString(hashParams);
-                    const qs = PopupService.parseQueryString(queryParams);
-                    const allParams = assign({}, qs, hash);
-
-                    this.popupWindow.close();
-
-                    if (allParams.error) {
-                        throw allParams.error;
-                    } else {
-                        return Observable.of(allParams);
+            .merge(Observable.fromEvent<Event>(this.popupWindow, 'close')
+                   .switchMap(() => Observable.throw(new Error ('Authentication Canceled'))),
+                Observable.fromEvent(this.popupWindow, 'loadstart')
+                .switchMap((event: Event & { url: string }) => {
+                    if (!this.popupWindow || this.popupWindow.closed) {
+                        return Observable.throw(new Error('Authentication Canceled'));
                     }
-                }
-                return Observable.empty();
-            })
-            .take(1);
+                    if (event.url.indexOf(redirectUri) !== 0) {
+                        return Observable.empty();
+                    }
+
+                    let parser = document.createElement('a');
+                    parser.href = event.url;
+
+                    if (parser.search || parser.hash) {
+                        const queryParams = parser.search.substring(1).replace(/\/$/, '');
+                        const hashParams = parser.hash.substring(1).replace(/\/$/, '');
+                        const hash = PopupService.parseQueryString(hashParams);
+                        const qs = PopupService.parseQueryString(queryParams);
+                        const allParams = assign({}, qs, hash);
+
+                        this.popupWindow.close();
+
+                        if (allParams.error) {
+                            throw allParams.error;
+                        } else {
+                            return Observable.of(allParams);
+                        }
+                    }
+                    return Observable.empty();
+                })
+                .take(1));
     }
 
     pollPopup() {

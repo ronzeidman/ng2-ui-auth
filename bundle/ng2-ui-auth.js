@@ -11,6 +11,7 @@ var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
 var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
 var rxjs_add_observable_throw = require('rxjs/add/observable/throw');
 var rxjs_add_observable_empty = require('rxjs/add/observable/empty');
+var rxjs_add_observable_merge = require('rxjs/add/observable/merge');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
 var rxjs_add_observable_of = require('rxjs/add/observable/of');
@@ -590,7 +591,8 @@ var PopupService = (function () {
     PopupService.prototype.eventListener = function (redirectUri) {
         var _this = this;
         return rxjs_Observable.Observable
-            .fromEvent(this.popupWindow, 'loadstart')
+            .merge(rxjs_Observable.Observable.fromEvent(this.popupWindow, 'close')
+            .switchMap(function () { return rxjs_Observable.Observable.throw(new Error('Authentication Canceled')); }), rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstart')
             .switchMap(function (event) {
             if (!_this.popupWindow || _this.popupWindow.closed) {
                 return rxjs_Observable.Observable.throw(new Error('Authentication Canceled'));
@@ -616,7 +618,7 @@ var PopupService = (function () {
             }
             return rxjs_Observable.Observable.empty();
         })
-            .take(1);
+            .take(1));
     };
     PopupService.prototype.pollPopup = function () {
         var _this = this;
