@@ -591,7 +591,7 @@ var PopupService = (function () {
     PopupService.prototype.eventListener = function (redirectUri) {
         var _this = this;
         return rxjs_Observable.Observable
-            .merge(rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstop')
+            .merge(rxjs_Observable.Observable.fromEvent(this.popupWindow, 'exit')
             .switchMap(function () {
             return rxjs_Observable.Observable.throw(new Error('Authentication Canceled'));
         }), rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstart')

@@ -76,7 +76,7 @@ export class PopupService {
 
     eventListener(redirectUri: string) {
         return Observable
-            .merge(Observable.fromEvent<Event>(this.popupWindow, 'loadstop')
+            .merge(Observable.fromEvent<Event>(this.popupWindow, 'exit')
                    .switchMap(() => {
                      return Observable.throw(new Error ('Authentication Canceled'))
                    }),

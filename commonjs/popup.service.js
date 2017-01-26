@@ -68,7 +68,7 @@ var PopupService = (function () {
     PopupService.prototype.eventListener = function (redirectUri) {
         var _this = this;
         return Observable_1.Observable
-            .merge(Observable_1.Observable.fromEvent(this.popupWindow, 'loadstop')
+            .merge(Observable_1.Observable.fromEvent(this.popupWindow, 'exit')
             .switchMap(function () {
             return Observable_1.Observable.throw(new Error('Authentication Canceled'));
         }), Observable_1.Observable.fromEvent(this.popupWindow, 'loadstart')
