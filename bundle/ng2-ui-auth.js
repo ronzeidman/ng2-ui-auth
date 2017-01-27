@@ -14,6 +14,7 @@ var rxjs_add_observable_empty = require('rxjs/add/observable/empty');
 var rxjs_add_observable_merge = require('rxjs/add/observable/merge');
 var rxjs_add_operator_take = require('rxjs/add/operator/take');
 var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
+var rxjs_add_operator_delay = require('rxjs/add/operator/delay');
 var rxjs_add_observable_of = require('rxjs/add/observable/of');
 var rxjs_add_operator_do = require('rxjs/add/operator/do');
 
@@ -592,6 +593,7 @@ var PopupService = (function () {
         var _this = this;
         return rxjs_Observable.Observable
             .merge(rxjs_Observable.Observable.fromEvent(this.popupWindow, 'exit')
+            .delay(1000)
             .switchMap(function () {
             return rxjs_Observable.Observable.throw(new Error('Authentication Canceled'));
         }), rxjs_Observable.Observable.fromEvent(this.popupWindow, 'loadstart')

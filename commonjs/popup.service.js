@@ -20,6 +20,7 @@ require('rxjs/add/observable/merge');
 require('rxjs/add/operator/switchMap');
 require('rxjs/add/operator/take');
 require('rxjs/add/operator/takeWhile');
+require('rxjs/add/operator/delay');
 var PopupService = (function () {
     function PopupService(config) {
         this.config = config;
@@ -69,6 +70,7 @@ var PopupService = (function () {
         var _this = this;
         return Observable_1.Observable
             .merge(Observable_1.Observable.fromEvent(this.popupWindow, 'exit')
+            .delay(1000)
             .switchMap(function () {
             return Observable_1.Observable.throw(new Error('Authentication Canceled'));
         }), Observable_1.Observable.fromEvent(this.popupWindow, 'loadstart')
