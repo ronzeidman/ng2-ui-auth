@@ -9,6 +9,8 @@ import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/map';
+
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/delay';
 
@@ -77,11 +79,7 @@ export class PopupService {
 
     eventListener(redirectUri: string) {
         return Observable
-            .merge(Observable.fromEvent<Event>(this.popupWindow, 'exit')
-                    .delay(1000)
-                   .switchMap(() => {
-                     return Observable.throw(new Error ('Authentication Canceled'))
-                   }),
+            .merge(
                 Observable.fromEvent(this.popupWindow, 'loadstart')
                 .switchMap((event: Event & { url: string }) => {
 
@@ -111,8 +109,8 @@ export class PopupService {
                         }
                     }
                     return Observable.empty();
-                })
-                .take(1));
+                }), Observable.fromEvent<Event>(this.popupWindow, 'exit').delay(100).map(() => {throw new Error('Authentication Canceled')})
+                       ).take(1);
     }
 
     pollPopup() {
