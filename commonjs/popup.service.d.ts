@@ -4,9 +4,12 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/delay';
 export declare class PopupService {
     private config;
     url: string;

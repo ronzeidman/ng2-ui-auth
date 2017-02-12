@@ -81,7 +81,7 @@ export class ConfigService {
             } else {
                 Object.keys(config[key]).map(provider => {
                     this.providers[provider] = Object.assign(
-                        this.providers[provider] || {}, 
+                        this.providers[provider] || {},
                         config.providers[provider]
                     );
                 });
