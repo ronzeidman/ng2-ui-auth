@@ -1,3 +1,7 @@
+#### Master (6.1.2) 
+* pull request #82: throw 'Authentication Canceled' when on a cordova app
+* issue #78: added optional params on google provider
+
 #### 6.1.0
 * pull request #73: universal support
 * throwing `new Error('Authentication Canceled')` when popup is closed prematurely so you could stop your spinners on `subscribe({..., error: err => <stop spinners here>, complete: () => <and here>})`

@@ -105,7 +105,7 @@ var ConfigService = (function () {
                 authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
                 redirectUri: this.getHttpHost(),
                 requiredUrlParams: ['scope'],
-                optionalUrlParams: ['display', 'state'],
+                optionalUrlParams: ['display', 'state', 'prompt', 'login_hint', 'access_type', 'include_granted_scopes', 'openid.realm', 'hd'],
                 scope: ['profile', 'email'],
                 scopePrefix: 'openid',
                 scopeDelimiter: ' ',
