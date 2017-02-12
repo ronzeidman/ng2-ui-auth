@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {assign, joinUrl, merge, camelCase} from './utils';
+import {assign, camelCase, joinUrl, merge} from './utils';
 import {ConfigService, IOauth2Options} from './config.service';
 import {PopupService} from './popup.service';
 import {StorageService} from './storage.service';
@@ -79,12 +79,18 @@ export class Oauth2Service {
             });
     }
 
-    private exchangeForToken(oauthData: {code?: string, state?: string}, userData?: {}) {
+    private exchangeForToken(oauthData: { code?: string, state?: string }, userData?: {}) {
         let data: any = assign({}, this.defaults, oauthData, userData);
 
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 
-        return this.http.post(exchangeForTokenUrl,  JSON.stringify(data), { withCredentials: this.config.withCredentials });
+        return this.defaults.method
+            ? this.http.request(exchangeForTokenUrl, {
+                body: JSON.stringify(data),
+                withCredentials: this.config.withCredentials,
+                method: this.defaults.method
+            })
+            : this.http.post(exchangeForTokenUrl, JSON.stringify(data), {withCredentials: this.config.withCredentials});
     }
 
     private buildQueryString() {
@@ -117,7 +123,7 @@ export class Oauth2Service {
             }
         });
 
-        return keyValuePairs.map(function(pair) {
+        return keyValuePairs.map(function (pair) {
             return pair.join('=');
         }).join('&');
     }

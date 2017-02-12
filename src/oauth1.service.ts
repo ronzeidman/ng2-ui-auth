@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PopupService} from './popup.service';
 import {Response} from '@angular/http';
-import {joinUrl, assign} from './utils';
+import {assign, joinUrl} from './utils';
 import {ConfigService, IOauth1Options} from './config.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -22,7 +22,10 @@ export class Oauth1Service {
         authorizationEndpoint: null
     };
     private defaults: IOauth1Options;
-    constructor(private http: JwtHttp, private popup: PopupService, private config: ConfigService) {}
+
+    constructor(private http: JwtHttp, private popup: PopupService, private config: ConfigService) {
+    }
+
     open(options?: IOauth1Options, userData?: any): Observable<Response> {
         this.defaults = assign({}, Oauth1Service.base, options);
         let popupWindow;
@@ -54,11 +57,19 @@ export class Oauth1Service {
                 return exchangeForToken(response, userData);
             });
     }
+
     private exchangeForToken(oauthData, userData?: any) {
         let data = assign({}, this.defaults, oauthData, userData);
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
+        return this.defaults.method
+            ? this.http.request(exchangeForTokenUrl, {
+                body: JSON.stringify(data),
+                withCredentials: this.config.withCredentials,
+                method: this.defaults.method
+            })
+            : this.http.post(exchangeForTokenUrl, data, {withCredentials: this.config.withCredentials});
     }
+
     private buildQueryString(obj: Object) {
         return Object.keys(obj).map((key) => {
             return encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]);

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Response} from '@angular/http';
+import {RequestMethod, Response} from '@angular/http';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -21,6 +21,7 @@ export interface IOauth1Options {
     authorizationEndpoint?: string;
     oauthType?: string;
     exchangeForToken?: boolean | ((options: {code?: string, state?: string}, userData?: any) => Observable<Response>);
+    method?: string | RequestMethod;
 }
 
 export interface IOauth2Options extends IOauth1Options {

@@ -1,6 +1,7 @@
 #### Master (6.1.2) 
 * pull request #82: throw 'Authentication Canceled' when on a cordova app
 * issue #78: added optional params on google provider
+* issue #77: added ability to change the exchangeForToken request method
 
 #### 6.1.0
 * pull request #73: universal support
