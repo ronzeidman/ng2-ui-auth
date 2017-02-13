@@ -5,19 +5,19 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var _angular_core = require('@angular/core');
 var _angular_http = require('@angular/http');
 var rxjs_Observable = require('rxjs/Observable');
-var rxjs_add_operator_switchMap = require('rxjs/add/operator/switchMap');
-var rxjs_add_operator_catch = require('rxjs/add/operator/catch');
-var rxjs_add_observable_interval = require('rxjs/add/observable/interval');
-var rxjs_add_observable_fromEvent = require('rxjs/add/observable/fromEvent');
-var rxjs_add_observable_throw = require('rxjs/add/observable/throw');
-var rxjs_add_observable_empty = require('rxjs/add/observable/empty');
-var rxjs_add_observable_merge = require('rxjs/add/observable/merge');
-var rxjs_add_operator_take = require('rxjs/add/operator/take');
-var rxjs_add_operator_map = require('rxjs/add/operator/map');
-var rxjs_add_operator_takeWhile = require('rxjs/add/operator/takeWhile');
-var rxjs_add_operator_delay = require('rxjs/add/operator/delay');
-var rxjs_add_observable_of = require('rxjs/add/observable/of');
-var rxjs_add_operator_do = require('rxjs/add/operator/do');
+require('rxjs/add/operator/switchMap');
+require('rxjs/add/operator/catch');
+require('rxjs/add/observable/interval');
+require('rxjs/add/observable/fromEvent');
+require('rxjs/add/observable/throw');
+require('rxjs/add/observable/empty');
+require('rxjs/add/observable/merge');
+require('rxjs/add/operator/take');
+require('rxjs/add/operator/map');
+require('rxjs/add/operator/takeWhile');
+require('rxjs/add/operator/delay');
+require('rxjs/add/observable/of');
+require('rxjs/add/operator/do');
 
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -697,7 +697,13 @@ var Oauth1Service = (function () {
     Oauth1Service.prototype.exchangeForToken = function (oauthData, userData) {
         var data = assign({}, this.defaults, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
+        return this.defaults.method
+            ? this.http.request(exchangeForTokenUrl, {
+                body: JSON.stringify(data),
+                withCredentials: this.config.withCredentials,
+                method: this.defaults.method
+            })
+            : this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     };
     Oauth1Service.prototype.buildQueryString = function (obj) {
         return Object.keys(obj).map(function (key) {
@@ -768,7 +774,13 @@ var Oauth2Service = (function () {
     Oauth2Service.prototype.exchangeForToken = function (oauthData, userData) {
         var data = assign({}, this.defaults, oauthData, userData);
         var exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
-        return this.http.post(exchangeForTokenUrl, JSON.stringify(data), { withCredentials: this.config.withCredentials });
+        return this.defaults.method
+            ? this.http.request(exchangeForTokenUrl, {
+                body: JSON.stringify(data),
+                withCredentials: this.config.withCredentials,
+                method: this.defaults.method
+            })
+            : this.http.post(exchangeForTokenUrl, JSON.stringify(data), { withCredentials: this.config.withCredentials });
     };
     Oauth2Service.prototype.buildQueryString = function () {
         var _this = this;

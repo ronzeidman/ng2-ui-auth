@@ -1,14 +1,33 @@
 /**
  * Created by ronze on 3/24/2016.
  */
-import nodeResolve from 'rollup-plugin-node-resolve';
-import typescript from 'rollup-plugin-typescript';
+import nodeResolve from "rollup-plugin-node-resolve";
+import typescript from "rollup-plugin-typescript";
 
 export default {
     entry: 'src/ng2-ui-auth.module.ts',
     dest: 'bundle/ng2-ui-auth.js',
     sourceMap: 'bundle/ng2-ui-auth.js.map',
     format: 'cjs',
+    external: [
+        '@angular/core',
+        '@angular/http',
+        'rxjs/Observable',
+        'rxjs/Subscriber',
+        'rxjs/add/observable/of',
+        'rxjs/add/observable/merge',
+        'rxjs/add/observable/empty',
+        'rxjs/add/observable/throw',
+        'rxjs/add/observable/fromEvent',
+        'rxjs/add/observable/interval',
+        'rxjs/add/operator/catch',
+        'rxjs/add/operator/delay',
+        'rxjs/add/operator/takeWhile',
+        'rxjs/add/operator/map',
+        'rxjs/add/operator/take',
+        'rxjs/add/operator/do',
+        'rxjs/add/operator/switchMap'
+    ],
     plugins: [
         typescript({
             typescript: require('typescript')
@@ -23,12 +42,6 @@ export default {
             // – see https://github.com/rollup/rollup-plugin-commonjs
             main: true,
 
-            // if there's something your bundle requires that you DON'T
-            // want to include, add it to 'skip'
-            skip: [
-                '@angular/core',
-                '@angular/http',
-                'rxjs'],
 
             // some package.json files have a `browser` field which
             // specifies alternative files to load for people bundling

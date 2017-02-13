@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import {RequestMethod, Response} from '@angular/http';
 export interface IPopupOptions {
     width?: number;
     height?: number;
@@ -17,6 +17,7 @@ export interface IOauth1Options {
         code?: string;
         state?: string;
     }, userData?: any) => Observable<Response>);
+    method?: string | RequestMethod;
 }
 export interface IOauth2Options extends IOauth1Options {
     state?: string | (() => string);
