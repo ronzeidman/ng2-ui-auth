@@ -1,4 +1,7 @@
-#### Master (6.1.2) 
+#### 6.1.3
+* pull request #83: avoid import Type from `src`.
+
+#### 6.1.2
 * pull request #82: throw 'Authentication Canceled' when on a cordova app
 * issue #78: added optional params on google provider
 * issue #77: added ability to change the exchangeForToken request method
