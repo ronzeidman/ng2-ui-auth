@@ -1,6 +1,8 @@
+#### 6.1.4
+* supporting angular 4 in package.json
+
 #### 6.1.3
 * pull request #83: avoid import Type from `src`.
-* supporting angular 4 in package.json
 
 #### 6.1.2
 * pull request #82: throw 'Authentication Canceled' when on a cordova app
