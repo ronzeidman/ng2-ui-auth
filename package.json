@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/ronzeidman/ng2-ui-auth#readme",
   "peerDependencies": {
-    "@angular/http": "^2.0.0",
-    "@angular/core": "^2.0.0"
+    "@angular/http": "2.x || 4.x",
+    "@angular/core": "2.x || 4.x"
   },
   "typings": "./commonjs/ng2-ui-auth.module.d.ts",
   "devDependencies": {
