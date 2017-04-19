@@ -1,5 +1,6 @@
-# ng2-ui-auth
-an angular2 repository for authentication based on angular1's satellizer
+# ng2-ui-auth [![npm version](https://badge.fury.io/js/ng2-ui-auth.svg)](https://badge.fury.io/js/ng2-ui-auth)
+
+An angular2 repository for authentication based on angular1's satellizer
 This is mostly copy-paste from the great satellizer (https://satellizer.herokuapp.com/#/ https://github.com/sahat/satellizer) library.
 To use this run `npm install ng2-ui-auth --save`.
 
