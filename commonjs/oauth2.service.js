@@ -95,7 +95,7 @@ var Oauth2Service = (function () {
                             paramValue = [_this.defaults.scopePrefix, paramValue].join(_this.defaults.scopeDelimiter);
                         }
                     }
-                    if (paramName !== 'optionalUrlParams' || typeof paramValue !== 'undefined') {
+                    if (params !== 'optionalUrlParams' || typeof paramValue !== 'undefined') {
                         keyValuePairs.push([paramName, paramValue]);
                     }
                 });

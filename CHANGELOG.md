@@ -1,4 +1,4 @@
-#### 6.1.5
+#### 6.1.6
 * fixed google new login 500 issue with undefined optional params
 
 #### 6.1.4
