@@ -1,5 +1,5 @@
-import {CustomConfig} from './config.service';
-import {ModuleWithProviders, Type} from '@angular/core';
+import { CustomConfig } from './config.service';
+import { ModuleWithProviders, Type } from '@angular/core';
 export { LocalService } from './local.service';
 export { Oauth2Service } from './oauth2.service';
 export { Oauth1Service } from './oauth1.service';

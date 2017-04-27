@@ -803,7 +803,9 @@ var Oauth2Service = (function () {
                             paramValue = [_this.defaults.scopePrefix, paramValue].join(_this.defaults.scopeDelimiter);
                         }
                     }
-                    keyValuePairs.push([paramName, paramValue]);
+                    if (paramName !== 'optionalUrlParams' || typeof paramValue !== 'undefined') {
+                        keyValuePairs.push([paramName, paramValue]);
+                    }
                 });
             }
         });

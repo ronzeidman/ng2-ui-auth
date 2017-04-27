@@ -118,7 +118,9 @@ export class Oauth2Service {
                         }
                     }
 
-                    keyValuePairs.push([paramName, paramValue]);
+                    if (paramName !== 'optionalUrlParams' || typeof paramValue !== 'undefined') {
+                        keyValuePairs.push([paramName, paramValue]);
+                    }
                 });
             }
         });
