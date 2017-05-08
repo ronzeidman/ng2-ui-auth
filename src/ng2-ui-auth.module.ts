@@ -10,19 +10,9 @@ import {Oauth1Service} from './oauth1.service';
 import {Oauth2Service} from './oauth2.service';
 import {LocalService} from './local.service';
 import {AuthService} from './auth.service';
-import {StorageService} from './storage.service';
+import {StorageService, BrowserStorageService} from './storage.service';
 import {ModuleWithProviders, NgModule, Injector, Type} from '@angular/core';
 import {HttpModule, Http} from '@angular/http';
-export {LocalService} from './local.service';
-export {Oauth2Service} from './oauth2.service';
-export {Oauth1Service} from './oauth1.service';
-export {PopupService} from './popup.service';
-export {OauthService} from './oauth.service';
-export {JwtHttp} from './jwt-http.service';
-export {SharedService} from './shared.service';
-export {StorageService} from './storage.service';
-export {AuthService} from './auth.service';
-export {ConfigService, CustomConfig} from './config.service';
 
 @NgModule({
     imports: [HttpModule]
@@ -34,7 +24,7 @@ export class Ng2UiAuthModule {
             providers: [
                 {provide: CustomConfig, useClass: config },
                 {provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
-                {provide: StorageService, useClass: StorageService, deps: [ConfigService]},
+                {provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService]},
                 {provide: SharedService,  useClass: SharedService, deps: [StorageService, ConfigService]},
                 httpProvider,
                 {provide: OauthService,  useClass: OauthService, deps: [JwtHttp, Injector, SharedService, ConfigService]} ,
@@ -52,7 +42,7 @@ export class Ng2UiAuthModule {
             providers: [
                 {provide: CustomConfig, useClass: config },
                 {provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
-                {provide: StorageService, useClass: StorageService, deps: [ConfigService]},
+                {provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService]},
                 {provide: SharedService,  useClass: SharedService, deps: [StorageService, ConfigService]},
                 {provide: JwtHttp, useClass: JwtHttp, deps: [Http, SharedService, ConfigService]},
                 {provide: OauthService,  useClass: OauthService, deps: [JwtHttp, Injector, SharedService, ConfigService]} ,
@@ -63,4 +53,17 @@ export class Ng2UiAuthModule {
                 {provide: AuthService,  useClass: AuthService, deps: [SharedService, LocalService, OauthService]} ,]
         }
     }
+}
+
+export {
+    LocalService,
+    Oauth2Service,
+    Oauth1Service,
+    PopupService,
+    OauthService,
+    JwtHttp,
+    SharedService,
+    StorageService, BrowserStorageService,
+    AuthService,
+    ConfigService, CustomConfig
 }
