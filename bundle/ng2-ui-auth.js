@@ -19,6 +19,12 @@ require('rxjs/add/operator/delay');
 require('rxjs/add/observable/of');
 require('rxjs/add/operator/do');
 
+function __extends(d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -244,44 +250,51 @@ var ConfigService = (function () {
 }());
 
 var StorageService = (function () {
-    function StorageService(config) {
-        var _this = this;
+    function StorageService() {
+    }
+    return StorageService;
+}());
+var BrowserStorageService = (function (_super) {
+    __extends(BrowserStorageService, _super);
+    function BrowserStorageService(config) {
+        _super.call(this);
         this.config = config;
         this.store = {};
-        this.isStorageAvailable = (function () {
-            try {
-                var supported = config.storageType in window && window[config.storageType] !== null;
-                if (supported) {
-                    var key = Math.random().toString(36).substring(7);
-                    window[_this.config.storageType].setItem(key, '');
-                    window[_this.config.storageType].removeItem(key);
-                }
-                return supported;
-            }
-            catch (e) {
-                return false;
-            }
-        })();
+        this.isStorageAvailable = this.checkIsStorageAvailable(config);
         if (!this.isStorageAvailable) {
             console.warn(config.storageType + ' is not available.');
         }
     }
-    StorageService.prototype.get = function (key) {
+    BrowserStorageService.prototype.get = function (key) {
         return this.isStorageAvailable ? window[this.config.storageType].getItem(key) : this.store[key];
     };
-    StorageService.prototype.set = function (key, value) {
-        return this.isStorageAvailable ? window[this.config.storageType].setItem(key, value) : this.store[key] = value;
+    BrowserStorageService.prototype.set = function (key, value) {
+        this.isStorageAvailable ? window[this.config.storageType].setItem(key, value) : this.store[key] = value;
     };
-    StorageService.prototype.remove = function (key) {
-        return this.isStorageAvailable ? window[this.config.storageType].removeItem(key) : delete this.store[key];
+    BrowserStorageService.prototype.remove = function (key) {
+        this.isStorageAvailable ? window[this.config.storageType].removeItem(key) : delete this.store[key];
     };
-    StorageService = __decorate([
+    BrowserStorageService.prototype.checkIsStorageAvailable = function (config) {
+        try {
+            var supported = config.storageType in window && window[config.storageType] !== null;
+            if (supported) {
+                var key = Math.random().toString(36).substring(7);
+                window[this.config.storageType].setItem(key, '');
+                window[this.config.storageType].removeItem(key);
+            }
+            return supported;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    BrowserStorageService = __decorate([
         _angular_core.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof ConfigService !== 'undefined' && ConfigService) === 'function' && _a) || Object])
-    ], StorageService);
-    return StorageService;
+    ], BrowserStorageService);
+    return BrowserStorageService;
     var _a;
-}());
+}(StorageService));
 
 var SharedService = (function () {
     function SharedService(storage, config) {
@@ -958,7 +971,7 @@ var Ng2UiAuthModule = (function () {
             providers: [
                 { provide: CustomConfig, useClass: config },
                 { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
-                { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
+                { provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService] },
                 { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
                 httpProvider,
                 { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
@@ -975,7 +988,7 @@ var Ng2UiAuthModule = (function () {
             providers: [
                 { provide: CustomConfig, useClass: config },
                 { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
-                { provide: StorageService, useClass: StorageService, deps: [ConfigService] },
+                { provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService] },
                 { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
                 { provide: JwtHttp, useClass: JwtHttp, deps: [_angular_http.Http, SharedService, ConfigService] },
                 { provide: OauthService, useClass: OauthService, deps: [JwtHttp, _angular_core.Injector, SharedService, ConfigService] },
@@ -995,7 +1008,6 @@ var Ng2UiAuthModule = (function () {
     return Ng2UiAuthModule;
 }());
 
-exports.Ng2UiAuthModule = Ng2UiAuthModule;
 exports.LocalService = LocalService;
 exports.Oauth2Service = Oauth2Service;
 exports.Oauth1Service = Oauth1Service;
@@ -1004,7 +1016,9 @@ exports.OauthService = OauthService;
 exports.JwtHttp = JwtHttp;
 exports.SharedService = SharedService;
 exports.StorageService = StorageService;
+exports.BrowserStorageService = BrowserStorageService;
 exports.AuthService = AuthService;
 exports.ConfigService = ConfigService;
 exports.CustomConfig = CustomConfig;
+exports.Ng2UiAuthModule = Ng2UiAuthModule;
 //# sourceMappingURL=ng2-ui-auth.js.map

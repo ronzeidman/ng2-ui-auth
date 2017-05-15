@@ -1,3 +1,6 @@
+#### 6.2.0
+* pull request #91: rename StorageService to BrowserStorageService + add BaseStorage.
+
 #### 6.1.6
 * fixed google new login 500 issue with undefined optional params
 

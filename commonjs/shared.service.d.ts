@@ -1,13 +1,14 @@
-import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
-import { ConfigService } from './config.service';
-import { StorageService } from './storage.service';
+import {Observable} from 'rxjs/Observable';
+import {Response} from '@angular/http';
+import {ConfigService} from './config.service';
+import {StorageService} from './storage.service';
+
 export declare class SharedService {
     private storage;
     private config;
     tokenName: string;
     constructor(storage: StorageService, config: ConfigService);
-    getToken(): any;
+    getToken(): string;
     getPayload(): any;
     setToken(response: string | Response | Object): void;
     removeToken(): void;
