@@ -64,7 +64,7 @@ export class Oauth2Service {
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and
                 // saving a token manually.
-                if (!options.exchangeForToken && (this.defaults.responseType === 'token' || !this.defaults.url)) {
+                if (!options.exchangeForToken || this.defaults.responseType === 'token' || !this.defaults.url) {
                     return Observable.of(oauthData);
                 }
 

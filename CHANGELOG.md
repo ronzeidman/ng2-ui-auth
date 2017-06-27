@@ -1,3 +1,6 @@
+#### Master
+* issue #98: responseType = 'token' not returning control to client app
+
 #### 6.2.0
 * pull request #91: rename StorageService to BrowserStorageService + add BaseStorage.
 
