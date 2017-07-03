@@ -10,7 +10,7 @@ export declare class AuthService {
     constructor(shared: SharedService, local: LocalService, oauth: OauthService);
     login(user: any, opts?: RequestOptionsArgs): Observable<Response>;
     signup(user: any, opts?: RequestOptionsArgs): Observable<Response>;
-    logout(): Observable<void>;
+    logout(): Observable<Response>;
     authenticate(name: string, userData?: any): Observable<Response>;
     link(name: string, userData?: any): Observable<Response>;
     unlink(provider: string, opts: RequestOptionsArgs): Observable<Response>;
