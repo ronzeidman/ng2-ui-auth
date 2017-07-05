@@ -6,7 +6,8 @@ To use this run `npm install ng2-ui-auth --save`.
 
 **If you are migrating from version 5 or below, replace `Ng2UiAuthModule.getWithConfig(MyConfig)` with `Ng2UiAuthModule.forRoot(MyConfig)`**
 
-for a full client + server-side example: https://github.com/ronzeidman/ng2-ui-auth-example
+- for a full client + server-side example: [ronzeidman/ng2-ui-auth-example](https://github.com/ronzeidman/ng2-ui-auth-example).
+- for a Go Server and extended client example: [pcdummy/ng2-ui-auth-example](https://github.com/pcdummy/ng2-ui-auth-example).
 
 Just modify your main app module:
 ```typescript
@@ -30,7 +31,7 @@ export class MyAuthConfig extends CustomConfig {
 AppModule {}
 ```
 
-For usage look at the satellizer project it's 99% the same (instead of promises it uses Observables), 
+For usage look at the satellizer project it's 99% the same (instead of promises it uses Observables),
 Hopefully I will update https://github.com/ronzeidman/ng2-ui-auth-example with a more current and simpler example soon
 
 If something doesn't work, feel free to issue a pull request and/or create a new issue, I'm not sure I'll be responsive though since I use it internally for my project and will only update and fix the repository if it affects my work.
