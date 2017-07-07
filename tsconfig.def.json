@@ -3,7 +3,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
@@ -16,5 +16,10 @@
   },
   "files": [
     "src/ng2-ui-auth.module.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "genDir": "commonjs",
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
 }

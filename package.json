@@ -2,14 +2,16 @@
   "name": "ng2-ui-auth",
   "version": "6.2.1",
   "description": "angular2 migration for satellizer",
-  "main": "./commonjs/ng2-ui-auth.module.js",
+  "main": "./bundle/ng2-ui-auth.js",
+  "module": "./commonjs/ng2-ui-auth.module.js",
+  "typings": "./commonjs/ng2-ui-auth.module.d.ts",
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ngc": "ngc --project tsconfig.def.json",
-    "tsc": "tsc --project tsconfig.def.json",
     "rollup:dev": "rollup -c",
     "rollup:prod": "rollup -c rollup.config.prod.js",
-    "compile": "npm run ngc && npm run tsc && rollup -c && rollup -c rollup.config.prod.js"
+    "compile": "npm run ngc && rollup -c && rollup -c rollup.config.prod.js"
   },
   "keywords": [
     "angular",
@@ -31,7 +33,6 @@
     "@angular/http": "2.x || 4.x",
     "@angular/core": "2.x || 4.x"
   },
-  "typings": "./commonjs/ng2-ui-auth.module.d.ts",
   "devDependencies": {
     "@angular/common": "4.2.5",
     "@angular/compiler": "4.2.5",
