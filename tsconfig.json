@@ -8,7 +8,10 @@
     "removeComments": true,
     "sourceMap": true,
     "declaration": false,
-    "types": ["es6-shim"]
+    "lib": ["dom", "es6"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "files": [
     "src/ng2-ui-auth.module.ts"

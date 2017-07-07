@@ -9,7 +9,10 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "commonjs",
-    "types": ["es6-shim"]
+    "lib": ["dom", "es6"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "files": [
     "src/ng2-ui-auth.module.ts"
