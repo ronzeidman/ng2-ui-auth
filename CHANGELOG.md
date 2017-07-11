@@ -1,4 +1,4 @@
-#### 7.0.0
+#### 7.0.1
 * issue #98: responseType = 'token' not returning control to client app
 * pull request #103: update packages + fixed support for TypeScript 2.4
 * `logout` now removes the token only if subscribing to it, to logout syncronically use `removeToken` instead.

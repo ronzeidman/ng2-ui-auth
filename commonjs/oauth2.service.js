@@ -42,7 +42,7 @@ var Oauth2Service = (function () {
         }
         return openPopup
             .switchMap(function (oauthData) {
-            if (!options.exchangeForToken || _this.defaults.responseType === 'token' || !_this.defaults.url) {
+            if (_this.defaults.responseType === 'token' || !_this.defaults.url) {
                 return Observable.of(oauthData);
             }
             if (oauthData.state && oauthData.state !== _this.storage.get(stateName)) {
