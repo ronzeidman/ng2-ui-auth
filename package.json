@@ -2,15 +2,9 @@
   "name": "ng2-ui-auth",
   "version": "7.0.1",
   "description": "angular2 migration for satellizer",
-  "main": "./bundle/ng2-ui-auth.js",
-  "module": "./commonjs/ng2-ui-auth.module.js",
-  "typings": "./commonjs/ng2-ui-auth.module.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ngc": "ngc --project tsconfig.def.json",
-    "rollup:dev": "rollup -c",
-    "rollup:prod": "rollup -c rollup.config.prod.js",
-    "compile": "npm run ngc && rollup -c && rollup -c rollup.config.prod.js"
+    "build": "ng-packagr -p ng-package.json"
   },
   "keywords": [
     "angular",
@@ -41,12 +35,8 @@
     "@angular/http": "4.0.0",
     "@angular/platform-browser": "4.0.0",
     "@angular/platform-server": "4.0.0",
-    "rollup": "0.43.0",
-    "rollup-plugin-node-resolve": "3.0.0",
-    "rollup-plugin-typescript": "0.8.1",
-    "rollup-plugin-uglify": "2.0.1",
+    "ng-packagr": "^1.0.0-pre.7",
     "rxjs": "5.4.2",
-    "typescript": "2.4.1",
     "zone.js": "0.8.12"
   }
 }
