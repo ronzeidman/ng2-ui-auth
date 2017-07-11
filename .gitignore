@@ -77,3 +77,6 @@ crashlytics.properties
 crashlytics-build.properties
 
 bundle
+.ng_build
+dist
+

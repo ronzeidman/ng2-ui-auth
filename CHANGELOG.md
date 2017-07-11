@@ -1,3 +1,6 @@
+#### 7.0.2
+* issue #105: Make the library FESM15 includeable by using ng-packagr.
+
 #### 7.0.1
 * issue #98: responseType = 'token' not returning control to client app
 * pull request #103: update packages + fixed support for TypeScript 2.4
@@ -5,7 +8,7 @@
 * issue #100: added visibleToolbar to popup options
 * removed `defaultUrlParams` customization, use `optionalUrlParams` instead
 * issue #81: support for 'cookie' & 'sessionCookie' (cookie without expiration) storage types
- 
+
 **BREAKING CHANGE:** This version drops official support for angular 2.0
 
 #### 6.2.0
@@ -38,7 +41,7 @@
 #### 5.0.0
 * might be breaking: changed out folder names, not linking to the bundled version by default because of webpack issues with the pre-bundled version
 * pull request #63 set token only when it's available
-* pull request #61 [expiration date] check payload is defined. 
+* pull request #61 [expiration date] check payload is defined.
 * pull request #60 allow string as a scope option.
 * pull request #57 allow any type in http body.
 
@@ -140,7 +143,7 @@ export class MyAuthConfig extends CustomConfig {
 * Removed dependency on angular-jwt (you can now use the included JwtHttp)
 * Readded "authHeader" to the configuration
 * Added an api for getting token expiration date (auth.getExpirationDate())
-* changed default token prefix and the name of the providers from SATELLIZER_PROVIDERS to NG2_UI_AUTH_PROVIDERS 
+* changed default token prefix and the name of the providers from SATELLIZER_PROVIDERS to NG2_UI_AUTH_PROVIDERS
 
 #### 1.0.9
 * everything is working!

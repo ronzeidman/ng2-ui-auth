@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '6.5.0'
+- '7.10.0'
 env:
   global:
   - GH_REF: github.com/ronzeidman/ng2-ui-auth
@@ -8,8 +8,10 @@ before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 script:
-- npm run compile
+- npm run build
 after_success:
+before_deploy:
+- cd dist
 deploy:
    provider: npm
    email: "ron.zeidman@gmail.com"
