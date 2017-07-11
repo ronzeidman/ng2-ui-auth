@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {SharedService} from './shared.service';
-import {ConfigService} from './config.service';
-import {RequestOptionsArgs, Response} from '@angular/http';
-import {joinUrl} from './utils';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { SharedService } from './shared.service';
+import { ConfigService } from './config.service';
+import { RequestOptionsArgs, Response } from '@angular/http';
+import { joinUrl } from './utils';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
-import {JwtHttp} from './jwt-http.service';
+import { JwtHttp } from './jwt-http.service';
 
 /**
  * Created by Ron on 17/12/2015.

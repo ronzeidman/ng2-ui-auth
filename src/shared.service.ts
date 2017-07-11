@@ -1,12 +1,12 @@
 /**
  * Created by Ron on 17/12/2015.
  */
-import {Observable} from 'rxjs/Observable';
-import {Subscriber} from 'rxjs/Subscriber';
-import {Injectable} from '@angular/core';
-import {Response} from '@angular/http';
-import {ConfigService} from './config.service';
-import {StorageService} from './storage.service';
+import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
+import { ConfigService } from './config.service';
+import { StorageService } from './storage.service';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -46,7 +46,7 @@ export class SharedService {
         if (typeof response === 'string') {
             token = response;
         } else {
-            token = this.config.resolveToken(response)
+            token = this.config.resolveToken(response);
         }
 
         if (token) {

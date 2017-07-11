@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Http, RequestMethod, Response, RequestOptionsArgs, Headers, Request} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Http, RequestMethod, Response, RequestOptionsArgs, Headers, Request } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
-import {ConfigService} from './config.service';
-import {SharedService} from './shared.service';
+import { ConfigService } from './config.service';
+import { SharedService } from './shared.service';
 /**
  * Created by Ron on 06/01/2016.
  */
 
 export interface JwtRequestOptionsArgs extends RequestOptionsArgs {
-    autoRefreshToken?: boolean
+    autoRefreshToken?: boolean;
 }
 
 @Injectable()
@@ -18,11 +18,11 @@ export class JwtHttp {
     constructor(
         private _http: Http,
         private _shared: SharedService,
-        private _config: ConfigService
+        private _config: ConfigService,
     ) {}
 
     request(url: string | Request, options?: JwtRequestOptionsArgs): Observable<Response> {
-        //if the token is expired the "getExpirationDate" function returns null
+        // if the token is expired the "getExpirationDate" function returns null
         const exp = this._shared.getExpirationDate();
         if (this._shared.getToken() &&
             (!exp || exp.getTime() + this._config.refreshBeforeExpiration > Date.now())  &&
@@ -39,7 +39,7 @@ export class JwtHttp {
                             .switchMap(() => this.actualRequest(url, options));
                     }
                     throw response;
-                })
+                });
         }
         return this.actualRequest(url, options);
     }
@@ -83,13 +83,12 @@ export class JwtHttp {
         return this.request(url, options);
     }
 
-
     refreshToken(): Observable<Response> {
         const authHeader = new Headers();
         authHeader.append(this._config.authHeader, (this._config.authToken + ' ' + this._shared.getToken()));
         return this._http
             .get(this._config.refreshUrl, {
-                headers: authHeader
+                headers: authHeader,
             })
             .do((res: Response) => this._shared.setToken(res));
     }

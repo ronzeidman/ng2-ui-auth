@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {assign} from './utils';
-import {ConfigService, IPopupOptions} from './config.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { assign } from './utils';
+import { ConfigService, IPopupOptions } from './config.service';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/throw';
@@ -74,7 +74,7 @@ export class PopupService {
                         }
                     }
                     return Observable.empty();
-                }), Observable.fromEvent<Event>(this.popupWindow, 'exit').delay(100).map(() => {throw new Error('Authentication Canceled')})
+                }), Observable.fromEvent<Event>(this.popupWindow, 'exit').delay(100).map(() => { throw new Error('Authentication Canceled'); }),
                        ).take(1);
     }
 
@@ -91,7 +91,7 @@ export class PopupService {
                     popupWindowOrigin = this.popupWindow.location.host;
                 } catch (error) {
                     // ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
-                    //error instanceof DOMException && error.name === 'SecurityError'
+                    // error instanceof DOMException && error.name === 'SecurityError'
                 }
                 if (popupWindowOrigin === documentOrigin && (this.popupWindow.location.search || this.popupWindow.location.hash)) {
                     const queryParams = this.popupWindow.location.search.substring(1).replace(/\/$/, '');
@@ -121,7 +121,7 @@ export class PopupService {
                 height: height,
                 left: window.screenX + ((window.outerWidth - width) / 2),
                 top: window.screenY + ((window.outerHeight - height) / 2.5),
-                toolbar: options.visibleToolbar ? 'yes': 'no'
+                toolbar: options.visibleToolbar ? 'yes' : 'no',
             },
             options);
     }
