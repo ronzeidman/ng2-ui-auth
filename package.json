@@ -1,11 +1,10 @@
 {
   "name": "ng2-ui-auth",
-  "version": "6.2.1",
+  "version": "7.0.0",
   "description": "angular2 migration for satellizer",
   "main": "./bundle/ng2-ui-auth.js",
   "module": "./commonjs/ng2-ui-auth.module.js",
   "typings": "./commonjs/ng2-ui-auth.module.d.ts",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ngc": "ngc --project tsconfig.def.json",
@@ -30,17 +29,18 @@
   },
   "homepage": "https://github.com/ronzeidman/ng2-ui-auth#readme",
   "peerDependencies": {
-    "@angular/http": "2.x || 4.x",
-    "@angular/core": "2.x || 4.x"
+    "@angular/http": "4.x",
+    "@angular/core": "4.x",
+    "rxjs": "5.x"
   },
   "devDependencies": {
-    "@angular/common": "4.2.5",
-    "@angular/compiler": "4.2.5",
-    "@angular/compiler-cli": "4.2.5",
-    "@angular/core": "4.2.5",
-    "@angular/http": "4.2.5",
-    "@angular/platform-browser": "4.2.5",
-    "@angular/platform-server": "4.2.5",
+    "@angular/common": "4.0.0",
+    "@angular/compiler": "4.0.0",
+    "@angular/compiler-cli": "4.0.0",
+    "@angular/core": "4.0.0",
+    "@angular/http": "4.0.0",
+    "@angular/platform-browser": "4.0.0",
+    "@angular/platform-server": "4.0.0",
     "rollup": "0.43.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-typescript": "0.8.1",

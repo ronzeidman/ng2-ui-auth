@@ -120,7 +120,8 @@ export class PopupService {
                 width: width,
                 height: height,
                 left: window.screenX + ((window.outerWidth - width) / 2),
-                top: window.screenY + ((window.outerHeight - height) / 2.5)
+                top: window.screenY + ((window.outerHeight - height) / 2.5),
+                toolbar: options.visibleToolbar ? 'yes': 'no'
             },
             options);
     }

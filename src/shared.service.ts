@@ -7,6 +7,7 @@ import {Injectable} from '@angular/core';
 import {Response} from '@angular/http';
 import {ConfigService} from './config.service';
 import {StorageService} from './storage.service';
+
 /**
  * Created by Ron on 17/12/2015.
  */
@@ -14,12 +15,15 @@ import {StorageService} from './storage.service';
 @Injectable()
 export class SharedService {
     tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join(this.config.tokenSeparator) : this.config.tokenName;
-    constructor(private storage: StorageService, private config: ConfigService) {}
+
+    constructor(private storage: StorageService, private config: ConfigService) {
+    }
+
     getToken() {
         return this.storage.get(this.tokenName);
     }
-    getPayload() {
-        let token = this.getToken();
+
+    getPayload(token = this.getToken()) {
 
         if (token && token.split('.').length === 3) {
             try {
@@ -46,14 +50,16 @@ export class SharedService {
         }
 
         if (token) {
-            this.storage.set(this.tokenName, token);
+            const expDate = this.getExpirationDate(token);
+            this.storage.set(this.tokenName, token, expDate ? expDate.toUTCString() : '');
         }
     }
+
     removeToken() {
         this.storage.remove(this.tokenName);
     }
-    isAuthenticated() {
-        let token = this.getToken();
+
+    isAuthenticated(token = this.getToken()) {
 
         // a token is present
         if (token) {
@@ -87,8 +93,9 @@ export class SharedService {
         // lail: No token at all
         return false;
     }
-    getExpirationDate() {
-        let payload = this.getPayload();
+
+    getExpirationDate(token = this.getToken()) {
+        let payload = this.getPayload(token);
         if (payload && payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
             let date = new Date(0);
             date.setUTCSeconds(payload.exp);
@@ -96,14 +103,16 @@ export class SharedService {
         }
         return null;
     }
+
     logout(): Observable<any> {
-        this.storage.remove(this.tokenName);
         return Observable.create((observer: Subscriber<any>) => {
+            this.storage.remove(this.tokenName);
             observer.next();
             observer.complete();
         });
     }
-    setStorageType(type) {
+
+    setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie') {
         this.config.storageType = type;
     }
 }

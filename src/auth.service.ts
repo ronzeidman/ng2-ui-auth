@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Response, RequestOptionsArgs} from '@angular/http';
+import {RequestOptionsArgs, Response} from '@angular/http';
 import {SharedService} from './shared.service';
 import {LocalService} from './local.service';
 import {OauthService} from './oauth.service';
@@ -60,7 +60,7 @@ export class AuthService {
         return this.shared.getPayload();
     }
 
-    setStorageType(type: string): void {
+    setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie'): void {
         this.shared.setStorageType(type);
     }
 

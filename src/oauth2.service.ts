@@ -15,7 +15,7 @@ import {JwtHttp} from './jwt-http.service';
 
 @Injectable()
 export class Oauth2Service {
-    private static base: IOauth2Options = {
+    private static base: IOauth2Options & { defaultUrlParams: string[] } = {
         defaultUrlParams: ['response_type', 'client_id', 'redirect_uri'],
         responseType: 'code',
         responseParams: {
@@ -25,7 +25,7 @@ export class Oauth2Service {
         }
     };
 
-    private defaults: IOauth2Options;
+    private defaults: IOauth2Options & { defaultUrlParams: string[] };
 
     constructor(private http: JwtHttp,
                 private popup: PopupService,
@@ -38,12 +38,13 @@ export class Oauth2Service {
 
         let url;
         let openPopup: Observable<any>;
-        let stateName = this.defaults.name + '_state';
-        let state = this.defaults.state;
+        const stateName = this.defaults.name + '_state';
+        const state = this.defaults.state;
+        const exp = new Date(Date.now() + 60 * 60 * 1000).toUTCString();
         if (typeof state === 'string') {
-            this.storage.set(stateName, state);
+            this.storage.set(stateName, state, exp);
         } else if (typeof state === 'function') {
-            this.storage.set(stateName, state());
+            this.storage.set(stateName, state(), exp);
         }
 
         url = [this.defaults.authorizationEndpoint, this.buildQueryString()].join('?');

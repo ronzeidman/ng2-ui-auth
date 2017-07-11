@@ -1,12 +1,11 @@
-/**
- * Created by Ron on 17/12/2015.
- */
-
-export function assign(target: any, ...src: any[]): any {
+export function assign(target) {
+    var src = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        src[_i - 1] = arguments[_i];
+    }
     if (target == null) {
         throw new TypeError('Cannot convert undefined or null to object');
     }
-
     target = Object(target);
     for (var index = 1; index < arguments.length; index++) {
         var source = arguments[index];
@@ -20,32 +19,28 @@ export function assign(target: any, ...src: any[]): any {
     }
     return target;
 }
-
-export function joinUrl(baseUrl: string, url: string) {
+export function joinUrl(baseUrl, url) {
     if (/^(?:[a-z]+:)?\/\//i.test(url)) {
         return url;
     }
-
-    let joined = [baseUrl, url].join('/');
-
-    let normalize = function(str) {
+    var joined = [baseUrl, url].join('/');
+    var normalize = function (str) {
         return str
             .replace(/[\/]+/g, '/')
             .replace(/\/\?/g, '?')
             .replace(/\/\#/g, '#')
             .replace(/\:\//g, '://');
     };
-
     return normalize(joined);
 }
-
-export function merge(obj1: object, obj2: object): any {
-    let result = {};
+export function merge(obj1, obj2) {
+    var result = {};
     for (var i in obj1) {
         if (obj1.hasOwnProperty(i)) {
             if ((i in obj2) && (typeof obj1[i] === 'object') && (i !== null)) {
                 result[i] = merge(obj1[i], obj2[i]);
-            } else {
+            }
+            else {
                 result[i] = obj1[i];
             }
         }
@@ -57,13 +52,12 @@ export function merge(obj1: object, obj2: object): any {
             }
             result[i] = obj2[i];
         }
-
     }
     return result;
 }
-
 export function camelCase(name) {
-    return name.replace(/([\:\-\_]+(.))/g, function(_, separator, letter, offset) {
+    return name.replace(/([\:\-\_]+(.))/g, function (_, separator, letter, offset) {
         return offset ? letter.toUpperCase() : letter;
     });
 }
+//# sourceMappingURL=utils.js.map

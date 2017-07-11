@@ -11,6 +11,7 @@ export interface IPopupOptions {
     height?: number;
     left?: number;
     top?: number;
+    visibleToolbar?: boolean;
 }
 
 export interface IOauth1Options {
@@ -26,7 +27,6 @@ export interface IOauth1Options {
 
 export interface IOauth2Options extends IOauth1Options {
     state?: string| (() => string);
-    defaultUrlParams?: string[];
     responseType?: string;
     responseParams?: {
         code?: string;
@@ -59,7 +59,7 @@ export abstract class CustomConfig {
     tokenPrefix: string;
     authToken: string;
     authHeader: string;
-    storageType: string;
+    storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie';
     providers: IProviders;
     defaultHeaders: { [name: string]: string };
     withCredentials: boolean;
@@ -101,7 +101,7 @@ export class ConfigService {
     tokenPrefix = 'ng2-ui-auth';
     authHeader = 'Authorization';
     authToken = 'Bearer';
-    storageType = 'localStorage';
+    storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' = 'localStorage';
     defaultHeaders = null;
     autoRefreshToken = false;
     refreshBeforeExpiration = 600000; //10 minutes

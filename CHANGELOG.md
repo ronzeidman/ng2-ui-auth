@@ -1,5 +1,12 @@
-#### Master
+#### 7.0.0
 * issue #98: responseType = 'token' not returning control to client app
+* pull request #103: update packages + fixed support for TypeScript 2.4
+* `logout` now removes the token only if subscribing to it, to logout syncronically use `removeToken` instead.
+* issue #100: added visibleToolbar to popup options
+* removed `defaultUrlParams` customization, use `optionalUrlParams` instead
+* issue #81: support for 'cookie' & 'sessionCookie' (cookie without expiration) storage types
+ 
+**BREAKING CHANGE:** This version drops official support for angular 2.0
 
 #### 6.2.0
 * pull request #91: rename StorageService to BrowserStorageService + add BaseStorage.
