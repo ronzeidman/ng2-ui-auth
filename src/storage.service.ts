@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {ConfigService} from './config.service';
+import { Injectable } from '@angular/core';
+import { ConfigService } from './config.service';
 
 export abstract class StorageService {
     abstract get(key: string): string;

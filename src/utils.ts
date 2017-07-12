@@ -8,10 +8,10 @@ export function assign(target: any, ...src: any[]): any {
     }
 
     target = Object(target);
-    for (var index = 1; index < arguments.length; index++) {
-        var source = arguments[index];
+    for (let index = 1; index < arguments.length; index++) {
+        let source = arguments[index];
         if (source != null) {
-            for (var key in source) {
+            for (let key in source) {
                 if (Object.prototype.hasOwnProperty.call(source, key)) {
                     target[key] = source[key];
                 }
@@ -41,7 +41,7 @@ export function joinUrl(baseUrl: string, url: string) {
 
 export function merge(obj1: object, obj2: object): any {
     let result = {};
-    for (var i in obj1) {
+    for (let i in obj1) {
         if (obj1.hasOwnProperty(i)) {
             if ((i in obj2) && (typeof obj1[i] === 'object') && (i !== null)) {
                 result[i] = merge(obj1[i], obj2[i]);
@@ -50,7 +50,7 @@ export function merge(obj1: object, obj2: object): any {
             }
         }
     }
-    for (i in obj2) {
+    for (let i in obj2) {
         if (obj2.hasOwnProperty(i)) {
             if (i in result) {
                 continue;

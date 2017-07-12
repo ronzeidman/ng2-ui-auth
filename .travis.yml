@@ -9,6 +9,7 @@ before_install:
 - sh -e /etc/init.d/xvfb start
 script:
 - npm run build
+- npm run lint
 after_success:
 before_deploy:
 - cd dist

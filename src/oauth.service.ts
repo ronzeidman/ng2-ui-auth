@@ -1,13 +1,13 @@
-import {Injectable, Injector} from '@angular/core';
-import {Oauth1Service} from './oauth1.service';
-import {Oauth2Service} from './oauth2.service';
-import {SharedService} from './shared.service';
-import {Response, RequestOptionsArgs} from '@angular/http';
-import {joinUrl} from './utils';
-import {ConfigService, IOauth1Options} from './config.service';
-import {Observable} from 'rxjs/Observable';
+import { Injectable, Injector } from '@angular/core';
+import { Oauth1Service } from './oauth1.service';
+import { Oauth2Service } from './oauth2.service';
+import { SharedService } from './shared.service';
+import { Response, RequestOptionsArgs } from '@angular/http';
+import { joinUrl } from './utils';
+import { ConfigService, IOauth1Options } from './config.service';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
-import {JwtHttp} from './jwt-http.service';
+import { JwtHttp } from './jwt-http.service';
 
 /**
  * Created by Ron on 17/12/2015.

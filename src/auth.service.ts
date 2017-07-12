@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {RequestOptionsArgs, Response} from '@angular/http';
-import {SharedService} from './shared.service';
-import {LocalService} from './local.service';
-import {OauthService} from './oauth.service';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { RequestOptionsArgs, Response } from '@angular/http';
+import { SharedService } from './shared.service';
+import { LocalService } from './local.service';
+import { OauthService } from './oauth.service';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Created by Ron on 17/12/2015.

@@ -1,17 +1,15 @@
-import {Injectable} from '@angular/core';
-import {PopupService} from './popup.service';
-import {Response} from '@angular/http';
-import {assign, joinUrl} from './utils';
-import {ConfigService, IOauth1Options} from './config.service';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { PopupService } from './popup.service';
+import { Response } from '@angular/http';
+import { assign, joinUrl } from './utils';
+import { ConfigService, IOauth1Options } from './config.service';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
-import {JwtHttp} from './jwt-http.service';
+import { JwtHttp } from './jwt-http.service';
 
 /**
  * Created by Ron on 17/12/2015.
  */
-
-
 @Injectable()
 export class Oauth1Service {
     private static base: IOauth1Options = {
@@ -19,7 +17,7 @@ export class Oauth1Service {
         name: null,
         popupOptions: null,
         redirectUri: null,
-        authorizationEndpoint: null
+        authorizationEndpoint: null,
     };
     private defaults: IOauth1Options;
 
@@ -65,7 +63,7 @@ export class Oauth1Service {
             ? this.http.request(exchangeForTokenUrl, {
                 body: JSON.stringify(data),
                 withCredentials: this.config.withCredentials,
-                method: this.defaults.method
+                method: this.defaults.method,
             })
             : this.http.post(exchangeForTokenUrl, data, {withCredentials: this.config.withCredentials});
     }

@@ -3,8 +3,9 @@
   "version": "7.0.2",
   "description": "angular2 migration for satellizer",
   "scripts": {
+    "build": "ng-packagr -p ng-package.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "ng-packagr -p ng-package.json"
+    "lint": "tslint 'src/**/*.ts' --type-check -p tsconfig.json"
   },
   "keywords": [
     "angular",
@@ -35,8 +36,10 @@
     "@angular/http": "4.0.0",
     "@angular/platform-browser": "4.0.0",
     "@angular/platform-server": "4.0.0",
+    "codelyzer": "^3.1.2",
     "ng-packagr": "^1.0.0-pre.7",
     "rxjs": "5.4.2",
+    "tslint": "^5.5.0",
     "zone.js": "0.8.12"
   }
 }

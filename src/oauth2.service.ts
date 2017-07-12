@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {assign, camelCase, joinUrl, merge} from './utils';
-import {ConfigService, IOauth2Options} from './config.service';
-import {PopupService} from './popup.service';
-import {StorageService} from './storage.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { assign, camelCase, joinUrl, merge } from './utils';
+import { ConfigService, IOauth2Options } from './config.service';
+import { PopupService } from './popup.service';
+import { StorageService } from './storage.service';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
-import {JwtHttp} from './jwt-http.service';
+import { JwtHttp } from './jwt-http.service';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -21,8 +21,8 @@ export class Oauth2Service {
         responseParams: {
             code: 'code',
             clientId: 'clientId',
-            redirectUri: 'redirectUri'
-        }
+            redirectUri: 'redirectUri',
+        },
     };
 
     private defaults: IOauth2Options & { defaultUrlParams: string[] };
@@ -89,7 +89,7 @@ export class Oauth2Service {
             ? this.http.request(exchangeForTokenUrl, {
                 body: JSON.stringify(data),
                 withCredentials: this.config.withCredentials,
-                method: this.defaults.method
+                method: this.defaults.method,
             })
             : this.http.post(exchangeForTokenUrl, JSON.stringify(data), {withCredentials: this.config.withCredentials});
     }
