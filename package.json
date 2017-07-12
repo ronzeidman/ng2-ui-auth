@@ -23,6 +23,9 @@
     "url": "https://github.com/ronzeidman/ng2-ui-auth/issues"
   },
   "homepage": "https://github.com/ronzeidman/ng2-ui-auth#readme",
+  "dependencies": {
+    "tslib": "^1.7.1"
+  },
   "peerDependencies": {
     "@angular/http": "4.x",
     "@angular/core": "4.x",
