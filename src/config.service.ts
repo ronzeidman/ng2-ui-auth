@@ -276,6 +276,6 @@ export class ConfigService {
     }
 
     isCordovaApp() {
-        return !!window['cordova'];
+        return typeof window === 'object' && !!window['cordova'];
     }
 }
