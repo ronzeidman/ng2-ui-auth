@@ -1,18 +1,14 @@
+import { deepMerge } from './utils';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { assign } from './utils';
 import { ConfigService, IPopupOptions } from './config.service';
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/observable/empty';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/map';
-
-import 'rxjs/add/operator/takeWhile';
-import 'rxjs/add/operator/delay';
+import { switchMap, take, map, takeWhile, delay } from 'rxjs/operators';
+import { interval } from 'rxjs/observable/interval';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { _throw } from 'rxjs/observable/throw';
+import { empty } from 'rxjs/observable/empty';
+import { merge } from 'rxjs/observable/merge';
+import { of } from 'rxjs/observable/of';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -23,7 +19,7 @@ export class PopupService {
     url = '';
     popupWindow: Window = null;
 
-    constructor(private config: ConfigService) {}
+    constructor(private config: ConfigService) { }
     open(url: string, name: string, options: IPopupOptions) {
         this.url = url;
 
@@ -43,47 +39,49 @@ export class PopupService {
     }
 
     eventListener(redirectUri: string) {
-        return Observable
-            .merge(
-                Observable.fromEvent(this.popupWindow, 'loadstart')
-                .switchMap((event: Event & { url: string }) => {
+        return merge(
+            fromEvent<Event>(this.popupWindow, 'exit').pipe(delay(100), map(() => { throw new Error('Authentication Canceled'); })),
+            fromEvent(this.popupWindow, 'loadstart'),
+        ).pipe(
+            switchMap((event: Event & { url: string }) => {
 
-                    if (!this.popupWindow || this.popupWindow.closed) {
-                        return Observable.throw(new Error('Authentication Canceled'));
+                if (!this.popupWindow || this.popupWindow.closed) {
+                    return Observable.throw(new Error('Authentication Canceled'));
+                }
+                if (event.url.indexOf(redirectUri) !== 0) {
+                    return empty();
+                }
+
+                let parser = document.createElement('a');
+                parser.href = event.url;
+
+                if (parser.search || parser.hash) {
+                    const queryParams = parser.search.substring(1).replace(/\/$/, '');
+                    const hashParams = parser.hash.substring(1).replace(/\/$/, '');
+                    const hash = this.parseQueryString(hashParams);
+                    const qs = this.parseQueryString(queryParams);
+                    const allParams = { ...qs, ...hash };
+
+                    this.popupWindow.close();
+
+                    if (allParams.error) {
+                        throw allParams.error;
+                    } else {
+                        return of(allParams);
                     }
-                    if (event.url.indexOf(redirectUri) !== 0) {
-                        return Observable.empty();
-                    }
-
-                    let parser = document.createElement('a');
-                    parser.href = event.url;
-
-                    if (parser.search || parser.hash) {
-                        const queryParams = parser.search.substring(1).replace(/\/$/, '');
-                        const hashParams = parser.hash.substring(1).replace(/\/$/, '');
-                        const hash = this.parseQueryString(hashParams);
-                        const qs = this.parseQueryString(queryParams);
-                        const allParams = assign({}, qs, hash);
-
-                        this.popupWindow.close();
-
-                        if (allParams.error) {
-                            throw allParams.error;
-                        } else {
-                            return Observable.of(allParams);
-                        }
-                    }
-                    return Observable.empty();
-                }), Observable.fromEvent<Event>(this.popupWindow, 'exit').delay(100).map(() => { throw new Error('Authentication Canceled'); }),
-                       ).take(1);
+                }
+                return empty();
+            }),
+            take(1),
+            );
     }
 
     pollPopup() {
-        return Observable
-            .interval(50)
-            .switchMap(() => {
+        return interval(50)
+            .pipe(
+            switchMap(() => {
                 if (!this.popupWindow || this.popupWindow.closed) {
-                    return Observable.throw(new Error('Authentication Canceled'));
+                    return _throw(new Error('Authentication Canceled'));
                 }
                 let documentOrigin = document.location.host;
                 let popupWindowOrigin = '';
@@ -99,31 +97,31 @@ export class PopupService {
                     const hash = this.parseQueryString(hashParams);
                     const qs = this.parseQueryString(queryParams);
                     this.popupWindow.close();
-                    const allParams = assign({}, qs, hash);
+                    const allParams = { ...qs, ...hash };
                     if (allParams.error) {
                         throw allParams.error;
                     } else {
-                        return Observable.of(allParams);
+                        return of(allParams);
                     }
                 }
-                return Observable.empty();
-            })
-            .take(1);
+                return empty();
+            }),
+            take(1),
+            );
     }
 
     private prepareOptions(options: IPopupOptions) {
         options = options || {};
         let width = options.width || 500;
         let height = options.height || 500;
-        return assign(
-            {
-                width: width,
-                height: height,
-                left: window.screenX + ((window.outerWidth - width) / 2),
-                top: window.screenY + ((window.outerHeight - height) / 2.5),
-                toolbar: options.visibleToolbar ? 'yes' : 'no',
-            },
-            options);
+        return {
+            width: width,
+            height: height,
+            left: window.screenX + ((window.outerWidth - width) / 2),
+            top: window.screenY + ((window.outerHeight - height) / 2.5),
+            toolbar: options.visibleToolbar ? 'yes' : 'no',
+            ...options,
+        };
     }
 
     private stringifyOptions(options: Object) {

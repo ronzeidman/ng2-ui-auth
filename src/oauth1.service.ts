@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PopupService } from './popup.service';
-import { Response } from '@angular/http';
-import { assign, joinUrl } from './utils';
+import { joinUrl } from './utils';
 import { ConfigService, IOauth1Options } from './config.service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-import { JwtHttp } from './jwt-http.service';
+import { switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -21,11 +20,11 @@ export class Oauth1Service {
     };
     private defaults: IOauth1Options;
 
-    constructor(private http: JwtHttp, private popup: PopupService, private config: ConfigService) {
+    constructor(private http: HttpClient, private popup: PopupService, private config: ConfigService) {
     }
 
-    open(options?: IOauth1Options, userData?: any): Observable<Response> {
-        this.defaults = assign({}, Oauth1Service.base, options);
+    open<T>(options?: IOauth1Options, userData?: any): Observable<T> {
+        this.defaults = { ...Oauth1Service.base, ...options };
         let popupWindow;
         let serverUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 
@@ -33,39 +32,41 @@ export class Oauth1Service {
             popupWindow = this.popup.open('', this.defaults.name, this.defaults.popupOptions/*, this.defaults.redirectUri*/);
         }
 
-        return this.http.post(serverUrl, JSON.stringify(this.defaults))
-            .switchMap((response: Response) => {
+        return this.http
+            .post<T>(serverUrl, JSON.stringify(this.defaults))
+            .pipe(
+            switchMap(response => {
                 if (this.config.cordova) {
                     popupWindow = this.popup.open(
-                        [this.defaults.authorizationEndpoint, this.buildQueryString(response.json())].join('?'),
+                        [this.defaults.authorizationEndpoint, this.buildQueryString(response)].join('?'),
                         this.defaults.name,
                         this.defaults.popupOptions);
                 } else {
                     popupWindow.popupWindow.location =
-                        [this.defaults.authorizationEndpoint, this.buildQueryString(response.json())].join('?');
+                        [this.defaults.authorizationEndpoint, this.buildQueryString(response)].join('?');
                 }
 
                 return this.config.cordova ? popupWindow.eventListener(this.defaults.redirectUri) : popupWindow.pollPopup();
-            })
-            .switchMap((response) => {
+            }),
+            switchMap(response => {
                 let exchangeForToken: any = options.exchangeForToken;
                 if (typeof exchangeForToken !== 'function') {
                     exchangeForToken = this.exchangeForToken.bind(this);
                 }
                 return exchangeForToken(response, userData);
-            });
+            }),
+            );
     }
 
     private exchangeForToken(oauthData, userData?: any) {
-        let data = assign({}, this.defaults, oauthData, userData);
+        let data = { ...this.defaults, ...oauthData, ...userData };
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
         return this.defaults.method
-            ? this.http.request(exchangeForTokenUrl, {
-                body: JSON.stringify(data),
+            ? this.http.request(this.defaults.method, exchangeForTokenUrl, {
+                body: data,
                 withCredentials: this.config.withCredentials,
-                method: this.defaults.method,
             })
-            : this.http.post(exchangeForTokenUrl, data, {withCredentials: this.config.withCredentials});
+            : this.http.post(exchangeForTokenUrl, data, { withCredentials: this.config.withCredentials });
     }
 
     private buildQueryString(obj: Object) {

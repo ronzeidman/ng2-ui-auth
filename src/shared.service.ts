@@ -4,7 +4,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { ConfigService } from './config.service';
 import { StorageService } from './storage.service';
 
@@ -36,7 +35,7 @@ export class SharedService {
         }
     }
 
-    setToken(response: string | Response | Object) {
+    setToken(response: string | object) {
         if (!response) {
             console.warn('Can\'t set token without passing a value');
             return;

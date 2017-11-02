@@ -1,3 +1,8 @@
+#### 8.0.0-beta.1
+* Angular 5.0.0
+* Rxjs lettables
+* Using HttpClient instead of Http
+
 #### 7.0.2
 * issue #105: Make the library FESM15 includeable by using ng-packagr.
 
@@ -66,7 +71,6 @@
 * **BREAKING CHANGE:** Initializing the library works like this now:
 ```typescript
 export class MyAuthConfig extends CustomConfig {
-    defaultHeaders = {'Content-Type': 'application/json'};
     providers = {google: {clientId: GOOGLE_CLIENT_ID}};
 }
 

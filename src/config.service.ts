@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { RequestMethod, Response } from '@angular/http';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -22,7 +21,7 @@ export interface IOauth1Options {
     authorizationEndpoint?: string;
     oauthType?: string;
     exchangeForToken?: boolean | ((options: {code?: string, state?: string}, userData?: any) => Observable<Response>);
-    method?: string | RequestMethod;
+    method?: string;
 }
 
 export interface IOauth2Options extends IOauth1Options {
@@ -61,7 +60,6 @@ export abstract class CustomConfig {
     authHeader: string;
     storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie';
     providers: IProviders;
-    defaultHeaders: { [name: string]: string };
     withCredentials: boolean;
     autoRefreshToken: boolean;
     refreshUrl: string;
@@ -85,7 +83,6 @@ export class ConfigService {
     authHeader = 'Authorization';
     authToken = 'Bearer';
     storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' = 'localStorage';
-    defaultHeaders = null;
     autoRefreshToken = false;
     refreshBeforeExpiration = 600000; // 10 minutes
     tryTokenRefreshIfUnauthorized = false;

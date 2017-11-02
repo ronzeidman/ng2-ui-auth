@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { assign, camelCase, joinUrl, merge } from './utils';
+import { camelCase, joinUrl, deepMerge } from './utils';
 import { ConfigService, IOauth2Options } from './config.service';
 import { PopupService } from './popup.service';
 import { StorageService } from './storage.service';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/observable/of';
-import { JwtHttp } from './jwt-http.service';
+import { HttpClient } from '@angular/common/http';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -27,14 +27,15 @@ export class Oauth2Service {
 
     private defaults: IOauth2Options & { defaultUrlParams: string[] };
 
-    constructor(private http: JwtHttp,
-                private popup: PopupService,
-                private storage: StorageService,
-                private config: ConfigService) {
+    constructor(
+        private http: HttpClient,
+        private popup: PopupService,
+        private storage: StorageService,
+        private config: ConfigService) {
     }
 
-    open(options: IOauth2Options, userData?: any) {
-        this.defaults = merge(options, Oauth2Service.base);
+    open<T>(options?: IOauth2Options, userData?: any): Observable<T> {
+        this.defaults = deepMerge(options, Oauth2Service.base);
 
         let url;
         let openPopup: Observable<any>;
@@ -60,13 +61,13 @@ export class Oauth2Service {
         }
 
         return openPopup
-            .switchMap((oauthData) => {
+            .pipe(switchMap(oauthData => {
                 // when no server URL provided, return popup params as-is.
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and
                 // saving a token manually.
                 if (this.defaults.responseType === 'token' || !this.defaults.url) {
-                    return Observable.of(oauthData);
+                    return of(oauthData);
                 }
 
                 if (oauthData.state && oauthData.state !== this.storage.get(stateName)) {
@@ -77,21 +78,20 @@ export class Oauth2Service {
                     exchangeForToken = this.exchangeForToken.bind(this);
                 }
                 return exchangeForToken(oauthData, userData);
-            });
+            }));
     }
 
-    private exchangeForToken(oauthData: { code?: string, state?: string }, userData?: {}) {
-        let data: any = assign({}, this.defaults, oauthData, userData);
+    private exchangeForToken(oauthData: { code?: string, state?: string }, userData?: object) {
+        let body = { ...this.defaults, ...oauthData, ...userData };
 
         let exchangeForTokenUrl = this.config.baseUrl ? joinUrl(this.config.baseUrl, this.defaults.url) : this.defaults.url;
 
-        return this.defaults.method
-            ? this.http.request(exchangeForTokenUrl, {
-                body: JSON.stringify(data),
+        return this.http.request(
+            this.defaults.method || 'POST',
+            exchangeForTokenUrl, {
+                body,
                 withCredentials: this.config.withCredentials,
-                method: this.defaults.method,
-            })
-            : this.http.post(exchangeForTokenUrl, JSON.stringify(data), {withCredentials: this.config.withCredentials});
+            });
     }
 
     private buildQueryString() {

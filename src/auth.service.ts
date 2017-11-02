@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RequestOptionsArgs, Response } from '@angular/http';
 import { SharedService } from './shared.service';
 import { LocalService } from './local.service';
 import { OauthService } from './oauth.service';
@@ -16,12 +15,12 @@ export class AuthService {
                 private oauth: OauthService) {
     }
 
-    login(user, opts?: RequestOptionsArgs): Observable<Response> {
-        return this.local.login(user, opts);
+    login(user: string | object, url?: string): Observable<Response> {
+        return this.local.login(user, url);
     }
 
-    signup(user, opts?: RequestOptionsArgs): Observable<Response> {
-        return this.local.signup(user, opts);
+    signup(user: string | object, url?: string): Observable<Response> {
+        return this.local.signup(user, url);
     }
 
     logout(): Observable<void> {
@@ -32,12 +31,12 @@ export class AuthService {
         return this.oauth.authenticate(name, userData);
     }
 
-    link(name: string, userData?: any): Observable<Response> {
+    link<T>(name: string, userData?: any): Observable<Response> {
         return this.oauth.authenticate(name, userData);
     }
 
-    unlink(provider: string, opts: RequestOptionsArgs): Observable<Response> {
-        return this.oauth.unlink(provider, opts);
+    unlink<T>(provider: string, url?: string): Observable<T> {
+        return this.oauth.unlink<T>(provider, url);
     }
 
     isAuthenticated(): boolean {
