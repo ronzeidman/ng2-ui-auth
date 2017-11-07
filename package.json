@@ -4,8 +4,7 @@
   "description": "angular2 migration for satellizer",
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint 'src/**/*.ts' -p tsconfig.json"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "angular",

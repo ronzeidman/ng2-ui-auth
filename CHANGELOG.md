@@ -6,7 +6,7 @@
     * Using HttpClient instead of Http
     * Using HttpClient Interceptor instead of JwtHttp
     * In the `exchangeForToken` flow (when you want to exchange authorization code given by the authorization endpoint with your server's token) this library now sends a body that looks like this instead of a flat mesh of the oauth options, oauth result and user data:
-    ```json
+    ```js
     {
         "authorizationData": {
             //the same data sent to the auth endpoint
