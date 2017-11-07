@@ -1,7 +1,35 @@
-#### 8.0.0-beta.1
-* Angular 5.0.0
+#### 8.0.0-beta.2
+* Angular 5.0.0 (for <5.0.0 use version 7.0.2)
 * Rxjs lettables
-* Using HttpClient instead of Http
+* Total refactor, code is much cleaner, shorter and easier to read
+* #### BREAKING CHANGES:
+    * Using HttpClient instead of Http
+    * Using HttpClient Interceptor instead of JwtHttp
+    * In the `exchangeForToken` flow (when you want to exchange authorization code given by the authorization endpoint with your server's token) this library now sends a body that looks like this instead of a flat mesh of the oauth options, oauth result and user data:
+    ```json
+    {
+        "authorizationData": {
+            //the same data sent to the auth endpoint
+        },
+        "oauthData": {
+            //the data received from the oauth endpoint
+        },
+        "userData": {
+            //additional data you've provided
+        }
+    }
+    ```
+    * You don't need a class for the options and several options were removed (mostly because you can't make requests while you intercept requests...): 
+        * `defaultHeaders` - No need, you can create your own interceptor.
+        * `tryTokenRefreshIfUnauthorized`, `refreshBeforeExpiration`, `autoRefreshToken`, `refreshUrl` - Removed since can't refresh while intercepting (if you come up with a clever idea how please send a pull request / issue)
+    * changed the OauthOptions
+        * removed `exchangeForToken` - was hard to use and nobody was using it
+        * removed `responseParams` - was not in use
+        * removed `scopePrefix` - you can just add it as the first param in `scope`
+        * `scope` is only an array
+        * No more `requiredUrlParams`/`optionalUrlParams` confusion! introducing `additionalUrlParams` - just add a param name, and value and it will be added to the request, if the value is `undefined` the param will not be added, if the value is `null` it will be added without a value, if the value is a function, it will run the function.
+
+
 
 #### 7.0.2
 * issue #105: Make the library FESM15 includeable by using ng-packagr.

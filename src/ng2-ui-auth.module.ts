@@ -1,7 +1,7 @@
 /**
  * Created by Ron on 25/12/2015.
  */
-import { CustomConfig, ConfigService } from './config.service';
+import { ConfigService, IPartialConfigOptions } from './config.service';
 import { SharedService } from './shared.service';
 import { OauthService } from './oauth.service';
 import { PopupService } from './popup.service';
@@ -12,25 +12,21 @@ import { AuthService } from './auth.service';
 import { JwtInterceptor } from './interceptor.service';
 import { StorageService, BrowserStorageService } from './storage.service';
 import { ModuleWithProviders, NgModule, Type } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
 
-@NgModule({})
+@NgModule({ imports: [HttpClientModule] })
 export class Ng2UiAuthModule {
-    static forRoot(config: Type<CustomConfig>): ModuleWithProviders {
+    static forRoot(options: IPartialConfigOptions): ModuleWithProviders {
         return {
             ngModule: Ng2UiAuthModule,
             providers: [
-                HttpClientModule,
-                { provide: CustomConfig, useClass: config },
-                { provide: ConfigService, useClass: ConfigService, deps: [CustomConfig] },
+                { provide: ConfigService, useValue: new ConfigService(options) },
                 { provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService] },
                 { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
-                { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-                { provide: OauthService, useClass: OauthService, deps: [SharedService, ConfigService] },
+                { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true, deps: [SharedService, ConfigService] },
+                { provide: OauthService, useClass: OauthService, deps: [HttpClient, SharedService, ConfigService, PopupService] },
                 { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
-                { provide: Oauth1Service, useClass: Oauth1Service, deps: [PopupService, ConfigService] },
-                { provide: Oauth2Service, useClass: Oauth2Service, deps: [PopupService, StorageService, ConfigService] },
-                { provide: LocalService, useClass: LocalService, deps: [SharedService, ConfigService] },
+                { provide: LocalService, useClass: LocalService, deps: [HttpClient, SharedService, ConfigService] },
                 { provide: AuthService, useClass: AuthService, deps: [SharedService, LocalService, OauthService] },
             ],
         };
@@ -46,6 +42,6 @@ export {
     SharedService,
     StorageService, BrowserStorageService,
     AuthService,
-    ConfigService, CustomConfig,
+    ConfigService, IPartialConfigOptions,
     JwtInterceptor,
 };

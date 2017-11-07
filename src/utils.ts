@@ -11,7 +11,7 @@ export function joinUrl(baseUrl: string, url: string) {
 
     let joined = [baseUrl, url].join('/');
 
-    let normalize = function(str) {
+    let normalize = function (str) {
         return str
             .replace(/[\/]+/g, '/')
             .replace(/\/\?/g, '?')
@@ -45,8 +45,9 @@ export function deepMerge(obj1: object, obj2: object): any {
     return result;
 }
 
-export function camelCase(name) {
-    return name.replace(/([\:\-\_]+(.))/g, function(_, separator, letter, offset) {
-        return offset ? letter.toUpperCase() : letter;
-    });
+export function buildQueryString(obj: object) {
+    return Object
+        .keys(obj)
+        .map((key) => !!obj[key] ? `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}` : key)
+        .join('&');
 }

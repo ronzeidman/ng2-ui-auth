@@ -13,21 +13,24 @@ import { StorageService } from './storage.service';
 
 @Injectable()
 export class SharedService {
-    tokenName = this.config.tokenPrefix ? [this.config.tokenPrefix, this.config.tokenName].join(this.config.tokenSeparator) : this.config.tokenName;
+    public tokenName = this.config.options.tokenPrefix
+        ? [this.config.options.tokenPrefix, this.config.options.tokenName].join(this.config.options.tokenSeparator)
+        : this.config.options.tokenName;
 
-    constructor(private storage: StorageService, private config: ConfigService) {
-    }
+    constructor(
+        private storage: StorageService,
+        private config: ConfigService) { }
 
-    getToken() {
+    public getToken() {
         return this.storage.get(this.tokenName);
     }
 
-    getPayload(token = this.getToken()) {
+    public getPayload(token = this.getToken()) {
 
         if (token && token.split('.').length === 3) {
             try {
-                let base64Url = token.split('.')[1];
-                let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 return JSON.parse(decodeURIComponent(encodeURIComponent(window.atob(base64))));
             } catch (e) {
                 return undefined;
@@ -35,9 +38,9 @@ export class SharedService {
         }
     }
 
-    setToken(response: string | object) {
+    public setToken(response: string | object) {
         if (!response) {
-            console.warn('Can\'t set token without passing a value');
+            // console.warn('Can\'t set token without passing a value');
             return;
         }
 
@@ -45,7 +48,7 @@ export class SharedService {
         if (typeof response === 'string') {
             token = response;
         } else {
-            token = this.config.resolveToken(response);
+            token = this.config.options.resolveToken(response, this.config.options);
         }
 
         if (token) {
@@ -54,11 +57,11 @@ export class SharedService {
         }
     }
 
-    removeToken() {
+    public removeToken() {
         this.storage.remove(this.tokenName);
     }
 
-    isAuthenticated(token = this.getToken()) {
+    public isAuthenticated(token = this.getToken()) {
 
         // a token is present
         if (token) {
@@ -66,12 +69,12 @@ export class SharedService {
             if (token.split('.').length === 3) {
                 // could be a valid JWT or an access token with the same format
                 try {
-                    let base64Url = token.split('.')[1];
-                    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    let exp = JSON.parse(window.atob(base64)).exp;
+                    const base64Url = token.split('.')[1];
+                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                    const exp = JSON.parse(window.atob(base64)).exp;
                     // jwt with an optional expiration claims
                     if (exp) {
-                        let isExpired = Math.round(new Date().getTime() / 1000) >= exp;
+                        const isExpired = Math.round(new Date().getTime() / 1000) >= exp;
                         if (isExpired) {
                             // fail: Expired token
                             this.storage.remove(this.tokenName);
@@ -93,17 +96,17 @@ export class SharedService {
         return false;
     }
 
-    getExpirationDate(token = this.getToken()) {
-        let payload = this.getPayload(token);
+    public getExpirationDate(token = this.getToken()) {
+        const payload = this.getPayload(token);
         if (payload && payload.exp && Math.round(new Date().getTime() / 1000) < payload.exp) {
-            let date = new Date(0);
+            const date = new Date(0);
             date.setUTCSeconds(payload.exp);
             return date;
         }
         return null;
     }
 
-    logout(): Observable<any> {
+    public logout(): Observable<any> {
         return Observable.create((observer: Subscriber<any>) => {
             this.storage.remove(this.tokenName);
             observer.next();
@@ -111,7 +114,7 @@ export class SharedService {
         });
     }
 
-    setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie') {
-        this.config.storageType = type;
+    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie') {
+        this.config.options.storageType = type;
     }
 }

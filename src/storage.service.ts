@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from './config.service';
+import { ConfigService, IConfigOptions } from './config.service';
 
 export abstract class StorageService {
     abstract get(key: string): string;
@@ -14,52 +14,52 @@ export abstract class StorageService {
  */
 @Injectable()
 export class BrowserStorageService extends StorageService {
-    private store = {};
+    private store: { [key: string]: string } = {};
     private isStorageAvailable: boolean;
 
     constructor(private config: ConfigService) {
         super();
-        this.isStorageAvailable = this.checkIsStorageAvailable(config);
+        this.isStorageAvailable = this.checkIsStorageAvailable(config.options);
         if (!this.isStorageAvailable) {
-            console.warn(config.storageType + ' is not available.');
+            console.warn(config.options.storageType + ' is not available.');
         }
     }
 
-    get(key: string) {
+    public get(key: string) {
         return this.isStorageAvailable
-            ? this.config.storageType === 'cookie' || this.config.storageType === 'sessionCookie'
+            ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
                 ? this.getCookie(key)
-                : window[this.config.storageType].getItem(key)
+                : window[this.config.options.storageType].getItem(key)
             : this.store[key];
     }
 
-    set(key: string, value: string, date: string) {
+    public set(key: string, value: string, date: string) {
         this.isStorageAvailable
-            ? this.config.storageType === 'cookie' || this.config.storageType === 'sessionCookie'
-            ? this.setCookie(key, value, this.config.storageType === 'cookie' ? date : '')
-            : window[this.config.storageType].setItem(key, value)
+            ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
+                ? this.setCookie(key, value, this.config.options.storageType === 'cookie' ? date : '')
+                : window[this.config.options.storageType].setItem(key, value)
             : this.store[key] = value;
     }
 
-    remove(key: string) {
+    public remove(key: string) {
         this.isStorageAvailable
-            ? this.config.storageType === 'cookie' || this.config.storageType === 'sessionCookie'
-            ? this.removeCookie(key)
-            : window[this.config.storageType].removeItem(key)
+            ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
+                ? this.removeCookie(key)
+                : window[this.config.options.storageType].removeItem(key)
             : delete this.store[key];
     }
 
-    private checkIsStorageAvailable(config: ConfigService) {
-        if (config.storageType === 'cookie' || config.storageType === 'sessionCookie') {
+    private checkIsStorageAvailable(options: IConfigOptions) {
+        if (options.storageType === 'cookie' || options.storageType === 'sessionCookie') {
             return this.isCookieStorageAvailable();
         }
         try {
-            const supported = window && config.storageType in window && window[config.storageType] !== null;
+            const supported = window && options.storageType in window && window[options.storageType] !== null;
 
             if (supported) {
                 const key = Math.random().toString(36).substring(7);
-                window[this.config.storageType].setItem(key, '');
-                window[this.config.storageType].removeItem(key);
+                window[options.storageType].setItem(key, '');
+                window[options.storageType].removeItem(key);
             }
 
             return supported;

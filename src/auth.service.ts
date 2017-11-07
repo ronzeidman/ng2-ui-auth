@@ -15,55 +15,55 @@ export class AuthService {
                 private oauth: OauthService) {
     }
 
-    login(user: string | object, url?: string): Observable<Response> {
-        return this.local.login(user, url);
+    public login<T extends string | object = any>(user: string | object, url?: string): Observable<T> {
+        return this.local.login<T>(user, url);
     }
 
-    signup(user: string | object, url?: string): Observable<Response> {
-        return this.local.signup(user, url);
+    public signup<T = any>(user: string | object, url?: string): Observable<T> {
+        return this.local.signup<T>(user, url);
     }
 
-    logout(): Observable<void> {
+    public logout(): Observable<void> {
         return this.shared.logout();
     }
 
-    authenticate(name: string, userData?: any): Observable<Response> {
-        return this.oauth.authenticate(name, userData);
+    public authenticate<T = any>(name: string, userData?: any): Observable<T> {
+        return this.oauth.authenticate<T>(name, userData);
     }
 
-    link<T>(name: string, userData?: any): Observable<Response> {
-        return this.oauth.authenticate(name, userData);
+    public link<T = any>(name: string, userData?: any): Observable<T> {
+        return this.oauth.authenticate<T>(name, userData);
     }
 
-    unlink<T>(provider: string, url?: string): Observable<T> {
+    public unlink<T = any>(provider: string, url?: string): Observable<T> {
         return this.oauth.unlink<T>(provider, url);
     }
 
-    isAuthenticated(): boolean {
+    public isAuthenticated(): boolean {
         return this.shared.isAuthenticated();
     }
 
-    getToken(): string {
+    public getToken(): string | null {
         return this.shared.getToken();
     }
 
-    setToken(token: string | Response): void {
+    public setToken(token: string | object): void {
         this.shared.setToken(token);
     }
 
-    removeToken(): void {
+    public removeToken(): void {
         this.shared.removeToken();
     }
 
-    getPayload(): any {
+    public getPayload(): any {
         return this.shared.getPayload();
     }
 
-    setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie'): void {
+    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie'): void {
         this.shared.setStorageType(type);
     }
 
-    getExpirationDate(): Date {
+    public getExpirationDate(): Date | null {
         return this.shared.getExpirationDate();
     }
 }
