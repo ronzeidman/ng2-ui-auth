@@ -1,3 +1,6 @@
+#### 8.0.0-beta.3
+* AOT compatible
+
 #### 8.0.0-beta.2
 * Angular 5.0.0 (for <5.0.0 use version 7.0.2)
 * Rxjs lettables

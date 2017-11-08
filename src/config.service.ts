@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 /**
  * Created by Ron on 17/12/2015.
  */
+
+export const CONFIG_OPTIONS = new InjectionToken<any>('config.options');
 
 export interface IPopupOptions {
     width?: number;
@@ -249,7 +251,7 @@ export const defaultOptions: IConfigOptions = {
 export class ConfigService {
     public options: IConfigOptions;
 
-    constructor(options: IPartialConfigOptions) {
+    constructor(@Inject(CONFIG_OPTIONS) options: IPartialConfigOptions) {
         this.options = {
             ...defaultOptions,
             ...options,

@@ -1,7 +1,7 @@
 /**
  * Created by Ron on 25/12/2015.
  */
-import { ConfigService, IPartialConfigOptions } from './config.service';
+import { ConfigService, IPartialConfigOptions, CONFIG_OPTIONS } from './config.service';
 import { SharedService } from './shared.service';
 import { OauthService } from './oauth.service';
 import { PopupService } from './popup.service';
@@ -11,7 +11,7 @@ import { LocalService } from './local.service';
 import { AuthService } from './auth.service';
 import { JwtInterceptor } from './interceptor.service';
 import { StorageService, BrowserStorageService } from './storage.service';
-import { ModuleWithProviders, NgModule, Type } from '@angular/core';
+import { InjectionToken, ModuleWithProviders, NgModule, Type } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
 
 @NgModule({ imports: [HttpClientModule] })
@@ -20,7 +20,8 @@ export class Ng2UiAuthModule {
         return {
             ngModule: Ng2UiAuthModule,
             providers: [
-                { provide: ConfigService, useValue: new ConfigService(options) },
+                { provide: CONFIG_OPTIONS, useValue: options },
+                { provide: ConfigService, useClass: ConfigService, deps: [CONFIG_OPTIONS] },
                 { provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService] },
                 { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
                 { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true, deps: [SharedService, ConfigService] },
