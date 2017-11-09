@@ -31,7 +31,7 @@ export class SharedService {
             try {
                 const base64Url = token.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                return JSON.parse(decodeURIComponent(encodeURIComponent(window.atob(base64))));
+                return JSON.parse(this.b64DecodeUnicode(base64));
             } catch (e) {
                 return undefined;
             }
@@ -71,7 +71,7 @@ export class SharedService {
                 try {
                     const base64Url = token.split('.')[1];
                     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const exp = JSON.parse(window.atob(base64)).exp;
+                    const exp = JSON.parse(this.b64DecodeUnicode(base64)).exp;
                     // jwt with an optional expiration claims
                     if (exp) {
                         const isExpired = Math.round(new Date().getTime() / 1000) >= exp;
@@ -116,5 +116,12 @@ export class SharedService {
 
     public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie') {
         this.config.options.storageType = type;
+    }
+
+    private b64DecodeUnicode(str) {
+        return decodeURIComponent(
+            Array.prototype.map.call(atob(str),
+            c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2),
+        ).join(''));
     }
 }

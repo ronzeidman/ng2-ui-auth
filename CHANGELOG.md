@@ -1,3 +1,7 @@
+#### 8.0.0-beta.4
+* issue #121: ability to inject config
+* issue #122: ability to decode unicode characters
+
 #### 8.0.0-beta.3
 * AOT compatible
 

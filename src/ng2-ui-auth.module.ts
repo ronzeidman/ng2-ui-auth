@@ -16,6 +16,21 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common
 
 @NgModule({ imports: [HttpClientModule] })
 export class Ng2UiAuthModule {
+    static forRootWithoutOptions(): ModuleWithProviders {
+        return {
+            ngModule: Ng2UiAuthModule,
+            providers: [
+                { provide: ConfigService, useClass: ConfigService, deps: [CONFIG_OPTIONS] },
+                { provide: StorageService, useClass: BrowserStorageService, deps: [ConfigService] },
+                { provide: SharedService, useClass: SharedService, deps: [StorageService, ConfigService] },
+                { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true, deps: [SharedService, ConfigService] },
+                { provide: OauthService, useClass: OauthService, deps: [HttpClient, SharedService, ConfigService, PopupService] },
+                { provide: PopupService, useClass: PopupService, deps: [ConfigService] },
+                { provide: LocalService, useClass: LocalService, deps: [HttpClient, SharedService, ConfigService] },
+                { provide: AuthService, useClass: AuthService, deps: [SharedService, LocalService, OauthService] },
+            ],
+        };
+    }
     static forRoot(options: IPartialConfigOptions): ModuleWithProviders {
         return {
             ngModule: Ng2UiAuthModule,
@@ -45,4 +60,5 @@ export {
     AuthService,
     ConfigService, IPartialConfigOptions,
     JwtInterceptor,
+    CONFIG_OPTIONS,
 };
