@@ -23,6 +23,6 @@ export class LocalService {
     }
 
     public signup<T = any>(user: string | object, url?: string): Observable<T> {
-        return this.http.post<T>(url || joinUrl(this.config.options.baseUrl, this.config.options.loginUrl), user);
+        return this.http.post<T>(url || joinUrl(this.config.options.baseUrl, this.config.options.signupUrl), user);
     }
 }

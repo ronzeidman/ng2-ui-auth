@@ -1,3 +1,8 @@
+#### 8.0.0-beta.5
+* fix signup logged in issue
+* issue #124: export IProviders
+* issue #123: fixed pollPopup regression
+
 #### 8.0.0-beta.4
 * issue #121: ability to inject config
 * issue #122: ability to decode unicode characters

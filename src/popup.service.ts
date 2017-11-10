@@ -92,7 +92,8 @@ export class PopupService {
                     // error instanceof DOMException && error.name === 'SecurityError'
                 }
 
-                if (popupWindowOrigin.indexOf(redirectUri) === 0 &&
+                if (popupWindowOrigin &&
+                    (redirectUri.indexOf(popupWindowOrigin) === 0 || popupWindowOrigin.indexOf(redirectUri) === 0) &&
                     (popupWindow.location.search || popupWindow.location.hash)) {
                     const queryParams = popupWindow.location.search.substring(1).replace(/\/$/, '');
                     const hashParams = popupWindow.location.hash.substring(1).replace(/[\/$]/, '');
@@ -131,7 +132,7 @@ export class PopupService {
             .map((key) => options[key] === null || options[key] === undefined
                 ? key
                 : key + '=' + options[key],
-            ).join(',');
+        ).join(',');
     }
 
     private parseQueryString(joinedKeyValue: string): any {
