@@ -26,14 +26,19 @@ export class BrowserStorageService extends StorageService {
     }
 
     public get(key: string) {
-        return this.isStorageAvailable
-            ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
-                ? this.getCookie(key)
-                : window[this.config.options.storageType].getItem(key)
-            : this.store[key];
+        return this.config.options.storageType === 'none'
+            ? null
+            : this.isStorageAvailable
+                ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
+                    ? this.getCookie(key)
+                    : window[this.config.options.storageType].getItem(key)
+                : this.store[key];
     }
 
     public set(key: string, value: string, date: string) {
+        if (this.config.options.storageType === 'none') {
+            return;
+        }
         this.isStorageAvailable
             ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
                 ? this.setCookie(key, value, this.config.options.storageType === 'cookie' ? date : '')
@@ -42,6 +47,9 @@ export class BrowserStorageService extends StorageService {
     }
 
     public remove(key: string) {
+        if (this.config.options.storageType === 'none') {
+            return;
+        }
         this.isStorageAvailable
             ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
                 ? this.removeCookie(key)
@@ -50,6 +58,9 @@ export class BrowserStorageService extends StorageService {
     }
 
     private checkIsStorageAvailable(options: IConfigOptions) {
+        if (options.storageType === 'none') {
+            return true;
+        }
         if (options.storageType === 'cookie' || options.storageType === 'sessionCookie') {
             return this.isCookieStorageAvailable();
         }

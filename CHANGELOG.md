@@ -1,3 +1,6 @@
+#### 8.0.0-beta.6
+* added storage type 'none'
+
 #### 8.0.0-beta.5
 * fix signup logged in issue
 * issue #124: export IProviders

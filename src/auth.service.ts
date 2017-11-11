@@ -59,7 +59,7 @@ export class AuthService {
         return this.shared.getPayload();
     }
 
-    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie'): void {
+    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' | 'none'): void {
         this.shared.setStorageType(type);
     }
 

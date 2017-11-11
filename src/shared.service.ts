@@ -114,7 +114,7 @@ export class SharedService {
         });
     }
 
-    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie') {
+    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' | 'none') {
         this.config.options.storageType = type;
     }
 

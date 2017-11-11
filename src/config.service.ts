@@ -59,7 +59,7 @@ export interface IConfigOptions {
     tokenPrefix: string;
     authToken: string;
     authHeader: string;
-    storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie';
+    storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' | 'none';
     providers: IProviders;
     withCredentials: boolean;
     resolveToken: (response: any, config: IConfigOptions) => string;
