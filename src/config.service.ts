@@ -1,5 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { StorageType, LOCAL_STORAGE } from './storage-type.enum';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -59,7 +60,7 @@ export interface IConfigOptions {
     tokenPrefix: string;
     authToken: string;
     authHeader: string;
-    storageType: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' | 'none';
+    storageType: StorageType;
     providers: IProviders;
     withCredentials: boolean;
     resolveToken: (response: any, config: IConfigOptions) => string;
@@ -77,7 +78,7 @@ export interface IPartialConfigOptions { // = Partial<IConfigOptions
     tokenPrefix?: string;
     authToken?: string;
     authHeader?: string;
-    storageType?: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie';
+    storageType?: StorageType;
     providers?: IProviders;
     withCredentials?: boolean;
     resolveToken?: (response: any, config: IConfigOptions) => string;
@@ -95,7 +96,7 @@ export const defaultOptions: IConfigOptions = {
     tokenPrefix: 'ng2-ui-auth',
     authHeader: 'Authorization',
     authToken: 'Bearer',
-    storageType: 'localStorage',
+    storageType: LOCAL_STORAGE,
     cordova: null,
     resolveToken: (response: any, config: IConfigOptions) => {
         const accessToken: string | { [key: string]: string } | null | undefined = response &&

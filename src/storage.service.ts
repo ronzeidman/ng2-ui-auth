@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ConfigService, IConfigOptions } from './config.service';
+import { StorageType, MEMMORY, COOKIE, SESSION_COOKIE, LOCAL_STORAGE, SESSION_STORAGE, NONE } from './storage-type.enum';
 
 export abstract class StorageService {
+    abstract updateStorageType(storageType: StorageType): boolean;
+
     abstract get(key: string): string;
 
     abstract set(key: string, value: string, date: string): void;
@@ -15,62 +18,102 @@ export abstract class StorageService {
 @Injectable()
 export class BrowserStorageService extends StorageService {
     private store: { [key: string]: string } = {};
-    private isStorageAvailable: boolean;
+    private storageType: StorageType = MEMMORY;
 
     constructor(private config: ConfigService) {
         super();
-        this.isStorageAvailable = this.checkIsStorageAvailable(config.options);
-        if (!this.isStorageAvailable) {
+        if (!this.updateStorageType(config.options.storageType)) {
             console.warn(config.options.storageType + ' is not available.');
         }
     }
 
+    public updateStorageType(storageType: StorageType) {
+        const isStorageAvailable = this.checkIsStorageAvailable(storageType);
+        if (!isStorageAvailable) {
+            return false;
+        }
+        this.storageType = storageType;
+        return true;
+    }
+
     public get(key: string) {
-        return this.config.options.storageType === 'none'
-            ? null
-            : this.isStorageAvailable
-                ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
-                    ? this.getCookie(key)
-                    : window[this.config.options.storageType].getItem(key)
-                : this.store[key];
+        switch (this.storageType) {
+            case COOKIE:
+            case SESSION_COOKIE:
+                return this.getCookie(key);
+            case LOCAL_STORAGE:
+            case SESSION_STORAGE:
+                return window[this.storageType].getItem(key);
+            case MEMMORY:
+                return this.store[key];
+            case NONE:
+            default:
+                return null;
+        }
     }
 
     public set(key: string, value: string, date: string) {
-        if (this.config.options.storageType === 'none') {
-            return;
+        switch (this.storageType) {
+            case COOKIE:
+            case SESSION_COOKIE:
+                this.setCookie(key, value, this.storageType === COOKIE ? date : '');
+                break;
+            case LOCAL_STORAGE:
+            case SESSION_STORAGE:
+                window[this.storageType].setItem(key, value);
+                break;
+            case MEMMORY:
+                this.store[key] = value;
+                break;
+            case NONE:
+            default:
+                break;
         }
-        this.isStorageAvailable
-            ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
-                ? this.setCookie(key, value, this.config.options.storageType === 'cookie' ? date : '')
-                : window[this.config.options.storageType].setItem(key, value)
-            : this.store[key] = value;
     }
 
     public remove(key: string) {
-        if (this.config.options.storageType === 'none') {
-            return;
+        switch (this.storageType) {
+            case COOKIE:
+            case SESSION_COOKIE:
+                this.removeCookie(key);
+                break;
+            case LOCAL_STORAGE:
+            case SESSION_STORAGE:
+                window[this.storageType].removeItem(key);
+                break;
+            case MEMMORY:
+                delete this.store[key];
+                break;
+            case NONE:
+            default:
+                break;
         }
-        this.isStorageAvailable
-            ? this.config.options.storageType === 'cookie' || this.config.options.storageType === 'sessionCookie'
-                ? this.removeCookie(key)
-                : window[this.config.options.storageType].removeItem(key)
-            : delete this.store[key];
     }
 
-    private checkIsStorageAvailable(options: IConfigOptions) {
-        if (options.storageType === 'none') {
-            return true;
+    private checkIsStorageAvailable(storageType: StorageType) {
+        switch (storageType) {
+            case COOKIE:
+            case SESSION_COOKIE:
+                return this.isCookieStorageAvailable();
+            case LOCAL_STORAGE:
+            case SESSION_STORAGE:
+                return this.isWindowStorageAvailable(storageType);
+            case NONE:
+            case MEMMORY:
+                return true;
+            default:
+                return false;
         }
-        if (options.storageType === 'cookie' || options.storageType === 'sessionCookie') {
-            return this.isCookieStorageAvailable();
-        }
+    }
+
+    private isWindowStorageAvailable(storageType: typeof SESSION_STORAGE | typeof LOCAL_STORAGE) {
         try {
-            const supported = window && options.storageType in window && window[options.storageType] !== null;
+            const supported = window && storageType in window && window[storageType] !== null;
 
             if (supported) {
                 const key = Math.random().toString(36).substring(7);
-                window[options.storageType].setItem(key, '');
-                window[options.storageType].removeItem(key);
+                window[storageType].setItem(key, '');
+                window[storageType].removeItem(key);
             }
 
             return supported;

@@ -6,6 +6,7 @@ import { Subscriber } from 'rxjs/Subscriber';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import { StorageService } from './storage.service';
+import { StorageType } from './storage-type.enum';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -114,8 +115,8 @@ export class SharedService {
         });
     }
 
-    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' | 'none') {
-        this.config.options.storageType = type;
+    public setStorageType(type: StorageType) {
+        return this.storage.updateStorageType(type);
     }
 
     private b64DecodeUnicode(str) {

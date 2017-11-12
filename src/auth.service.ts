@@ -3,6 +3,7 @@ import { SharedService } from './shared.service';
 import { LocalService } from './local.service';
 import { OauthService } from './oauth.service';
 import { Observable } from 'rxjs/Observable';
+import { StorageType } from './storage-type.enum';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -11,8 +12,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
     constructor(private shared: SharedService,
-                private local: LocalService,
-                private oauth: OauthService) {
+        private local: LocalService,
+        private oauth: OauthService) {
     }
 
     public login<T extends string | object = any>(user: string | object, url?: string): Observable<T> {
@@ -59,8 +60,8 @@ export class AuthService {
         return this.shared.getPayload();
     }
 
-    public setStorageType(type: 'localStorage' | 'sessionStorage' | 'cookie' | 'sessionCookie' | 'none'): void {
-        this.shared.setStorageType(type);
+    public setStorageType(type: StorageType): boolean {
+        return this.shared.setStorageType(type);
     }
 
     public getExpirationDate(): Date | null {

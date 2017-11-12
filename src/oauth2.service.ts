@@ -27,7 +27,7 @@ export class Oauth2Service implements IOauthService {
         const authorizationData = this.getAuthorizationData(oauthOptions);
         const url = [oauthOptions.authorizationEndpoint, buildQueryString(authorizationData)].join('?');
         return this.popup.open(url, oauthOptions, this.config.options.cordova).pipe(
-            switchMap((oauthData) => {
+            switchMap((oauthData: any) => {
                 // when no server URL provided, return popup params as-is.
                 // this is for a scenario when someone wishes to opt out from
                 // satellizer's magic by doing authorization code exchange and
