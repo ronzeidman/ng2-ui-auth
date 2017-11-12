@@ -1,5 +1,5 @@
-#### 8.0.0-beta.7
-* added storage type 'none' and 'memmory' and added StorageType enum.
+#### 8.0.0-beta.8
+* added storage type 'none' and 'memory' and added StorageType enum.
 * `forRoot` without options will give you the ability to inject your own config
 * you can decide to not inject the JwtInterceptor view `forRoot` function
 

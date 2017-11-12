@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigService, IConfigOptions } from './config.service';
-import { StorageType, MEMMORY, COOKIE, SESSION_COOKIE, LOCAL_STORAGE, SESSION_STORAGE, NONE } from './storage-type.enum';
+import { StorageType, MEMORY, COOKIE, SESSION_COOKIE, LOCAL_STORAGE, SESSION_STORAGE, NONE } from './storage-type.enum';
 
 export abstract class StorageService {
     abstract updateStorageType(storageType: StorageType): boolean;
@@ -18,7 +18,7 @@ export abstract class StorageService {
 @Injectable()
 export class BrowserStorageService extends StorageService {
     private store: { [key: string]: string } = {};
-    private storageType: StorageType = MEMMORY;
+    private storageType: StorageType = MEMORY;
 
     constructor(private config: ConfigService) {
         super();
@@ -44,7 +44,7 @@ export class BrowserStorageService extends StorageService {
             case LOCAL_STORAGE:
             case SESSION_STORAGE:
                 return window[this.storageType].getItem(key);
-            case MEMMORY:
+            case MEMORY:
                 return this.store[key];
             case NONE:
             default:
@@ -62,7 +62,7 @@ export class BrowserStorageService extends StorageService {
             case SESSION_STORAGE:
                 window[this.storageType].setItem(key, value);
                 break;
-            case MEMMORY:
+            case MEMORY:
                 this.store[key] = value;
                 break;
             case NONE:
@@ -81,7 +81,7 @@ export class BrowserStorageService extends StorageService {
             case SESSION_STORAGE:
                 window[this.storageType].removeItem(key);
                 break;
-            case MEMMORY:
+            case MEMORY:
                 delete this.store[key];
                 break;
             case NONE:
@@ -99,7 +99,7 @@ export class BrowserStorageService extends StorageService {
             case SESSION_STORAGE:
                 return this.isWindowStorageAvailable(storageType);
             case NONE:
-            case MEMMORY:
+            case MEMORY:
                 return true;
             default:
                 return false;
