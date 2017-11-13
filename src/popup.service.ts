@@ -1,4 +1,4 @@
-import { deepMerge } from './utils';
+import { deepMerge, getWindowOrigin } from './utils';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ConfigService, IPopupOptions, IOauth2Options, IOauth1Options } from './config.service';
@@ -29,8 +29,8 @@ export class PopupService {
         }
 
         return cordova
-            ? this.eventListener(popupWindow, options.redirectUri || this.getHttpHost())
-            : this.pollPopup(popupWindow, options.redirectUri || this.getHttpHost());
+            ? this.eventListener(popupWindow, options.redirectUri || getWindowOrigin())
+            : this.pollPopup(popupWindow, options.redirectUri || getWindowOrigin());
     }
 
     public eventListener(popupWindow: Window, redirectUri: string) {
@@ -84,13 +84,7 @@ export class PopupService {
                     return _throw(new Error('Authentication Canceled'));
                 }
 
-                let popupWindowOrigin = '';
-                try {
-                    popupWindowOrigin = popupWindow.location.origin;
-                } catch (error) {
-                    // ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
-                    // error instanceof DOMException && error.name === 'SecurityError'
-                }
+                const popupWindowOrigin = getWindowOrigin(popupWindow);
 
                 if (popupWindowOrigin &&
                     (redirectUri.indexOf(popupWindowOrigin) === 0 || popupWindowOrigin.indexOf(redirectUri) === 0) &&
@@ -148,10 +142,6 @@ export class PopupService {
                 return obj;
             },
             {} as { [k: string]: string | true });
-    }
-
-    private getHttpHost() {
-        return window && window.location && window.location.origin;
     }
 
     private isCordovaApp() {

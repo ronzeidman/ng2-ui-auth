@@ -1,7 +1,7 @@
 import { IOauthService } from './oauth-service.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { joinUrl, deepMerge, buildQueryString } from './utils';
+import { joinUrl, deepMerge, buildQueryString, getWindowOrigin } from './utils';
 import { ConfigService, IOauth2Options } from './config.service';
 import { PopupService } from './popup.service';
 import { StorageService } from './storage.service';
@@ -56,7 +56,7 @@ export class Oauth2Service implements IOauthService {
         const {
             responseType = 'code',
             clientId,
-            redirectUri = (window && window.location.origin) || '',
+            redirectUri = getWindowOrigin() || '',
             scopeDelimiter = ',',
             scope,
             state,

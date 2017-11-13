@@ -1,3 +1,6 @@
+#### 8.0.0-beta.9
+* issue #121: IE support.
+
 #### 8.0.0-beta.8
 * added storage type 'none' and 'memory' and added StorageType enum.
 * `forRoot` without options will give you the ability to inject your own config

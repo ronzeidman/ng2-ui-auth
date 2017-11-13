@@ -51,3 +51,19 @@ export function buildQueryString(obj: object) {
         .map((key) => !!obj[key] ? `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}` : key)
         .join('&');
 }
+
+export function getWindowOrigin(w = window) {
+    try {
+        if (!w || !w.location) {
+            return null;
+        }
+        if (!w.location.origin) {
+            return `${w.location.protocol}//${w.location.hostname}${w.location.port ? ':' + w.location.port : ''}`;
+        }
+        return w.location.origin;
+    } catch (error) {
+        return null;
+        // ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
+        // error instanceof DOMException && error.name === 'SecurityError'
+    }
+}
