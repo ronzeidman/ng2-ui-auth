@@ -1,24 +1,10 @@
-#### 8.0.0-beta.9
-* issue #121: IE support.
-
-#### 8.0.0-beta.8
-* added storage type 'none' and 'memory' and added StorageType enum.
+#### 8.0.0
+* added storage type 'none' and 'memory' and added StorageType "enum".
 * `forRoot` without options will give you the ability to inject your own config
 * you can decide to not inject the JwtInterceptor view `forRoot` function
-
-#### 8.0.0-beta.5
-* fix signup logged in issue
 * issue #124: export IProviders
-* issue #123: fixed pollPopup regression
-
-#### 8.0.0-beta.4
 * issue #121: ability to inject config
 * issue #122: ability to decode unicode characters
-
-#### 8.0.0-beta.3
-* AOT compatible
-
-#### 8.0.0-beta.2
 * Angular 5.0.0 (for <5.0.0 use version 7.0.2)
 * Rxjs lettables
 * Total refactor, code is much cleaner, shorter and easier to read
