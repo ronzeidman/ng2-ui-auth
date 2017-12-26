@@ -1,6 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { StorageType, LOCAL_STORAGE } from './storage-type.enum';
+
+import { LOCAL_STORAGE, StorageType } from './storage-type.enum';
+import { getWindowOrigin } from './utils';
 
 /**
  * Created by Ron on 17/12/2015.
@@ -131,6 +132,7 @@ export const defaultOptions: IConfigOptions = {
         facebook: {
             name: 'facebook',
             url: '/auth/facebook',
+            redirectUri: `${getWindowOrigin()}/`,
             authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
             additionalUrlParams: {
                 display: 'popup',
@@ -230,6 +232,7 @@ export const defaultOptions: IConfigOptions = {
             name: 'bitbucket',
             url: '/auth/bitbucket',
             authorizationEndpoint: 'https://bitbucket.org/site/oauth2/authorize',
+            redirectUri: `${getWindowOrigin()}/`,
             scope: ['email'],
             scopeDelimiter: ',',
             oauthType: '2.0',

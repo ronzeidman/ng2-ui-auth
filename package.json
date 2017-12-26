@@ -1,6 +1,6 @@
 {
   "name": "ng2-ui-auth",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "angular2 migration for satellizer",
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
@@ -36,8 +36,8 @@
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
     "@angular/platform-server": "5.0.0",
-    "codelyzer": "^4.0.1",
-    "ng-packagr": "^1.5.0",
+    "codelyzer": "^4.0.2",
+    "ng-packagr": "^1.6.0",
     "rxjs": "^5.5.2",
     "tslint": "^5.8.0",
     "typescript": "2.3.4",

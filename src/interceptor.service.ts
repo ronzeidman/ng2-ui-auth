@@ -16,7 +16,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { authHeader, authToken } = this.config.options;
         const token = this.shared.getToken();
-        const isAuthenticated = this.shared.isAuthenticated;
+        const isAuthenticated = this.shared.isAuthenticated();
         const newReq = isAuthenticated && !req.headers.has(authHeader)
             ? req.clone({ setHeaders: { [authHeader]: `${authToken} ${token}` } })
             : req;

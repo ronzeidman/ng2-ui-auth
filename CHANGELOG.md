@@ -1,3 +1,7 @@
+#### 8.0.1
+* fixed facebook and twitter config
+* fixed a bug in JwtInterceptor
+
 #### 8.0.0
 * added storage type 'none' and 'memory' and added StorageType "enum".
 * `forRoot` without options will give you the ability to inject your own config
