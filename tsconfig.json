@@ -1,19 +1,25 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "module": "es6",
-    "moduleResolution": "node",
-    "removeComments": true,
-    "sourceMap": true,
-    "declaration": false,
-    "lib": ["dom", "es6"],
     "typeRoots": [
-      "./node_modules/@types"
-    ]
-  },
-  "files": [
-    "src/ng2-ui-auth.module.ts"
-  ]
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "Ng2UiAuth": [
+        "dist/Ng2UiAuth"
+      ]
+    }
+  }
 }

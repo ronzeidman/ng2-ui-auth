@@ -11,10 +11,10 @@ script:
 - npm run build
 after_success:
 before_deploy:
-- cd dist
-deploy:
-   provider: npm
-   email: "ron.zeidman@gmail.com"
-   api_key: "$NPM_TOKEN"
-   on:
-     tags: true
+- cd dist/ng2-ui-auth
+# deploy:
+#    provider: npm
+#    email: "ron.zeidman@gmail.com"
+#    api_key: "$NPM_TOKEN"
+#    on:
+#      tags: true
