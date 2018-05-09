@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Inject } from '@angular/core';
 import { StorageType } from './storage-type.enum';
 import { IConfigOptions, IPartialConfigOptions, IProviders } from './config-interfaces';
-import { defaultProviders } from '../public_api';
+import { defaultProviders } from './config-providers';
 
 export const CONFIG_OPTIONS = new InjectionToken<any>('config.options');
 

@@ -16,7 +16,6 @@ import { StorageType } from './lib/storage-type.enum';
 /*
  * Public API Surface of ng2-ui-auth
  */
-export * from './lib/config-providers';
 export {
   Ng2UiAuthModule,
   LocalService,
