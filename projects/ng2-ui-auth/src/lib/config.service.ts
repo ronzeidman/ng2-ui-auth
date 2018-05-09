@@ -1,6 +1,7 @@
 import { Injectable, InjectionToken, Inject } from '@angular/core';
 import { StorageType } from './storage-type.enum';
 import { IConfigOptions, IPartialConfigOptions, IProviders } from './config-interfaces';
+import { defaultProviders } from '../public_api';
 
 export const CONFIG_OPTIONS = new InjectionToken<any>('config.options');
 
@@ -55,6 +56,7 @@ export class ConfigService {
       ...this.options,
       ...options
     };
+    this.mergeWithDefaultProviders();
   }
 
   updateProviders(providers: IProviders) {
@@ -62,5 +64,17 @@ export class ConfigService {
       ...(this.options.providers || {}),
       ...providers
     };
+    this.mergeWithDefaultProviders();
+  }
+
+  mergeWithDefaultProviders() {
+    Object.keys(this.options.providers).forEach(key => {
+      if (key in defaultProviders) {
+        this.options.providers[key] = {
+          ...defaultProviders[key],
+          ...this.options.providers[key]
+        };
+      }
+    });
   }
 }

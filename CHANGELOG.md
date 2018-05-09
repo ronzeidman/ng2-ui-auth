@@ -1,7 +1,6 @@
 #### 9.0.0
 
 * using angular cli version 6 to build the library
-* providers should be imported and merged seperately (better treeshaking)
 * StorageType is now a proper enum
 * Universal might be working now
 * Update providers function

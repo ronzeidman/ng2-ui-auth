@@ -7,7 +7,7 @@ for a Go Server and extended client example: pcdummy/ng2-ui-auth-example.
 Just modify your main app module:
 
 ```ts
-import {Ng2UiAuthModule, google} from 'ng2-ui-auth';
+import {Ng2UiAuthModule} from 'ng2-ui-auth';
 
 const GOOGLE_CLIENT_ID = '******\*\*******\*\*******\*\*******.apps.googleusercontent.com';
 
@@ -15,7 +15,7 @@ const GOOGLE_CLIENT_ID = '******\*\*******\*\*******\*\*******.apps.googleuserco
 imports: [
 BrowserModule,
 HttpModule,
-Ng2UiAuthModule.forRoot({providers: {google: { ...google, clientId: GOOGLE_CLIENT_ID}}}),
+Ng2UiAuthModule.forRoot({providers: {google: { clientId: GOOGLE_CLIENT_ID}}}),
 ...
 ]
 ...
