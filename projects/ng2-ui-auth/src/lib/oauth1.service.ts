@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { IOauth1Options } from './config-interfaces';
 import { ConfigService } from './config.service';
 import { IOauthService } from './oauth-service';
@@ -16,14 +16,14 @@ export class Oauth1Service implements IOauthService {
     const serverUrl = this.config.options.baseUrl ? joinUrl(this.config.options.baseUrl, oauthOptions.url) : oauthOptions.url;
 
     return this.http.post<object>(serverUrl, oauthOptions).pipe(
-      switchMap(
-        authorizationData =>
-          this.popup.open(
+      switchMap(authorizationData =>
+        this.popup
+          .open(
             [oauthOptions.authorizationEndpoint, buildQueryString(authorizationData)].join('?'),
             oauthOptions,
             this.config.options.cordova
-          ),
-        (authorizationData, oauthData) => ({ authorizationData, oauthData })
+          )
+          .pipe(map(oauthData => ({ authorizationData, oauthData })))
       ),
       switchMap(({ authorizationData, oauthData }) => this.exchangeForToken<T>(oauthOptions, authorizationData, oauthData, userData))
     );
