@@ -1,9 +1,9 @@
 {
   "name": "ng2-ui-auth",
-  "version": "9.1.0",
+  "version": "9.1.1",
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/core": "^^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
     "rxjs": "^6.0.0"
   }
 }

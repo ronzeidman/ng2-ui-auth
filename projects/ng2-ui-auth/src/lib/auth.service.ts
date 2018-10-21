@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { StorageType } from './storage-type.enum';
 import { Observable } from 'rxjs';
-import { OauthService } from './oauth.service';
 import { LocalService } from './local.service';
+import { OauthService } from './oauth.service';
 import { SharedService } from './shared.service';
+import { StorageType } from './storage-type.enum';
 
 @Injectable()
 export class AuthService {
@@ -21,11 +21,11 @@ export class AuthService {
     return this.shared.logout();
   }
 
-  public authenticate<T = any>(name: string, userData?: any): Observable<T> {
+  public authenticate<T extends object | string = any>(name: string, userData?: any): Observable<T> {
     return this.oauth.authenticate<T>(name, userData);
   }
 
-  public link<T = any>(name: string, userData?: any): Observable<T> {
+  public link<T extends object | string = any>(name: string, userData?: any): Observable<T> {
     return this.oauth.authenticate<T>(name, userData);
   }
 
