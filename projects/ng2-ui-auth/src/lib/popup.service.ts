@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { IPopupOptions, IOauth2Options, IOauth1Options } from './config-interfaces';
-import { interval, merge, fromEvent, Observable, empty, of, throwError } from 'rxjs';
-import { take, switchMap, delay, map } from 'rxjs/operators';
+import { empty, fromEvent, interval, merge, Observable, of, throwError } from 'rxjs';
+import { delay, map, switchMap, take } from 'rxjs/operators';
+import { IOauth1Options, IOauth2Options, IPopupOptions } from './config-interfaces';
 import { getWindowOrigin } from './utils';
 
+declare const cordova: any;
 @Injectable()
 export class PopupService {
-  public open(url: string, options: IOauth2Options | IOauth1Options, cordova: boolean | null) {
+  public open(url: string, options: IOauth2Options | IOauth1Options, cordova = this.isCordovaApp()) {
     const stringifiedOptions = this.stringifyOptions(this.prepareOptions(options.popupOptions));
-    const UA = window.navigator.userAgent;
-    cordova = cordova === null ? this.isCordovaApp() : cordova;
     const windowName = cordova ? '_blank' : options.name;
 
     const popupWindow = typeof window !== 'undefined' ? window.open(url, windowName, stringifiedOptions) : null;
@@ -18,14 +17,16 @@ export class PopupService {
       if (popupWindow.focus) {
         popupWindow.focus();
       }
-      return cordova
-        ? this.eventListener(popupWindow, options.redirectUri || getWindowOrigin())
-        : this.pollPopup(popupWindow, options.redirectUri || getWindowOrigin());
+      return of(popupWindow);
     }
     return empty();
   }
 
-  public eventListener(popupWindow: Window, redirectUri: string) {
+  public waitForClose(popupWindow: Window, cordova = this.isCordovaApp(), redirectUri = getWindowOrigin()) {
+    return cordova ? this.eventListener(popupWindow, redirectUri) : this.pollPopup(popupWindow, redirectUri);
+  }
+
+  private eventListener(popupWindow: Window, redirectUri = getWindowOrigin()) {
     if (!popupWindow) {
       throw new Error('Popup was not created');
     }
@@ -70,7 +71,7 @@ export class PopupService {
     );
   }
 
-  public pollPopup(popupWindow: Window, redirectUri: string) {
+  private pollPopup(popupWindow: Window, redirectUri = getWindowOrigin()) {
     return interval(50).pipe(
       switchMap(() => {
         if (!popupWindow || popupWindow.closed) {
@@ -139,9 +140,6 @@ export class PopupService {
   }
 
   private isCordovaApp() {
-    return !!(
-      window &&
-      ((window as any).cordova || (window.navigator && window.navigator.userAgent && window.navigator.userAgent.indexOf('CriOS') > -1))
-    );
+    return typeof cordova === 'object' || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1);
   }
 }

@@ -1,10 +1,9 @@
-import { Injectable, InjectionToken, Inject } from '@angular/core';
-import { StorageType } from './storage-type.enum';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { IConfigOptions, IPartialConfigOptions, IProviders } from './config-interfaces';
 import { defaultProviders } from './config-providers';
+import { StorageType } from './storage-type.enum';
 
 export const CONFIG_OPTIONS = new InjectionToken<any>('config.options');
-
 @Injectable()
 export class ConfigService {
   public options = {
@@ -20,7 +19,7 @@ export class ConfigService {
     authHeader: 'Authorization',
     authToken: 'Bearer',
     storageType: StorageType.LOCAL_STORAGE,
-    cordova: null,
+    cordova: undefined,
     resolveToken: (response: any, config: IConfigOptions) => {
       const accessToken: string | { [key: string]: string } | null | undefined =
         response && (response.access_token || response.token || response.data);

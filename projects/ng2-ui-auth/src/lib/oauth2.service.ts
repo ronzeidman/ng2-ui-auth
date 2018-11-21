@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PopupService } from './popup.service';
-import { ConfigService } from './config.service';
-import { IOauth2Options } from './config-interfaces';
-import { Observable, of } from 'rxjs';
-import { buildQueryString, joinUrl, getWindowOrigin } from './utils';
+import { Injectable } from '@angular/core';
+import { empty, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { IOauth2Options } from './config-interfaces';
+import { ConfigService } from './config.service';
 import { IOauthService } from './oauth-service';
+import { PopupService } from './popup.service';
+import { buildQueryString, getWindowOrigin, joinUrl } from './utils';
 
 @Injectable()
 export class Oauth2Service implements IOauthService {
@@ -16,6 +16,9 @@ export class Oauth2Service implements IOauthService {
     const authorizationData = this.getAuthorizationData(oauthOptions);
     const url = [oauthOptions.authorizationEndpoint, buildQueryString(authorizationData)].join('?');
     return this.popup.open(url, oauthOptions, this.config.options.cordova).pipe(
+      switchMap((window?: Window) =>
+        window ? this.popup.waitForClose(window, this.config.options.cordova, oauthOptions.redirectUri) : empty()
+      ),
       switchMap((oauthData: any) => {
         // when no server URL provided, return popup params as-is.
         // this is for a scenario when someone wishes to opt out from
