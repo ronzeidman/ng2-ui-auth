@@ -1,6 +1,6 @@
 {
-  "name": "ng2-ui-auth-project",
-  "version": "0.0.0",
+  "name": "ng2-ui-auth",
+  "version": "9.2.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,8 +9,26 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "main": "dist/ng2-ui-auth/bundles/ng2-ui-auth.umd.js",
+  "module": "dist/ng2-ui-auth/fesm5/ng2-ui-auth.js",
+  "es2015": "dist/ng2-ui-auth/fesm2015/ng2-ui-auth.js",
+  "esm5": "dist/ng2-ui-auth/esm5/ng2-ui-auth.js",
+  "esm2015": "dist/ng2-ui-auth/esm2015/ng2-ui-auth.js",
+  "fesm5": "dist/ng2-ui-auth/fesm5/ng2-ui-auth.js",
+  "fesm2015": "dist/ng2-ui-auth/fesm2015/ng2-ui-auth.js",
+  "typings": "dist/ng2-ui-auth/ng2-ui-auth.d.ts",
+  "metadata": "dist/ng2-ui-auth/ng2-ui-auth.metadata.json",
+  "sideEffects": false,
   "private": true,
   "dependencies": {
+    "tslib": "^1.9.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "rxjs": "^6.0.0"
+  },
+  "devDependencies": {
     "@angular/animations": "^7.0.4",
     "@angular/common": "^7.0.4",
     "@angular/compiler": "^7.0.4",
@@ -22,9 +40,7 @@
     "@angular/router": "^7.0.4",
     "core-js": "^2.5.7",
     "rxjs": "^6.3.3",
-    "zone.js": "^0.8.26"
-  },
-  "devDependencies": {
+    "zone.js": "^0.8.26",
     "@angular-devkit/build-angular": "~0.10.0",
     "@angular-devkit/build-ng-packagr": "~0.10.0",
     "@angular/cli": "^7.0.6",
@@ -45,7 +61,6 @@
     "protractor": "^5.4.1",
     "ts-node": "~7.0.1",
     "tsickle": "^0.34.0",
-    "tslib": "^1.9.3",
     "tslint": "~5.11.0",
     "typescript": "~3.1.6"
   }

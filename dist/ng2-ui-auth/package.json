@@ -1,0 +1,22 @@
+{
+  "name": "ng2-ui-auth",
+  "version": "9.2.1",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "rxjs": "^6.0.0"
+  },
+  "main": "bundles/ng2-ui-auth.umd.js",
+  "module": "fesm5/ng2-ui-auth.js",
+  "es2015": "fesm2015/ng2-ui-auth.js",
+  "esm5": "esm5/ng2-ui-auth.js",
+  "esm2015": "esm2015/ng2-ui-auth.js",
+  "fesm5": "fesm5/ng2-ui-auth.js",
+  "fesm2015": "fesm2015/ng2-ui-auth.js",
+  "typings": "ng2-ui-auth.d.ts",
+  "metadata": "ng2-ui-auth.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}
