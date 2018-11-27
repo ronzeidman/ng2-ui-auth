@@ -1,20 +1,24 @@
 language: node_js
 node_js:
-- '8'
+  - 'node'
 env:
   global:
-  - GH_REF: github.com/ronzeidman/ng2-ui-auth
-before_install:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+    - GH_REF: github.com/ronzeidman/ng2-ui-auth
 script:
-- npm run build
+  - npm run build
 after_success:
-before_deploy:
-- cd dist/ng2-ui-auth
-# deploy:
-#    provider: npm
-#    email: "ron.zeidman@gmail.com"
-#    api_key: "$NPM_TOKEN"
-#    on:
-#      tags: true
+jobs:
+  include:
+    - stage: npm release
+      node_js: 'node'
+      script:
+        - npm run build
+      before_deploy:
+        - cd dist/ng2-ui-auth
+      deploy:
+        provider: npm
+        email: 'ron.zeidman@gmail.com'
+        api_key: '$NPM_API_KEY'
+        skip_cleanup: true
+        on:
+          tags: true
