@@ -1,3 +1,7 @@
+#### 10.0.1
+
+- using latest google api
+
 #### 10.0.0
 
 - support angular 8

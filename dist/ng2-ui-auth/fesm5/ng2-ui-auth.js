@@ -100,7 +100,7 @@ var defaultProviders = {
     google: {
         name: 'google',
         url: '/auth/google',
-        authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+        authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
         additionalUrlParams: {
             display: 'popup',
             prompt: undefined,
@@ -110,7 +110,7 @@ var defaultProviders = {
             'openid.realm': undefined,
             hd: undefined
         },
-        scope: ['openid', 'profile', 'email'],
+        scope: ['openid', 'email'],
         scopeDelimiter: ' ',
         oauthType: '2.0',
         popupOptions: { width: 452, height: 633 },
