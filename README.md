@@ -14,7 +14,7 @@ const GOOGLE_CLIENT_ID = '******\*\*******\*\*******\*\*******.apps.googleuserco
 @NgModule({
 imports: [
 BrowserModule,
-HttpModule,
+HttpClientModule,
 Ng2UiAuthModule.forRoot({providers: {google: { clientId: GOOGLE_CLIENT_ID}}}),
 ...
 ]
