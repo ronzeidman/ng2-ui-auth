@@ -1,3 +1,7 @@
+#### 10.0.0
+
+- support angular 8
+
 #### 9.1.0
 
 - added oauthOptions to the exchange for token flow in oauth 1.0a
